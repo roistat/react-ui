@@ -15,9 +15,10 @@
   "homepage": "https://github.com/roistat/react-ui",
   "license": "MIT",
   "scripts": {
-    "build": "styleguidist build && build-storybook -o build",
+    "build": "styleguidist build && build-storybook -o storybook",
     "server": "styleguidist server",
-    "storybook": "start-storybook -p 9010 -s ./assets"
+    "storybook": "start-storybook -p 9010 -s ./assets",
+    "deploy_doc": "git subtree push --prefix styleguide origin gh-pages"
   },
   "dependencies": {
     "jss": "5.0.0",

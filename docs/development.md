@@ -25,7 +25,7 @@
             |
             ...
             + styles // библиотека для работы со стилями
-            - addEventListener.js // listener для для не реакт DOM событий
+            - addEventListener.js // listener для не реакт DOM событий
 ```
 
 ### Установка

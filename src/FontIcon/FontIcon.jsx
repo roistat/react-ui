@@ -10,6 +10,7 @@ export default class FontIcon extends React.Component {
         name: PropTypes.string, 
     };
     render() {
+		const props = this.props;
         const classNameFromProps = (props.className ? ` ${props.className}` : '');
         const className = classNameFromProps;
         return (

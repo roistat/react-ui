@@ -5,6 +5,6 @@ storiesOf('FontIcon', module)
     .addWithInfo('FontIconCheckbox', 'FontIcon Checkbox', () => (
         <FontIcon name="check" className="checkbox"/>
     ))	
-	.addWithInfo('FontIconRefresh', 'FontIcon Refresh', () => (
+    .addWithInfo('FontIconRefresh', 'FontIcon Refresh', () => (
         <FontIcon name="refresh"/>
     ))

@@ -1,5 +1,5 @@
 Check icon:
-    <FontIcon name="check" className="checkbox"/>
+	<FontIcon name="check" className="checkbox"/>
 
 Refresh icon:
-    <FontIcon name="refresh"/>
+	<FontIcon name="refresh"/>

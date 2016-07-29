@@ -1,9 +1,15 @@
 const path = require('path');
 const dir = path.join(__dirname, 'src');
+var glob = require('glob');
 
 module.exports = {
     title: 'Roistat react ui components',
-    components: './src/**/*.jsx',
+    //components: './src/**/*.jsx',
+    components: function() {
+        return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
+            return !/story.jsx$/.test(module);
+        });
+    },
     highlightTheme: 'material',
     assetsDir: './assets',
     template: './template.html',

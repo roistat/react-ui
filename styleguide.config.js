@@ -4,7 +4,6 @@ var glob = require('glob');
 
 module.exports = {
     title: 'Roistat react ui components',
-    //components: './src/**/*.jsx',
     components: function() {
         return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
             return !/story.jsx$/.test(module);
@@ -13,6 +12,7 @@ module.exports = {
     highlightTheme: 'material',
     assetsDir: './assets',
     template: './template.html',
+    styleguideDir: 'assets',
     updateWebpackConfig: function(webpackConfig, env) {
         // Your source files folder or array of folders, should not include node_modules
         webpackConfig.module.loaders = webpackConfig.module.loaders.concat([

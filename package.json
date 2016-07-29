@@ -15,7 +15,8 @@
   "homepage": "https://github.com/roistat/react-ui",
   "license": "MIT",
   "scripts": {
-    "build": "styleguidist build && build-storybook -o storybook",
+    "build-doc": "styleguidist build",
+    "build-storybook": "build-storybook -o assets",
     "server": "styleguidist server",
     "storybook": "start-storybook -p 9010 -s ./assets",
     "remove-doc": "git push origin --delete gh-pages",

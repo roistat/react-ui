@@ -4,10 +4,10 @@ import React, { PropTypes } from 'react';
 
 export default class FontIcon extends React.Component {
 	static propTypes = {
-	/**
-	 * Name of font awesome icon without 'fa-' prefix
-	 */
-		name: PropTypes.string,
+		/**
+		 * Name of font awesome icon without 'fa-' prefix
+		 */
+		name: PropTypes.string
 	};
 	render() {
 		const props = this.props;

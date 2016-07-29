@@ -20,7 +20,7 @@
     "server": "styleguidist server",
     "storybook": "start-storybook -p 9010 -s ./assets",
     "remove-doc": "git push origin --delete gh-pages",
-    "deploy-doc": "git subtree push --prefix styleguide origin gh-pages"
+    "deploy-doc": "git subtree push --prefix assets origin gh-pages"
   },
   "dependencies": {
     "jss": "5.0.0",

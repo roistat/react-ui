@@ -11,29 +11,76 @@ import { StyleSheet, css } from '../helpers/styles';
 
 export default class TextInput extends React.Component {
 	static propTypes = {
+		/**
+		 * placeholder text
+		 */
 		placeholder: PropTypes.string,
-		validateState: PropTypes.oneOf(['success', 'warning', 'error']),
+		/**
+		 * size of the input
+		 */
 		size: PropTypes.oneOf(['l', 'm', 's', 'xs', 'title']),
+		/**
+		 * Is input field disabled.
+		 */
 		isDisabled: PropTypes.bool,
+		/**
+		 * text value of the input
+		 */
 		value: PropTypes.string,
+		/**
+		 * width value of the input
+		 */
 		width: PropTypes.string,
+		/**
+		 * text-align of the input text
+		 */
 		textAlign: PropTypes.oneOf(['left', 'center', 'right']),
+		/**
+		 * is multiline field (textarea)
+		 */
 		isMultiLine: PropTypes.bool,
+		/**
+		 * is input has autofocus after create
+		 */
 		autoFocus: PropTypes.bool,
+		/**
+		 * number of textarea rows
+		 */
 		rows: PropTypes.number,
+		/**
+		 * On change event handler
+		 */
 		onChange: PropTypes.func,
+		/**
+		 * On focus event handler
+		 */
 		onFocus: PropTypes.func,
+		/**
+		 * On blur event handler
+		 */
 		onBlur: PropTypes.func,
+		/**
+		 * On click event handler
+		 */
 		onClick: PropTypes.func,
+		/**
+		 * On keydown event handler
+		 */
 		onKeyDown: PropTypes.func,
+		/**
+		 * On keypress event handler
+		 */
 		onKeyPress: PropTypes.func,
+		/**
+		 * On keyup event handler
+		 */
 		onKeyUp: PropTypes.func
 	};
 
 	static defaultProps = {
 		value: '',
 		size: 'm',
-		placeholder: 'rrr',
+		placeholder: '',
 		isDisabled: false,
 		textAlign: 'left',
 		multiLine: false,
@@ -42,10 +89,9 @@ export default class TextInput extends React.Component {
 
 	constructor(props) {
 		super(props);
-		console.log(props);
 		this.state = {
-		isFocused: false,
-		value: this.props.value
+			isFocused: false,
+			value: this.props.value
 		};
 
 		this._onFocusHandler = this._onFocusHandler.bind(this);
@@ -61,22 +107,21 @@ export default class TextInput extends React.Component {
 	}
 
 	_onFocusHandler(event) {
-		let props = this.props;
+		const props = this.props;
 
 		this.setState({ isFocused: true });
 		props.onFocus && props.onFocus(event);
 	}
 
 	_onBlurHandler(event) {
-		let props = this.props;
+		const props = this.props;
 
 		this.setState({ isFocused: false });
 		props.onBlur && props.onBlur(event);
 	}
 
 	_onChangeHandler(event) {
-		let value = event.target.value;
-
+		const value = event.target.value;
 		this.setState({ value: value });
 
 		this.props.onChange && this.props.onChange(value);
@@ -117,15 +162,16 @@ export default class TextInput extends React.Component {
 				onKeyDown: this._onKeyDownHandler,
 				onKeyPress: this._onKeyPressHandler,
 				onKeyUp: this._onKeyUpHandler
-			})
+			}
+		)
 	}
 
 	_renderChildren() {
 		return React.Children.map(this.props.children, (item) => {
-		if (item.type.__TEXT_INPUT_CONTROL__) {
-		return this._cloneControl(item);
-		}
-		return item;
+			if (item.type.__TEXT_INPUT_CONTROL__) {
+				return this._cloneControl(item);
+			}
+			return item;
 		})
 	}
 
@@ -215,3 +261,4 @@ const STYLE = StyleSheet.create({
 		paddingRight: 0
 	}
 });
+

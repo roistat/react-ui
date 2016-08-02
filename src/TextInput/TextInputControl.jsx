@@ -10,24 +10,75 @@ export default class TextInputControl extends React.Component {
 	static __TEXT_INPUT_CONTROL__ = true;
 
 	static propTypes = {
+		/**
+		 * placeholder text
+		 */
 		placeholder: PropTypes.string,
+		/**
+		 * size of the input
+		 */
 		size: PropTypes.oneOf(['l', 'm', 's', 'xs', 'title']),
+		/**
+		 * Is input field disabled.
+		 */
 		isDisabled: PropTypes.bool,
+		/**
+		 * text value of the input
+		 */
 		value: PropTypes.string,
+		/**
+		 * width value of the input
+		 */
+		width: PropTypes.string,
+		/**
+		 * text-align of the input text
+		 */
 		textAlign: PropTypes.oneOf(['left', 'center', 'right']),
+		/**
+		 * is multiline field (textarea)
+		 */
 		isMultiLine: PropTypes.bool,
+		/**
+		 * is input has autofocus after create
+		 */
 		autoFocus: PropTypes.bool,
+		/**
+		 * number of textarea rows
+		 */
 		rows: PropTypes.number,
+		/**
+		 * On change event handler
+		 */
 		onChange: PropTypes.func,
+		/**
+		 * On focus event handler
+		 */
 		onFocus: PropTypes.func,
+		/**
+		 * On blur event handler
+		 */
 		onBlur: PropTypes.func,
+		/**
+		 * On click event handler
+		 */
 		onClick: PropTypes.func,
+		/**
+		 * On keydown event handler
+		 */
 		onKeyDown: PropTypes.func,
+		/**
+		 * On keypress event handler
+		 */
 		onKeyPress: PropTypes.func,
+		/**
+		 * On keyup event handler
+		 */
 		onKeyUp: PropTypes.func
 	};
+
 	_renderControl() {
-		let props = this.props;
+		const props = this.props;
+		
 		return React.createElement(
 			props.isMultiLine ? 'textarea' : 'input',
 			Object.assign({},
@@ -52,6 +103,7 @@ export default class TextInputControl extends React.Component {
 
 	_renderPlaceholder() {
 		const props = this.props;
+		
 		if (!props.placeholder || props.value) {
 			return null
 		}
@@ -76,9 +128,9 @@ export default class TextInputControl extends React.Component {
 			</View>
 		)
 	}
-	}
+}
 
-	const STYLE = StyleSheet.create({
+const STYLE = StyleSheet.create({
 	root: {
 		position: 'relative'
 	},
@@ -138,4 +190,5 @@ export default class TextInputControl extends React.Component {
 	placeholderSizeTITLE: {
 		padding: '0 .2rem'
 	}
-	});
+});
+

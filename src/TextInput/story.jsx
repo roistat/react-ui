@@ -4,15 +4,17 @@ import TextInput from './TextInput.jsx';
 storiesOf('TextInput', module)
 	.addWithInfo('InputField', 'TextInput field', () => (
 		<TextInput
-			placeholder="Введите текст"
+			placeholder="enter the text"
 			width = '200px'
 			autoFocus = { true }
+			size = 'l'
 		/>
 	))
 	.addWithInfo('TextArea', 'TextArea field', () => (
 		<TextInput
-			placeholder="Многострочный текст"
+			placeholder="multiline text"
 			isMultiLine = { true }
 			rows = { 10 }
 		/>
 	))
+

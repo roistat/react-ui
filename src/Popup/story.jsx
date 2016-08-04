@@ -5,7 +5,7 @@ import TextInput from '../TextInput';
 
 storiesOf('Popup', module)
 	.addWithInfo('Popup window', 'Popup window component', () => (
-		<Popup hasTail={true} tailDirection='Left' tailColor='#df0909'>
+		<Popup hasTail={true} tailDirection='left' tailColor='#df0909'>
 			<TextInput placeholder="Enter the text" />
 		</Popup>
 	))

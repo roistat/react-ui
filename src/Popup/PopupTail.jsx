@@ -17,7 +17,6 @@ export default class PopupTail extends React.Component {
 
 	render() {
 		const props = this.props;
-		console.log(props);
 		return (
 			<i className={css(STYLE.root, STYLE[props.direction])}
 				style={{ 

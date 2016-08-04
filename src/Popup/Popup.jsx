@@ -14,19 +14,15 @@ import { StyleSheet, css } from '../helpers/styles';
 export default class Popup extends React.Component {
 	static propTypes = {
 		/**
-		 * On close event handler
-		 */
-		onClose: PropTypes.func,
-		/**
 		 * is popup has tail
 		 */
 		hasTail: PropTypes.bool,
 		/**
-		 * popup tail direction
+		 * Tail direction
 		 */
 		tailDirection: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
 		/**
-		 * tail color
+		 * Tail color
 		 */
 		tailColor: PropTypes.string,
 		/**
@@ -35,45 +31,11 @@ export default class Popup extends React.Component {
 		isRounded: PropTypes.bool
 	};
 
-	constructor(props, context) {
-		super(props, context);
-		this._targetNode = props.target ? ReactDOM.findDOMNode(props.target) : null;
-	}
-
-	componentDidMount() {
-		const props = this.props;
-		
-		if (typeof document !== 'undefined') {
-			var node = ReactDOM.findDOMNode(this);
-			this._removeOutsideClickListener = addEventListener(document, 'click', (event) => {
-				if (!node.contains(event.target) &&
-					!(props.target && props.target.contains(event.target))) {
-						this._close();
-					}
-				});
-
-			this._removeKeyDownlickListener = addEventListener(document, 'keydown', (event) => {
-				if (event.keyCode === 27) {
-					this._close();
-				}
-			});
-		}
-	}
-
-	componentWillUnmount() {
-		this._removeOutsideClickListener && this._removeOutsideClickListener.remove();
-		this._removeKeyDownlickListener && this._removeKeyDownlickListener.remove();
-	}
-
-	_close() {
-		this.props.onClose && this.props.onClose();
-	}
-
 	_renderTail() {
 		const props = this.props;
 
 		return (
-			<PopupTail direction={props.tailDirection.toLowerCase()} color={props.tailColor} />
+			<PopupTail direction={props.tailDirection} color={props.tailColor} />
 		)
 	}
 

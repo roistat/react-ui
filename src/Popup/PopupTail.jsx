@@ -12,13 +12,21 @@ export default class PopupTail extends React.Component {
 		/**
 		 * tail color
 		 */
-		tailColor: PropTypes.string
+		color: PropTypes.string
 	};
 
 	render() {
 		const props = this.props;
+		console.log(props);
 		return (
-			<i className={css(STYLE.root, STYLE[props.direction])} />
+			<i className={css(STYLE.root, STYLE[props.direction])}
+				style={{ 
+					borderBottom: props.direction === 'top' && (props.color),
+					borderLeft: props.direction === 'right' && (props.color),
+					borderTop: props.direction === 'bottom' && (props.color),
+					borderRightColor: props.direction === 'left' && (props.color)
+				}}
+			/>
 		)
 	}
 }
@@ -66,3 +74,4 @@ const STYLE = StyleSheet.create({
 		borderRight: '5px solid #006498'
 	}
 });
+

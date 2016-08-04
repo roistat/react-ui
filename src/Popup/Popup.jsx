@@ -14,10 +14,6 @@ import { StyleSheet, css } from '../helpers/styles';
 export default class Popup extends React.Component {
 	static propTypes = {
 		/**
-		 * is autoCloseable popup
-		 */
-		autoCloseable: PropTypes.bool,
-		/**
 		 * On close event handler
 		 */
 		onClose: PropTypes.func,
@@ -28,7 +24,11 @@ export default class Popup extends React.Component {
 		/**
 		 * popup tail direction
 		 */
-		tailSide: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+		tailDirection: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+		/**
+		 * tail color
+		 */
+		tailColor: PropTypes.string,
 		/**
 		 * is rounded popup
 		 */
@@ -43,8 +43,7 @@ export default class Popup extends React.Component {
 	componentDidMount() {
 		const props = this.props;
 		
-		// TODO: remove favore AutoClosable component
-		if (this.props.autoCloseable && typeof document !== 'undefined') {
+		if (typeof document !== 'undefined') {
 			var node = ReactDOM.findDOMNode(this);
 			this._removeOutsideClickListener = addEventListener(document, 'click', (event) => {
 				if (!node.contains(event.target) &&
@@ -70,14 +69,11 @@ export default class Popup extends React.Component {
 		this.props.onClose && this.props.onClose();
 	}
 
-	_getTailName() {
-		const props = this.props;
-		return `${props.tailSide.replace(/^\w/, (s) => s)}`;
-	}
-
 	_renderTail() {
+		const props = this.props;
+
 		return (
-			<PopupTail direction = { this._getTailName() } />
+			<PopupTail direction={props.tailDirection.toLowerCase()} color={props.tailColor} />
 		)
 	}
 

@@ -6,18 +6,18 @@ import { StyleSheet, css } from '../helpers/styles';
 export default class PopupTail extends React.Component {
 	static propTypes = {
 		/**
-		 * PopupTail direction
+		 * Tail direction
 		 */
 		direction: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
 		/**
-		 * tail color
+		 * Tail color
 		 */
 		color: PropTypes.string
 	};
 
 	render() {
 		const props = this.props;
-		console.log(props.color);
+
 		return (
 			<i className={css(STYLE.root, STYLE[props.direction])}
 				style={{ 

@@ -17,12 +17,13 @@ export default class PopupTail extends React.Component {
 
 	render() {
 		const props = this.props;
+		console.log(props.color);
 		return (
 			<i className={css(STYLE.root, STYLE[props.direction])}
 				style={{ 
-					borderBottom: props.direction === 'top' && (props.color),
-					borderLeft: props.direction === 'right' && (props.color),
-					borderTop: props.direction === 'bottom' && (props.color),
+					borderBottomColor: props.direction === 'top' && (props.color),
+					borderLeftColor: props.direction === 'right' && (props.color),
+					borderTopColor: props.direction === 'bottom' && (props.color),
 					borderRightColor: props.direction === 'left' && (props.color)
 				}}
 			/>

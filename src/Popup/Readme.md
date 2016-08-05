@@ -4,11 +4,11 @@ Simple popup with content:
 
 Simple popup with content and tail:
 
-	<Popup hasTail={true} tailSide='left'>popup content</Popup>
+	<Popup hasTail={true} tailDirection='left'>popup content</Popup>
 
 Popup with child react component and tail and custom color:
 
-	<Popup hasTail={true} tailSide='left' tailColor='#1dc428'>
+	<Popup hasTail={true} tailDirection='left' tailColor='#1dc428'>
 		<TextInput placeholder="Enter the text" />
 	</Popup>
 

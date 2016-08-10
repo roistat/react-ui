@@ -12,9 +12,9 @@ export default class AutoClosable extends React.Component {
 		 */
 		onClose: PropTypes.func,
 		/**
-		 * Parent component of autoclosable element
+		 * Optional parent component, click event on parent don't fire close event
 		 */
-		parentComponent: PropTypes.object
+		parentComponent: PropTypes.element
 	};
 
 	componentDidMount() {
@@ -23,8 +23,8 @@ export default class AutoClosable extends React.Component {
 
 		this._removeOutsideClickListener = addEventListener(document, 'click', (event) => {
 			if (!(parentNode && parentNode.contains(event.target)) &&
-					!this._node.contains(event.target) &&
-						!(props.targetNode && props.targetNode.contains(event.target))) {
+				!this._node.contains(event.target) &&
+				!(props.targetNode && props.targetNode.contains(event.target))) {
 				this._emitClose();
 			}
 		});

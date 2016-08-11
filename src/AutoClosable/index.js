@@ -1,1 +1,1 @@
-export { default } from './AutoClosable.jsx';
+export { default } from './AutoClosable';

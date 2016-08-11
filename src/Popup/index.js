@@ -1,2 +1,2 @@
-export { default } from './Popup.jsx';
+export { default } from './Popup';
 

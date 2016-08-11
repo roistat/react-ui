@@ -1,40 +1,15 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import style from './Spinner.css';
-
-style.use();
-
-const STYLE = {
-    root: {
-        size: {
-            l: {
-                width: 64,
-                height: 64,
-                borderWidth: 6,
-                borderRadius: '50%'
-            },
-            m: {
-                width: 32,
-                height: 32
-            },
-            s: {
-                width: 24,
-                height: 24,
-                borderWidth: 3
-            },
-            xs: {
-                width: 16,
-                height: 16,
-                borderWidth: 2
-            }
-        }
-    }
-};
+import { StyleSheet, css, getSizeStyle } from '../helpers/styles';
+import { COLOR} from '../const/theme';
 
 const Spinner = (props) => {
     return (
-        <div style={{ ...STYLE.root.size[props.size], borderColor: props.color }} className='Spinner'/>
+        <div
+            className={css(styles.spinner, getSizeStyle(styles, props.size))}
+            style={{ borderColor: props.color || COLOR.PRIMARY }}
+        />
     )
 };
 
@@ -45,6 +20,49 @@ Spinner.propTypes = {
 Spinner.defaultProps = {
     size: 'xs'
 };
+
+const styles = StyleSheet.create({
+    spinner: {
+        animation: 'SpinnerAnimation 1250ms infinite linear',
+        borderWidth: '4px',
+        borderStyle: 'solid',
+        borderRightColor: 'transparent !important',
+        borderRadius: '16px',
+        boxSizing: 'border-box',
+        display: 'inline-block',
+        position: 'relative',
+        overflow: 'hidden',
+        textIndent: '-9999px',
+    },
+    sizeXS: {
+        width: '16px',
+        height: '16px',
+        borderWidth: '2px'
+    },
+    sizeS: {
+        width: '24px',
+        height: '24px',
+        borderWidth: '3px'
+    },
+    sizeM: {
+        width: '32px',
+        height: '32px'
+    },
+    sizeL: {
+        width: '64px',
+        height: '64px',
+        borderWidth: '6px',
+        borderRadius: '50%'
+    },
+    '@keyframes SpinnerAnimation': {
+        '0%':  {
+            transform: 'rotate(0deg)'
+        },
+        '100%': {
+            transform: 'rotate(360deg)'
+        }
+    }
+});
 
 
 export default Spinner;

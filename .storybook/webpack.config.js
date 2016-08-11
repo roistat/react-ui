@@ -8,11 +8,6 @@ const config = {
                 test: /\.jsx?$/,
                 include: dir,
                 loader: 'babel'
-            },
-            {
-                test: /\.css?$/,
-                include: dir,
-                loader: 'style/useable!css'
             }
         ],
     },

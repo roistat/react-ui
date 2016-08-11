@@ -14,7 +14,13 @@ module.exports = {
     template: './assets/template.html',
     styleguideDir: 'styleguide',
     updateWebpackConfig: function(webpackConfig, env) {
-        // Your source files folder or array of folders, should not include node_modules
+        webpackConfig.module.resolve = {
+            extensions: [
+                '',
+                '.js',
+                '.jsx'
+            ]
+        };
         webpackConfig.module.loaders = webpackConfig.module.loaders.concat([
             // Babel loader will use your project’s .babelrc
             {

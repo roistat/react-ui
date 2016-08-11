@@ -7,7 +7,7 @@ import View from '../View';
 
 import { FONT, COLOR, SHADOW } from '../const/theme';
 
-import { StyleSheet, css } from '../helpers/styles';
+import { StyleSheet, css, getSizeStyle } from '../helpers/styles';
 
 export default class PrimaryButton extends AbstractButton {
     static propTypes = {
@@ -74,7 +74,7 @@ export default class PrimaryButton extends AbstractButton {
                 className={
                     css(
                         ...this.buildStyleList(styles, 'button'),
-                        styles[`buttonSize${props.size.toUpperCase()}`])
+                        getSizeStyle(styles, props.size))
                 }>
                 {
                     !props.isWaiting ?
@@ -122,22 +122,22 @@ const styles = StyleSheet.create({
     buttonIsFocused: {
         boxShadow: `${SHADOW.FOCUS}, inset 0px -2px 0px 0px rgba(27, 42, 48, 0.1), inset 0px -1px 0px 0px #b4bdc0, inset 1px 1px 0px 0px #c6cbce, inset -1px 0px 0px 0px #c6cbce;`
     },
-    buttonSizeL: {
+    sizeL: {
         padding: '.3rem .6rem',
         minWidth: '1.8rem',
         height: '1.8rem'
     },
-    buttonSizeM: {
+    sizeM: {
         padding: '.2rem .6rem',
         minWidth: '1.6rem',
         height: '1.6rem'
     },
-    buttonSizeS: {
+    sizeS: {
         padding: '.1rem .4rem',
         minWidth: '1.4rem',
         height: '1.4rem'
     },
-    buttonSizeXS: {
+    sizeXS: {
         fontSize: FONT.SIZE.BUTTON_SMALL_TEXT,
         padding: '0 .4rem',
         minWidth: '1.2rem',

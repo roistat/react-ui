@@ -3,5 +3,18 @@
     "react",
     "es2015",
     "stage-0"
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-react-remove-prop-types",
+        "transform-react-inline-elements"
+      ],
+      "presets": [
+        "react",
+        "es2015",
+        "stage-0"
+      ]
+    }
+  }
 }

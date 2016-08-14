@@ -24,8 +24,8 @@
     "clean:storybook": "rm -rf ./storybook",
     "docs": "styleguidist server",
     "storybook": "start-storybook -p 9010 -s ./assets",
-    "publish:docs": "gh-pages -d styleguide",
-    "prepublish": "npm run build:commonjs && npm run build:docs",
+    "publish:docs": "npm run build:docs && gh-pages -d styleguide",
+    "prepublish": "npm run build:commonjs",
     "postpublish": "npm run publish:docs"
   },
   "dependencies": {

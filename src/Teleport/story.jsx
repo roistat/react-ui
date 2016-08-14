@@ -6,7 +6,7 @@ import TeleportContext from './TeleportContext';
 import Teleport from '../Teleport';
 
 storiesOf('Teleport', module)
-    .addWithInfo('Move one target', '', () => (
+    .add('Move one target', () => (
         <TeleportContext>
             <div style={{ position: 'relative' }}>
                 move to
@@ -24,7 +24,7 @@ storiesOf('Teleport', module)
             </div>
         </TeleportContext>
     ))
-    .addWithInfo('Move two target', '', () => (
+    .add('Move two target', () => (
         <TeleportContext>
             <div style={{ position: 'relative' }}>
                 move to

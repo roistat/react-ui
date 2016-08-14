@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import Button from './Button.jsx';
+import Button from './Button';
 
 storiesOf('Button', module)
     .addWithInfo('Button default view', 'Default button with click handler', () => (

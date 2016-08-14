@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import Popover from './Popover.jsx';
+import Popover from './Popover';
 
 storiesOf('Popover', module)
 	.addWithInfo('Popover window', 'Popover window component', () => (

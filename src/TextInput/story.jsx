@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import TextInput from './TextInput.jsx';
+import TextInput from './TextInput';
+
 storiesOf('TextInput', module)
 	.addWithInfo('InputField', 'TextInput field', () => (
 		<TextInput
@@ -16,5 +17,5 @@ storiesOf('TextInput', module)
 			isMultiLine = { true }
 			rows = { 10 }
 		/>
-	))
+	));
 

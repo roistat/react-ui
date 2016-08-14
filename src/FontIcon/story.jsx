@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
-import FontIcon from './FontIcon.jsx';
+import FontIcon from './FontIcon';
 
 storiesOf('FontIcon', module)
 	.addWithInfo('FontIconCheckbox', 'FontIcon Checkbox', () => (

@@ -7,7 +7,7 @@ import View from '../View';
 
 import { FONT, COLOR, SHADOW } from '../const/theme';
 
-import { StyleSheet, css, getSizeStyle } from '../helpers/styles';
+import { StyleSheet, css } from '../helpers/styles';
 
 export default class PrimaryButton extends AbstractButton {
     static propTypes = {
@@ -74,7 +74,7 @@ export default class PrimaryButton extends AbstractButton {
                 className={
                     css(
                         ...this.buildStyleList(styles, 'button'),
-                        getSizeStyle(styles, props.size))
+                        styles.getPreset('size', props.size))
                 }>
                 {
                     !props.isWaiting ?
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         minWidth: '1.4rem',
         height: '1.4rem'
     },
-    sizeXS: {
+    sizeXs: {
         fontSize: FONT.SIZE.BUTTON_SMALL_TEXT,
         padding: '0 .4rem',
         minWidth: '1.2rem',

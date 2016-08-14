@@ -9,10 +9,19 @@ jss.use(nested());
 jss.use(camelCase());
 jss.use(vendorPrefixer());
 
+function Styles(classes) {
+    Object.assign(this, classes);
+}
+
+Styles.prototype.getPreset = function (prefix: string, preset: string) {
+    return this[`${prefix}${preset.charAt(0).toUpperCase()}${preset.substr(1)}`];
+};
+
 export const StyleSheet  = {
-    create(styles) {
+    create(styles: Object) {
         const sheet = jss.createStyleSheet(styles).attach();
-        return sheet.classes;
+
+        return new Styles(sheet.classes);
     }
 };
 

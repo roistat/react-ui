@@ -1,13 +1,13 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import { StyleSheet, css, getSizeStyle } from '../helpers/styles';
+import { StyleSheet, css } from '../helpers/styles';
 import { COLOR} from '../const/theme';
 
 const Spinner = (props) => {
     return (
         <div
-            className={css(styles.spinner, getSizeStyle(styles, props.size))}
+            className={css(styles.spinner, styles.getPreset('size', props.size))}
             style={{ borderColor: props.color || COLOR.PRIMARY }}
         />
     )
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         textIndent: '-9999px',
     },
-    sizeXS: {
+    sizeXs: {
         width: '16px',
         height: '16px',
         borderWidth: '2px'

@@ -14,11 +14,19 @@ const Spinner = (props) => {
 };
 
 Spinner.propTypes = {
-    size: PropTypes.oneOf(['l', 'm', 's', 'xs'])
+    /**
+     * Spinner size
+     */
+    size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
+    /**
+     * Spinner color
+     */
+    color: PropTypes.string
 };
 
 Spinner.defaultProps = {
-    size: 'xs'
+    size: 'xs',
+    color: COLOR.PRIMARY
 };
 
 const styles = StyleSheet.create({

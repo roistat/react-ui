@@ -1,1 +1,2 @@
-export { default } from './Teleport.jsx';
+export { default } from './Teleport';
+export { default as TeleportContext } from './TeleportContext'

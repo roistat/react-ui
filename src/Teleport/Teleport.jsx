@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 var idCount = 0;
 
@@ -10,7 +11,9 @@ export default class Teleport extends React.Component {
             move: PropTypes.func,
             remove: PropTypes.func,
             update: PropTypes.func,
-            isAdded: PropTypes.func
+            isAdded: PropTypes.func,
+            getRootDOMNode: PropTypes.func,
+            getBoundingClientRect: PropTypes.func
         })
     };
 
@@ -18,9 +21,12 @@ export default class Teleport extends React.Component {
         super(...args);
 
         this._componentID = `${Math.random().toString(36)}:${++idCount}`;
+        this._parentDOMNode = null;
     }
 
     componentDidMount() {
+        this._parentDOMNode = ReactDOM.findDOMNode(this).parentNode;
+
         if (this.context.teleport.isAdded(this._componentID)) {
             this._update(this.props.children);
 
@@ -38,6 +44,10 @@ export default class Teleport extends React.Component {
 
     componentWillUnmount() {
         this._destroy();
+    }
+
+    getParentDOMNode() {
+        return this._parentDOMNode || null;
     }
 
     _moveToDestination() {

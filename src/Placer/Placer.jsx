@@ -15,6 +15,11 @@ const Y_AXIS_PRESET_CALCULATORS = {
             top: targetRect.top + targetRect.height
         }
     },
+    'middle':  (targetRect: Object, placeableRect: Object) => {
+        return {
+            top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2
+        }
+    }
 };
 export default class Placer extends React.Component {
     static propTypes = {

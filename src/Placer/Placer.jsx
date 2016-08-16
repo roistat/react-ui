@@ -42,6 +42,11 @@ const X_AXIS_PRESET_CALCULATORS = {
         return {
             left: targetRect.left + targetRect.width
         }
+    },
+    'middle': (targetRect: Object, placeableRect: Object) => {
+        return {
+            left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2
+        }
     }
 };
 

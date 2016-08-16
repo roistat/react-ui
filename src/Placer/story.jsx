@@ -4,7 +4,6 @@ import { storiesOf, action } from '@kadira/storybook';
 import StateProvider from '../StateProvider';
 import Placer from './Placer';
 import { TeleportContext } from '../Teleport';
-import Placeable from './Placeable';
 
 storiesOf('Placer', module)
     .add('Y axis outside top', () => (

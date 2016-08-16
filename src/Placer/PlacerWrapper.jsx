@@ -19,6 +19,10 @@ export default class PlacerWrapper extends React.Component {
         return this._selfDOMNode || null;
     }
 
+    getBoundingClientRect(): Object {
+        return this._selfDOMNode ? this._selfDOMNode.getBoundingClientRect() : null
+    }
+
     setStyles(styles: Object) {
         Object.assign(this.getDOMNode().style, styles);
     }
@@ -27,7 +31,7 @@ export default class PlacerWrapper extends React.Component {
         const props = this.props;
 
         return (
-            <div style={{ visibility: 'hidden' }}>
+            <div style={{ visibility: 'hidden', position: 'absolute' }}>
                 {props.children}
             </div>
         )

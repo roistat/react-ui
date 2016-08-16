@@ -118,6 +118,8 @@ TeleportContext.childContextTypes = {
 
 const styles = StyleSheet.create({
     teleportRoot: {
-        position: 'absolute'
+        position: 'absolute',
+        top: 0,
+        left: 0
     }
 });

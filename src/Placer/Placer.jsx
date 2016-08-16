@@ -5,10 +5,11 @@ import Teleport from '../Teleport';
 import PlacerWrapper from './PlacerWrapper';
 
 const Y_AXIS_PRESET_CALCULATORS = {
-    'outside-top': (targetRect: Object) => {
+    'outside-top': (targetRect: Object, placeableRect: Object, rootRect: Object) => {
+        console.log('### =>',  targetRect.top, placeableRect.height, rootRect.top);
+
         return {
-            top: targetRect.top,
-            offset: '-100%'
+            top: targetRect.top - placeableRect.height
         }
     }
 };
@@ -77,7 +78,15 @@ export default class Placer extends React.Component {
             return null;
         }
 
-        return this._teleportComponent.getParentDOMNode().getBoundingClientRect();
+        return this._teleportComponent.getParentBoundingClientRect();
+    }
+
+    _getPlaceableRect() {
+        if (!this._wrapperComponent) {
+            return null;
+        }
+
+        return this._wrapperComponent.getBoundingClientRect();
     }
 
     _getRootRect() {
@@ -86,14 +95,13 @@ export default class Placer extends React.Component {
 
     _calculatePosition(): Object {
         const targetRect = this._getTargetRect();
+        const placeableRect = this._getPlaceableRect();
+        const rootRect = this._getRootRect();
 
-        const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect);
+        const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect, placeableRect, rootRect);
         console.log('## yAxis', yAxis);
 
-        return {
-            top: yAxis.top,
-            yOffset: yAxis.offset
-        }
+        return Object.assign({}, yAxis);
     }
 
     _generateStyles(): Object {
@@ -101,7 +109,6 @@ export default class Placer extends React.Component {
 
         return {
             top: position.top ? `${position.top}px` : 0,
-            transform: `translate3D(0, ${position.yOffset}, 0)`,
             visibility: 'visible'
         }
     }

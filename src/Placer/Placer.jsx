@@ -31,13 +31,22 @@ const Y_AXIS_PRESET_CALCULATORS = {
         }
     }
 };
+
+const X_AXIS_PRESET_CALCULATORS = {
+    'outside-left': (targetRect: Object, placeableRect: Object) => {
+        return {
+            left: targetRect.left - placeableRect.width
+        }
+    }
+};
+
 export default class Placer extends React.Component {
     static propTypes = {
         xAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
-            'outside-top',
-            'outside-bottom',
-            'inside-top',
-            'inside-bottom',
+            'outside-left',
+            'outside-right',
+            'inside-left',
+            'inside-right',
             'middle'
         ])),
         yAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
@@ -73,10 +82,6 @@ export default class Placer extends React.Component {
         this._onTeleportMountHandler = this._onTeleportMountHandler.bind(this);
         console.log('X:', props.xAxisPresets);
         console.log('Y:', props.yAxisPresets);
-    }
-    
-    componentDidMount() {
-        console.log('#### mount');
     }
 
     _onWrapperMountHandler(c) {
@@ -116,10 +121,13 @@ export default class Placer extends React.Component {
         const placeableRect = this._getPlaceableRect();
         const rootRect = this._getRootRect();
 
+        console.log('#### =', this.props.xAxisPresets);
         const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect, placeableRect, rootRect);
-        console.log('## yAxis', yAxis);
+        const xAxis = X_AXIS_PRESET_CALCULATORS[this.props.xAxisPresets[0]](targetRect, placeableRect, rootRect);
 
-        return Object.assign({}, yAxis);
+        console.log('## => yAxis:', yAxis, 'xAxis:', xAxis);
+
+        return Object.assign({}, yAxis, xAxis);
     }
 
     _generateStyles(): Object {
@@ -127,6 +135,7 @@ export default class Placer extends React.Component {
 
         return {
             top: position.top ? `${position.top}px` : 0,
+            left: position.left ? `${position.left}px` : 0,
             visibility: 'visible'
         }
     }

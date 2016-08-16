@@ -48,9 +48,14 @@ const X_AXIS_PRESET_CALCULATORS = {
             left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2
         }
     },
-    'inside-left': (targetRect: Object, placeableRect: Object) => {
+    'inside-left': (targetRect: Object) => {
         return {
             left: targetRect.left
+        }
+    },
+    'inside-right': (targetRect: Object, placeableRect: Object) => {
+        return {
+            left: targetRect.left + targetRect.width - placeableRect.width
         }
     }
 };

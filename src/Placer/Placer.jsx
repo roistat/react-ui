@@ -24,6 +24,11 @@ const Y_AXIS_PRESET_CALCULATORS = {
         return {
             top: targetRect.top
         }
+    },
+    'inside-bottom': (targetRect: Object, placeableRect: Object) => {
+        return {
+            top: targetRect.top + targetRect.height - placeableRect.height
+        }
     }
 };
 export default class Placer extends React.Component {

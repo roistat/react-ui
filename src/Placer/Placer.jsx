@@ -5,13 +5,16 @@ import Teleport from '../Teleport';
 import PlacerWrapper from './PlacerWrapper';
 
 const Y_AXIS_PRESET_CALCULATORS = {
-    'outside-top': (targetRect: Object, placeableRect: Object, rootRect: Object) => {
-        console.log('### =>',  targetRect.top, placeableRect.height, rootRect.top);
-
+    'outside-top': (targetRect: Object, placeableRect: Object) => {
         return {
             top: targetRect.top - placeableRect.height
         }
-    }
+    },
+    'outside-bottom': (targetRect: Object) => {
+        return {
+            top: targetRect.top + targetRect.height
+        }
+    },
 };
 export default class Placer extends React.Component {
     static propTypes = {

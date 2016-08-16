@@ -130,6 +130,9 @@ export default class Placer extends React.Component {
     _calculatePosition(): Object {
         const targetRect = this._getTargetRect();
         const placeableRect = this._getPlaceableRect();
+        const rootRect = this._getRootRect();
+
+        console.log('### =>', rootRect.top, placeableRect.top);
 
         const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect, placeableRect);
         const xAxis = X_AXIS_PRESET_CALCULATORS[this.props.xAxisPresets[0]](targetRect, placeableRect);

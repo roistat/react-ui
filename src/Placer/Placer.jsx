@@ -37,6 +37,11 @@ const X_AXIS_PRESET_CALCULATORS = {
         return {
             left: targetRect.left - placeableRect.width
         }
+    },
+    'outside-right': (targetRect: Object) => {
+        return {
+            left: targetRect.left + targetRect.width
+        }
     }
 };
 

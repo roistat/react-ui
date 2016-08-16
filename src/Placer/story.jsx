@@ -90,13 +90,20 @@ storiesOf('Placer', module)
             </div>
         </TeleportContext>
     ))
-    // .add('X axis outside bottom', () => (
-    //     <Placer>
-    //         <div style={{ margin: '40px', padding: '10px', background: '#eee', width: '200px' }}>
-    //             Target
-    //         </div>
-    //     </Placer>
-    // ))
+    .add('X axis outside right', () => (
+        <TeleportContext>
+            <div style={{ margin: '40px' }}>
+                <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                    Target
+                    <Placer xAxisPresets={['outside-right']}>
+                        <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
+                            Placeable
+                        </div>
+                    </Placer>
+                </div>
+            </div>
+        </TeleportContext>
+    ))
     // .add('X axis middle', () => (
     //     <Placer>
     //         <div style={{ margin: '40px', padding: '10px', background: '#eee', width: '200px' }}>

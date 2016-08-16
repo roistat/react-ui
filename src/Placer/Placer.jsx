@@ -68,19 +68,14 @@ export default class Placer extends React.Component {
             'inside-left',
             'inside-right',
             'middle'
-        ])),
+        ])).isRequired,
         yAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
             'outside-top',
             'outside-bottom',
             'inside-top',
             'inside-bottom',
             'middle'
-        ]))
-    };
-
-    static defaultProps = {
-        xAxisPresets: ['middle'],
-        yAxisPresets: ['outside-top']
+        ])).isRequired
     };
 
     static contextTypes = {
@@ -100,16 +95,12 @@ export default class Placer extends React.Component {
         this._teleportComponent = null;
         this._onWrapperMountHandler = this._onWrapperMountHandler.bind(this);
         this._onTeleportMountHandler = this._onTeleportMountHandler.bind(this);
-        console.log('X:', props.xAxisPresets);
-        console.log('Y:', props.yAxisPresets);
     }
 
     _onWrapperMountHandler(c) {
         this._wrapperComponent = c;
 
         this._wrapperComponent.setStyles(this._generateStyles());
-        // console.log('parent:', this._getTargetRect());
-        // console.log('root:', this._getRootRect());
     }
 
     _onTeleportMountHandler(c) {
@@ -139,13 +130,9 @@ export default class Placer extends React.Component {
     _calculatePosition(): Object {
         const targetRect = this._getTargetRect();
         const placeableRect = this._getPlaceableRect();
-        const rootRect = this._getRootRect();
 
-        console.log('#### =', this.props.xAxisPresets);
-        const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect, placeableRect, rootRect);
-        const xAxis = X_AXIS_PRESET_CALCULATORS[this.props.xAxisPresets[0]](targetRect, placeableRect, rootRect);
-
-        console.log('## => yAxis:', yAxis, 'xAxis:', xAxis);
+        const yAxis = Y_AXIS_PRESET_CALCULATORS[this.props.yAxisPresets[0]](targetRect, placeableRect);
+        const xAxis = X_AXIS_PRESET_CALCULATORS[this.props.xAxisPresets[0]](targetRect, placeableRect);
 
         return Object.assign({}, yAxis, xAxis);
     }

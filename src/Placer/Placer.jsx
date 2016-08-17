@@ -79,7 +79,13 @@ export default class Placer extends React.Component {
             'middle'
         ])).isRequired,
         offsetX: PropTypes.number,
-        offsetY: PropTypes.number
+        offsetY: PropTypes.number,
+        targetRect: PropTypes.shape({
+            left: PropTypes.number,
+            top: PropTypes.number,
+            width: PropTypes.number,
+            height: PropTypes.number,
+        })
     };
 
     static contextTypes = {
@@ -189,7 +195,7 @@ export default class Placer extends React.Component {
     }
 
     _generateStyles(): Object {
-        const targetRect = this._getTargetRect();
+        const targetRect = this.props.targetRect || this._getTargetRect();
         const placeableRect = this._getPlaceableRect();
         const windowRect = this._getWindowRect();
         const args = [targetRect, placeableRect, windowRect];

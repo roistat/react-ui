@@ -244,4 +244,21 @@ storiesOf('Placer', module)
                 </div>
             </div>
         </TeleportContext>
+    ))
+    .add('Custom position', () => (
+        <TeleportContext>
+            <div style={{ margin: '40px' }}>
+                <div style={{ position: 'absolute', left: 200, top: 100, width: 100, height: 40, background: '#eee' }}>
+                    Target
+                </div>
+                <Placer
+                    targetRect={{ left: 200, top: 100, width: 100, height: 40 }}
+                    xAxisPresets={['middle']}
+                    yAxisPresets={['outside-bottom']}>
+                    <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
+                        Placeable
+                    </div>
+                </Placer>
+            </div>
+        </TeleportContext>
     ));

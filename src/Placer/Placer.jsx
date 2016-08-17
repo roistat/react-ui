@@ -7,56 +7,56 @@ import addEventListener from '../helpers/addEventListener';
 
 const PRESETS = {
     x : {
-        'outside-left': (targetRect: Object, placeableRect: Object) => {
+        'outside-left': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                left: targetRect.left - placeableRect.width
+                left: targetRect.left - placeableRect.width + windowRect.left
             }
         },
-        'outside-right': (targetRect: Object) => {
+        'outside-right': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                left: targetRect.left + targetRect.width
+                left: targetRect.left + targetRect.width + windowRect.left
             }
         },
-        'middle': (targetRect: Object, placeableRect: Object) => {
+        'middle': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2
+                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  + windowRect.left
             }
         },
-        'inside-left': (targetRect: Object) => {
+        'inside-left': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                left: targetRect.left
+                left: targetRect.left + windowRect.left
             }
         },
-        'inside-right': (targetRect: Object, placeableRect: Object) => {
+        'inside-right': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                left: targetRect.left + targetRect.width - placeableRect.width
+                left: targetRect.left + targetRect.width - placeableRect.width + windowRect.left
             }
         }
     },
     y: {
-        'outside-top': (targetRect: Object, placeableRect: Object) => {
+        'outside-top': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                top: targetRect.top - placeableRect.height
+                top: targetRect.top - placeableRect.height + windowRect.top
             }
         },
-        'outside-bottom': (targetRect: Object) => {
+        'outside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                top: targetRect.top + targetRect.height
+                top: targetRect.top + targetRect.height + windowRect.top
             }
         },
-        'middle':  (targetRect: Object, placeableRect: Object) => {
+        'middle':  (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2
+                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2 + windowRect.top
             }
         },
-        'inside-top': (targetRect: Object) => {
+        'inside-top': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                top: targetRect.top
+                top: targetRect.top + windowRect.top
             }
         },
-        'inside-bottom': (targetRect: Object, placeableRect: Object) => {
+        'inside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
             return {
-                top: targetRect.top + targetRect.height - placeableRect.height
+                top: targetRect.top + targetRect.height - placeableRect.height + windowRect.top
             }
         }
     }
@@ -111,12 +111,20 @@ export default class Placer extends React.Component {
                 this._setPositionStyles();
             });
 
+            this._scrollEventListener = addEventListener(window, 'scroll', () => {
+                if (!this._isMount) {
+                    return;
+                }
+
+                this._setPositionStyles();
+            });
         }
     }
 
     componentWillUnmount() {
         this._isMount = false;
         this._resizeEventListener && this._resizeEventListener.remove();
+        this._scrollEventListener && this._scrollEventListener.remove();
     }
 
     _onWrapperMountHandler(c) {
@@ -153,18 +161,14 @@ export default class Placer extends React.Component {
         return this.context.teleport.getBoundingClientRect();
     }
 
-    _calculateBestPosition(axis: 'x' | 'y') {
-        const targetRect = this._getTargetRect();
-        const placeableRect = this._getPlaceableRect();
-        const windowRect = this._getWindowRect();
-
+    _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, windowRect: Object) {
         var resultPreset = this.props[`${axis}AxisPresets`][0];
         const isXaxis = axis === 'x';
         const axisPropertyKey = isXaxis ? 'left' : 'top';
         const windowPropertyKey = isXaxis ? 'width' : 'height';
 
         this.props[`${axis}AxisPresets`].some(preset => {
-            let rect = PRESETS[axis][preset](targetRect, placeableRect);
+            let rect = PRESETS[axis][preset](targetRect, placeableRect, windowRect);
 
             if (rect[axisPropertyKey] > -1 &&
                 windowRect[windowPropertyKey] - rect[axisPropertyKey] - placeableRect[windowPropertyKey] > 0) {
@@ -176,11 +180,18 @@ export default class Placer extends React.Component {
             return false;
         });
 
-        return PRESETS[axis][resultPreset](targetRect, placeableRect);
+        return PRESETS[axis][resultPreset](targetRect, placeableRect, windowRect);
     }
 
     _generateStyles(): Object {
-        const position = Object.assign({}, this._calculateBestPosition('x'), this._calculateBestPosition('y'));
+        const targetRect = this._getTargetRect();
+        const placeableRect = this._getPlaceableRect();
+        const windowRect = this._getWindowRect();
+        const args = [targetRect, placeableRect, windowRect];
+
+        const position = Object.assign({},
+            this._calculateBestPosition('x', ...args),
+            this._calculateBestPosition('y', ...args));
 
         return {
             top: position.top ? `${position.top}px` : 0,
@@ -190,9 +201,12 @@ export default class Placer extends React.Component {
     }
 
     _getWindowRect() {
+        const body = document.getElementsByTagName('body')[0]
         return {
             width: window.innerWidth,
-            height: window.innerHeight
+            height: window.innerHeight,
+            left: body.scrollLeft,
+            top: body.scrollTop,
         }
     }
 

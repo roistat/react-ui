@@ -201,3 +201,33 @@ storiesOf('Placer', module)
             </div>
         </TeleportContext>
     ))
+    .add('Position with scroll', () => (
+        <TeleportContext>
+            <div style={{ margin: '900px 0' }}>
+                <div style={{ position: 'absolute', bottom: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
+                    Target
+                    <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
+                        <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
+                            Placeable
+                        </div>
+                    </Placer>
+                </div>
+            </div>
+        </TeleportContext>
+    ))
+    .add('Position with inner scroll', () => (
+        <TeleportContext>
+            <div style={{ margin: 0, width: 300, height: 300, overflow: 'scroll' }}>
+                <div style={{ margin: '300px 100px' }}>
+                    <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                        Target
+                        <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
+                            <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
+                                Placeable
+                            </div>
+                        </Placer>
+                    </div>
+                </div>
+            </div>
+        </TeleportContext>
+    ));

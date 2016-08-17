@@ -7,56 +7,56 @@ import addEventListener from '../helpers/addEventListener';
 
 const PRESETS = {
     x : {
-        'outside-left': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'outside-left': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left - placeableRect.width + windowRect.left
+                left: targetRect.left - placeableRect.width + windowRect.left + offsets.left
             }
         },
-        'outside-right': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'outside-right': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width + windowRect.left
+                left: targetRect.left + targetRect.width + windowRect.left + offsets.left
             }
         },
-        'middle': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'middle': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  + windowRect.left
+                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  + windowRect.left + offsets.left
             }
         },
-        'inside-left': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'inside-left': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + windowRect.left
+                left: targetRect.left + windowRect.left + offsets.left
             }
         },
-        'inside-right': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'inside-right': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width - placeableRect.width + windowRect.left
+                left: targetRect.left + targetRect.width - placeableRect.width + windowRect.left + offsets.left
             }
         }
     },
     y: {
-        'outside-top': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'outside-top': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top - placeableRect.height + windowRect.top
+                top: targetRect.top - placeableRect.height + windowRect.top + offsets.top
             }
         },
-        'outside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'outside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height + windowRect.top
+                top: targetRect.top + targetRect.height + windowRect.top + offsets.top
             }
         },
-        'middle':  (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'middle':  (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2 + windowRect.top
+                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2 + windowRect.top + offsets.top
             }
         },
-        'inside-top': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'inside-top': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + windowRect.top
+                top: targetRect.top + windowRect.top + offsets.top
             }
         },
-        'inside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object) => {
+        'inside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height - placeableRect.height + windowRect.top
+                top: targetRect.top + targetRect.height - placeableRect.height + windowRect.top + offsets.top
             }
         }
     }
@@ -77,7 +77,9 @@ export default class Placer extends React.Component {
             'inside-top',
             'inside-bottom',
             'middle'
-        ])).isRequired
+        ])).isRequired,
+        offsetX: PropTypes.number,
+        offsetY: PropTypes.number
     };
 
     static contextTypes = {
@@ -162,13 +164,16 @@ export default class Placer extends React.Component {
     }
 
     _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, windowRect: Object) {
-        var resultPreset = this.props[`${axis}AxisPresets`][0];
+        const props = this.props;
+
+        var resultPreset = props[`${axis}AxisPresets`][0];
         const isXaxis = axis === 'x';
         const axisPropertyKey = isXaxis ? 'left' : 'top';
         const windowPropertyKey = isXaxis ? 'width' : 'height';
+        const offsets = { left: props.offsetX || 0, top: props.offsetY || 0 };
 
-        this.props[`${axis}AxisPresets`].some(preset => {
-            let rect = PRESETS[axis][preset](targetRect, placeableRect, windowRect);
+        props[`${axis}AxisPresets`].some(preset => {
+            let rect = PRESETS[axis][preset](targetRect, placeableRect, windowRect, offsets);
 
             if (rect[axisPropertyKey] > -1 &&
                 windowRect[windowPropertyKey] - rect[axisPropertyKey] - placeableRect[windowPropertyKey] > 0) {
@@ -180,7 +185,7 @@ export default class Placer extends React.Component {
             return false;
         });
 
-        return PRESETS[axis][resultPreset](targetRect, placeableRect, windowRect);
+        return PRESETS[axis][resultPreset](targetRect, placeableRect, windowRect, offsets);
     }
 
     _generateStyles(): Object {

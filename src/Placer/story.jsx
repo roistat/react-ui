@@ -230,4 +230,18 @@ storiesOf('Placer', module)
                 </div>
             </div>
         </TeleportContext>
+    ))
+    .add('Custom offsets', () => (
+        <TeleportContext>
+            <div style={{ margin: 40 }}>
+                <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                    Target
+                    <Placer offsetX={10} offsetY={-15} xAxisPresets={['inside-right']} yAxisPresets={['inside-top']}>
+                        <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff', opacity: .2 }}>
+                            Placeable
+                        </div>
+                    </Placer>
+                </div>
+            </div>
+        </TeleportContext>
     ));

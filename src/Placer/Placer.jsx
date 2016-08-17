@@ -64,6 +64,9 @@ const PRESETS = {
 
 export default class Placer extends React.Component {
     static propTypes = {
+        /**
+         * Presets for position by x axis
+         */
         xAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
             'outside-left',
             'outside-right',
@@ -71,6 +74,9 @@ export default class Placer extends React.Component {
             'inside-right',
             'middle'
         ])).isRequired,
+        /**
+         * Presets for position by x axis
+         */
         yAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
             'outside-top',
             'outside-bottom',
@@ -78,8 +84,17 @@ export default class Placer extends React.Component {
             'inside-bottom',
             'middle'
         ])).isRequired,
+        /**
+         * Offset by x axis
+         */
         offsetX: PropTypes.number,
+        /**
+         * Offset by y axis
+         */
         offsetY: PropTypes.number,
+        /**
+         * Custom target position
+         */
         targetRect: PropTypes.shape({
             left: PropTypes.number,
             top: PropTypes.number,

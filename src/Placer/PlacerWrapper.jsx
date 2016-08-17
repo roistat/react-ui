@@ -31,7 +31,7 @@ export default class PlacerWrapper extends React.Component {
         const props = this.props;
 
         return (
-            <div style={{ visibility: 'hidden', position: 'absolute' }}>
+            <div style={{ visibility: 'hidden', position: 'absolute', top: 0, left: 0 }}>
                 {props.children}
             </div>
         )

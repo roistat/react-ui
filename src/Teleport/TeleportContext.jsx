@@ -80,27 +80,23 @@ export default class TeleportContext extends React.Component {
     render() {
         const props = this.props;
 
-        return (
-            <div>
-                {React.cloneElement(
-                    props.children,
-                    {
-                        children: [
-                            <div className={css(styles.teleportRoot)}>
-                                {
-                                    this.state.shownComponents.map((id) => (
-                                        <TeleportWrapper key={id} ref={(c) => c && (this._refs[id] = c)}>
-                                            {this._componentsBank[id]}
-                                        </TeleportWrapper>
-                                    ))
-                                }
-                            </div>,
-                            ...React.Children.toArray(props.children.props.children)
-                        ]
-                    })
-                }
-            </div>
-        )
+        return React.cloneElement(
+            props.children,
+            {
+                children: [
+                    <div className={css(styles.teleportRoot)}>
+                        {
+                            this.state.shownComponents.map((id) => (
+                                <TeleportWrapper key={id} ref={(c) => c && (this._refs[id] = c)}>
+                                    {this._componentsBank[id]}
+                                </TeleportWrapper>
+                            ))
+                        }
+                    </div>,
+                    ...React.Children.toArray(props.children.props.children)
+                ]
+            });
+
     }
 }
 

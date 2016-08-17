@@ -1,7 +1,6 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 
-import StateProvider from '../StateProvider';
 import Placer from './Placer';
 import { TeleportContext } from '../Teleport';
 
@@ -151,7 +150,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', top: 20, left: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                    <Placer xAxisPresets={['inside-right', 'inside-left', 'outside-left']} yAxisPresets={['outside-top', 'outside-bottom']}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -165,7 +164,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', top: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                    <Placer xAxisPresets={['inside-left', 'outside-left']} yAxisPresets={['outside-top', 'middle']}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -179,7 +178,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', bottom: 20, left: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                    <Placer xAxisPresets={['inside-right', 'inside-left', ]} yAxisPresets={['outside-bottom', 'outside-top']}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -190,10 +189,10 @@ storiesOf('Placer', module)
     ))
     .add('Auto position right bottom corner', () => (
         <TeleportContext>
-            <div style={{ margin: '40px' }}>
+            <div style={{ margin: 0 }}>
                 <div style={{ position: 'absolute', bottom: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                    <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -202,9 +201,3 @@ storiesOf('Placer', module)
             </div>
         </TeleportContext>
     ))
-
-// где больше пространтсва туда и помещаем
-
-// 1) apply position to placeable
-// 2) проходимся циклом по всем позациям и вычисляем свободное место , если оно больше предыдущего то запоминаем/
-// need: 1) map position->targetProperty for space

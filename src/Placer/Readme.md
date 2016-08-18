@@ -1,9 +1,10 @@
 ### Use cases:
 Typical use case for placer is showing tooltip, popover, dropdown popup
 
-### Dependencies
+### NOTE:
 
-Need TeleportContext
+For usage you must wrap ypu app component with TeleportContext component, and render Placer in children of target component.
+Target component is point for position of Placer.
 
 ### Placer usage
 

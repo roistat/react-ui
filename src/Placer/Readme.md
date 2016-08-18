@@ -7,7 +7,7 @@ Need TeleportContext
 
 ### Placer usage
 
-Position X: inside-left, Y: 'outside-top'
+Position X: inside-left, Y: outside-top
     
     <TeleportContext>
         <div style={{ margin: '40px' }}>
@@ -23,13 +23,73 @@ Position X: inside-left, Y: 'outside-top'
     </TeleportContext>
     
     
-Position X: inside-left, Y: 'outside-bottom'
+Position X: inside-left, Y: outside-bottom
     
     <TeleportContext>
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
                 <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                    <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
+                        Placeable
+                    </div>
+                </Placer>
+            </div>
+        </div>
+    </TeleportContext>    
+    
+Position X: outside-right, Y: inside-top
+    
+    <TeleportContext>
+        <div style={{ margin: '40px' }}>
+            <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                Target
+                <Placer xAxisPresets={['outside-right']} yAxisPresets={['inside-top']}>
+                    <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
+                        Placeable
+                    </div>
+                </Placer>
+            </div>
+        </div>
+    </TeleportContext>
+        
+Position X: outside-right, Y: middle
+    
+    <TeleportContext>
+        <div style={{ margin: '40px' }}>
+            <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                Target
+                <Placer xAxisPresets={['outside-right']} yAxisPresets={['middle']}>
+                    <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
+                        Placeable
+                    </div>
+                </Placer>
+            </div>
+        </div>
+    </TeleportContext>
+            
+Position X: middle, Y: outside-top
+    
+    <TeleportContext>
+        <div style={{ margin: '40px' }}>
+            <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
+                Target
+                <Placer xAxisPresets={['middle']} yAxisPresets={['outside-top']}>
+                    <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
+                        Placeable
+                    </div>
+                </Placer>
+            </div>
+        </div>
+    </TeleportContext>    
+            
+Position X: inside-left, Y: inside-bottom
+    
+    <TeleportContext>
+        <div style={{ margin: '40px' }}>
+            <div style={{ padding: '40px', background: '#eee', width: '200px' }}>
+                Target
+                <Placer xAxisPresets={['inside-left']} yAxisPresets={['inside-bottom']}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -99,7 +159,7 @@ Custom target
                     <Placer
                         targetRect={state.rect}
                         xAxisPresets={['middle']}
-                        yAxisPresets={['outside-top']}>
+                        yAxisPresets={['middle']}>
                         <div 
                             onClick={() => setState({ rect: null })} 
                             style={{ padding: '8px', background: 'red', color: '#fff', cursor: 'pointer' }}>

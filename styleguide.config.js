@@ -6,6 +6,10 @@ module.exports = {
     title: 'Roistat react ui components',
     components: function() {
         return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
+            if (/PlacerWrapper/.test(module)) {
+                return false;
+            }
+
             return !/story.jsx$/.test(module);
         });
     },

@@ -6,10 +6,16 @@ Typical use case for placer is showing tooltip, popover, dropdown popup
 For usage you must wrap ypu app component with TeleportContext component, and render Placer in children of target component.
 Target component is point for position of Placer.
 
+
 ### Placer usage
 
+```js
+import { TeleportContext } from '@roistat/ui/lib/Teleport';
+import Placer from '@roistat/ui/lib/Placer';
+```
+
 Position X: inside-left, Y: outside-top
-    
+       
     <TeleportContext>
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>

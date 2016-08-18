@@ -4,7 +4,8 @@ var glob = require('glob');
 
 var RE_EXCLUDE = new RegExp([
     'TeleportWrapper',
-    'TextInputControl'
+    'TextInputControl',
+    'PlacerWrapper'
 ].join('|'));
 
 module.exports = {

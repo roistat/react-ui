@@ -4,6 +4,7 @@
 ### Требования для использования
 1. React v 15.0.0 и выше
 2. commonjs modules
+3. Object.assign
 
 пример webpack конфига можно посмотреть в ./storybook/webpack.config.js
 

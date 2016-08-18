@@ -17,7 +17,7 @@ Spinner.propTypes = {
     /**
      * Spinner size
      */
-    size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
+    size: PropTypes.oneOf(['l', 'm', 's', 'xs', 'tiny']),
     /**
      * Spinner color
      */
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         borderWidth: '4px',
         borderStyle: 'solid',
         borderRightColor: 'transparent !important',
-        borderRadius: '16px',
+        borderRadius: '50%',
         boxSizing: 'border-box',
         display: 'inline-block',
         position: 'relative',
@@ -60,7 +60,11 @@ const styles = StyleSheet.create({
         width: '64px',
         height: '64px',
         borderWidth: '6px',
-        borderRadius: '50%'
+    },
+    sizeTiny: {
+        width: '12px',
+        height: '12px',
+        borderWidth: '1px',
     },
     '@keyframes SpinnerAnimation': {
         '0%':  {

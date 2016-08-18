@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import AbstractButton from '../AbstractButton';
+import View from '../View';
 
 import { FONT, COLOR, SHADOW } from '../const/theme';
 

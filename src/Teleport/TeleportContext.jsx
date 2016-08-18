@@ -30,13 +30,13 @@ export default class TeleportContext extends React.Component {
     getChildContext() {
         return {
             teleport: {
-                move: (id, component) => {
+                move: (id, component, callback: () => void) => {
                     this._componentsBank[id] = component;
                     this._shownComponents.push(id);
 
                     this.setState({
                         shownComponents: this._shownComponents
-                    });
+                    }, callback);
                 },
                 remove: (componentID: string, callback: () => void) => {
                     this._shownComponents = this._shownComponents.filter(id => id !== componentID);

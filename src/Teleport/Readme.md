@@ -1,4 +1,12 @@
-Teleport usage
+### Use cases
+Typical use case of teleport is moving component from standart flow to children of context wrapper. 
+For example see Placer component sources.
+
+### Usage:
+```js
+import Teleport, { TeleportContext } from '@roistat/ui/lib/Teleport';
+```
+Example
 
     <TeleportContext>
         <div style={{ position: 'relative' }}>

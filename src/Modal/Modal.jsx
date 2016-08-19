@@ -13,7 +13,8 @@ export default class Modal extends React.Component {
     static propTypes = {
         isShown: PropTypes.boolean,
         onDidClose: PropTypes.func,
-        onDidShow: PropTypes.func
+        onDidShow: PropTypes.func,
+        isAutoClosable: PropTypes.boolean
     };
 
     constructor(props, ...args) {
@@ -25,8 +26,12 @@ export default class Modal extends React.Component {
 
         this._onShowHandler =  this._onShowHandler.bind(this);
         this._onCloseHandler =  this._onCloseHandler.bind(this);
+        this._onDidLeaveHandler =  this._onDidLeaveHandler.bind(this);
         this._isBodyScrollDisabled = null;
         this._prevBodyOverflow = null;
+
+        this._onDidShowCallbacks = [];
+        this._onDidHideCallbacks = [];
     }
 
     componentDidMount() {
@@ -39,11 +44,15 @@ export default class Modal extends React.Component {
         }
     }
     
-    show() {
+    show(callback: () => void) {
+        callback && this._onDidShowCallbacks.push(callback);
+
         this.setState({ isShown: true });
     }
 
-    hide() {
+    hide(callback: () => void) {
+        callback && this._onDidHideCallbacks.push(callback);
+
         this._enableBodyScroll();
         this.setState({ isShown: false });
     }
@@ -80,12 +89,27 @@ export default class Modal extends React.Component {
     }
 
     _onShowHandler() {
+        const callbacks = this._onDidShowCallbacks;
         this._disableBodyScroll();
+
+        this._onDidShowCallbacks = [];
+
+        callbacks.forEach((callback) => callback());
+
         this.props.onDidShow && this.props.onDidShow();
     }
 
     _onCloseHandler() {
-        this.hide();
+        this.props.isAutoClosable && this.hide();
+    }
+
+    _onDidLeaveHandler() {
+        const callbacks = this._onDidHideCallbacks;
+
+        this._onDidHideCallbacks = [];
+        callbacks.forEach((callback) => callback());
+
+        this.props.onDidClose && this.props.onDidClose();
     }
 
     render() {
@@ -95,7 +119,7 @@ export default class Modal extends React.Component {
                     timeout={200}
                     leaveTimeout={400}
                     onDidEnter={this._onShowHandler}
-                    onDidLeave={() => this.props.onDidClose && this.props.onDidClose()}>
+                    onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
                             styles={[

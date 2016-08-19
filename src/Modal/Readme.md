@@ -20,7 +20,7 @@ Example
             <Button onClick={() => setState({ isShown: !state.isShown })}>
                 show modal
             </Button>
-            <Modal isShown={state.isShown} onClose={() => setState({ isShown: false, content: null })}>
+            <Modal isAutoClosable isShown={state.isShown} onClose={() => setState({ isShown: false, content: null })}>
                 <ModalHeader>
                     <ModalHeaderTitle onClick={() => setState({ isShown: false, content: null })}>
                         Modal title

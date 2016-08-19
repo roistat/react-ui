@@ -14,7 +14,8 @@ export default class Modal extends React.Component {
         isShown: PropTypes.boolean,
         onDidClose: PropTypes.func,
         onDidShow: PropTypes.func,
-        isAutoClosable: PropTypes.boolean
+        isAutoClosable: PropTypes.boolean,
+        onClose: PropTypes.func
     };
 
     constructor(props, ...args) {
@@ -100,7 +101,9 @@ export default class Modal extends React.Component {
     }
 
     _onCloseHandler() {
-        this.props.isAutoClosable && this.hide();
+        const { isAutoClosable, onClose } = this.props;
+
+        isAutoClosable && onClose && onClose();
     }
 
     _onDidLeaveHandler() {
@@ -158,12 +161,12 @@ const styles = StyleSheet.create({
         transform: 'translate3d(0, 0, 0)',
         transition: 'all .2s ease-out',
         background: 'rgba(0, 0, 0, 0)',
+        overflow: 'auto'
     },
     inner: {
         minWidth: '100%',
         alignItems: 'flex-start',
         justifyContent: 'center',
-        padding: '4.4rem 140px 5rem 140px',
         transition: 'all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
         transform: 'translate3d(0, 0, 0) scale(.9)',
         opacity: 0,
@@ -171,7 +174,10 @@ const styles = StyleSheet.create({
     popup: {
         padding: 0,
         flexDirection: 'column',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        minWidth: '960px',
+        minHeight: '400px',
+        margin: '4.4rem 140px 5rem 140px'
     },
     shownOverlay: {
         background: 'rgba(0, 0, 0, .4)'

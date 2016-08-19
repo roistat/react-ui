@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom';
 import { StyleSheet, css } from '../helpers/styles';
 import TeleportWrapper from './TeleportWrapper';
 
+/**
+ * Context for Teleport component
+ */
 export default class TeleportContext extends React.Component {
     static propTypes = {};
 

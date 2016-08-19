@@ -1,13 +1,13 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import View from '../View';
 import Control from './TextInputControl.jsx';
 
 import { FONT, COLOR, SHADOW } from '../const/theme.js';
 
 import { StyleSheet, css } from '../helpers/styles';
+import { generateTextStyles } from './helpers';
 
 export default class TextInput extends React.Component {
 	static propTypes = {
@@ -179,25 +179,23 @@ export default class TextInput extends React.Component {
 		const props = this.props;
 		return (
 			<View
-				style={{ width:this.props.width }}
+				style={{ width: this.props.width }}
 				onClick={props.onClick}
-				className={
-					css(
-						STYLE.root,
-						STYLE[`rootSize${(props.size || 'm').toUpperCase()}`],
-						props.isMultiLine && STYLE.isMultiLine,
-						this.state.isFocused && STYLE.rootIsFocused,
-						props.isDisabled && STYLE.rootIsDisabled,
-					)
-				}>
+				styles={[
+					STYLE.textInput,
+					props.isMultiLine && STYLE.isMultiLine,
+					this.state.isFocused && STYLE.isFocused,
+					props.isDisabled && STYLE.isDisabled,
+					...(props.styles || [])
+				]}>
 				{this.props.children ? this._renderChildren() : this._cloneControl(<Control/>)}
 			</View>
 		)
 	}
 }
 
-const STYLE = StyleSheet.create({
-	root: {
+const STYLE = StyleSheet.create(Object.assign(generateTextStyles(), {
+	textInput: {
 		position: 'relative',
 		background: '#fff',
 		width: '100%',
@@ -211,54 +209,17 @@ const STYLE = StyleSheet.create({
 		fontWeight: '400',
 		flexWrap: 'wrap'
 	},
-	rootIsDisabled: {
+	isDisabled: {
 		color: COLOR.MUTED,
 		background: COLOR.DISABLED,
 		cursor: 'not-allowed'
 	},
-	rootSizeXL: {
-		height: '2rem',
-		lineHeight: '2rem',
-		padding: '0 .4rem',
-		fontSize: FONT.SIZE_BUTTON_LARGE
-	},
-	rootSizeL: {
-		height: '1.8rem',
-		lineHeight: '1.8rem',
-		padding: '0 .3rem',
-		fontSize: FONT.SIZE_BUTTON
-	},
-	rootSizeM: {
-		height: '1.6rem',
-		lineHeight: '1.6rem',
-		padding: '0 .2rem',
-		fontSize: FONT.SIZE_BUTTON_SMALL
-	},
-	rootSizeS: {
-		height: '1.4rem',
-		lineHeight: '1.4rem',
-		padding: '0 .2rem',
-		fontSize: FONT.SIZE_BUTTON_TINY
-	},
-	rootSizeXS: {
-		height: '1.2rem',
-		lineHeight: '1.2rem',
-		padding: '0 .2rem',
-		fontSize: FONT.SIZE_BUTTON_TINY
-	},
-	rootSizeTITLE: {
-		height: '1.6rem',
-		lineHeight: '1.6rem',
-		padding: '0 .2rem',
-		fontSize: FONT.SIZE_TITLE,
-		fontWeight: 700
-	},
-	rootIsFocused: {
+	isFocused: {
 		boxShadow: `${SHADOW.FOCUS}, inset 0px 1px 2px 0px rgba(27, 42, 48, 0.3)`
 	},
 	isMultiLine: {
 		height: 'auto',
 		paddingRight: 0
 	}
-});
+}));
 

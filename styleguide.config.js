@@ -5,14 +5,15 @@ var glob = require('glob');
 var RE_EXCLUDE = new RegExp([
     'TeleportWrapper',
     'TextInputControl',
-    'PlacerWrapper'
+    'PlacerWrapper',
+    'SVGIcons'
 ].join('|'));
 
 module.exports = {
     title: 'Roistat react ui components',
     components: function() {
         return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
-            if (/RE_EXCLUDE/.test(module)) {
+            if (RE_EXCLUDE.test(module)) {
                 return false
             }
 

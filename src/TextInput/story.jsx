@@ -3,19 +3,39 @@ import { storiesOf, action } from '@kadira/storybook';
 import TextInput from './TextInput';
 
 storiesOf('TextInput', module)
-	.addWithInfo('InputField', 'TextInput field', () => (
+	.add('Size l', () => (
 		<TextInput
 			placeholder="enter the text"
-			width = '200px'
-			autoFocus = { true }
-			size = 'l'
+			width='200px'
+			autoFocus
+			size='l'
 		/>
 	))
-	.addWithInfo('TextArea', 'TextArea field', () => (
+	.add('Size m', () => (
+		<TextInput
+			placeholder="enter the text"
+			width='200px'
+			autoFocus
+			size='m'
+		/>
+	))
+	.add('Size s', () => (
+		<TextInput
+			placeholder="enter the text"
+			size='s'
+		/>
+	))
+	.add('Size xs', () => (
+		<TextInput
+			placeholder="enter the text"
+			size='xs'
+		/>
+	))
+	.add('TextArea', () => (
 		<TextInput
 			placeholder="multiline text"
-			isMultiLine = { true }
-			rows = { 10 }
+			isMultiLine
+			rows={10}
 		/>
 	));
 

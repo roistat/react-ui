@@ -19,12 +19,6 @@ export default class TeleportWrapper extends React.Component {
         this._isMount = false;
     }
 
-    componentWillReceiveProps(newProps) {
-        if (newProps.children !== this.state.children) {
-            this.setState({ children: newProps.children });
-        }
-    }
-
     update(newChildren: Object, callback: () => void) {
         this.setState({ children: newChildren ? React.Children.only(newChildren) : null }, callback);
     }

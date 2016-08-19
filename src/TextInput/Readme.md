@@ -2,24 +2,25 @@ Input-box with custom width and autofocus:
 
 	<TextInput
 		placeholder="input the text"
-		width = '200px'
-		autoFocus = { true }
+		width='200px'
+		autoFocus
 	/>
 
 TextArea:
 
 	<TextInput
 		placeholder="multiline text"
-		isMultiLine = { true }
-		rows = { 10 }
+		isMultiLine
+        width ='200px'
+		rows={5}
 	/>
 
 Input-box large size:
 
 	<TextInput
 		placeholder="input the text"
-		width = '200px'
-		size = 'l'
+		width ='200px'
+		size='l'
 	/>
 
 Input-box extra-small size:

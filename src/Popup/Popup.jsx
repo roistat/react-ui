@@ -40,19 +40,19 @@ export default class Popup extends React.Component {
 	}
 
 	render() {
-		const props = this.props;
+		const { styles, isRounded, hasTail, children }  = this.props;
 
 		return (
-			<View styles={[styles.root, props.isRounded && styles.rootRounded, ...(props.styles || [])]} >
-				{this.props.children}
-				{this.props.hasTail && this._renderTail()}
+			<View styles={[STYLES.popup, isRounded && STYLES.rounded, ...(styles || [])]} >
+				{children}
+				{hasTail && this._renderTail()}
 			</View>
 		)
 	}
 }
 
-const styles = StyleSheet.create({
-	root: {
+const STYLES = StyleSheet.create({
+	popup: {
 		position: 'relative',
 		background: '#fff',
 		boxShadow: SHADOW.POPUP,
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		alignItems: 'stretch'
 	},
-	rootRounded: {
+	rounded: {
 		borderRadius: '4px'
 	}
 });

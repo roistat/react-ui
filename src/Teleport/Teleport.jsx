@@ -55,16 +55,16 @@ export default class Teleport extends React.Component {
 
     }
 
-    _moveToDestination() {
-        this.context.teleport.move(this._componentID, this._getValidChildren());
+    _moveToDestination(callback: () => void) {
+        this.context.teleport.move(this._componentID, this._getValidChildren(), callback);
     }
 
-    _update(newChildren: Object) {
-        this.context.teleport.update(this._componentID, newChildren);
+    _update(newChildren: Object, callback: () => void) {
+        this.context.teleport.update(this._componentID, newChildren, callback);
     }
 
-    _destroy() {
-        this.context.teleport.remove(this._componentID);
+    _destroy(callback: () => void) {
+        this.context.teleport.remove(this._componentID, callback);
     }
 
     _getValidChildren(children) {

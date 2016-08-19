@@ -5,6 +5,7 @@ import View from '../View';
 
 import { StyleSheet, css } from '../helpers/styles';
 import { FONT, COLOR, SHADOW } from '../const/theme.js';
+import { generateTextStyles } from './helpers';
 
 export default class TextInputControl extends React.Component {
 	static __TEXT_INPUT_CONTROL__ = true;
@@ -78,7 +79,7 @@ export default class TextInputControl extends React.Component {
 
 	_renderControl() {
 		const props = this.props;
-		
+
 		return React.createElement(
 			props.isMultiLine ? 'textarea' : 'input',
 			Object.assign({},
@@ -94,8 +95,8 @@ export default class TextInputControl extends React.Component {
 					onKeyUp: props.onKeyUp,
 					className: css(
 						STYLE.control,
-						STYLE[`controlSize${props.size.toUpperCase()}`]
-					)
+						STYLE.getPreset('size', props.size),
+						props.isMultiLine && STYLE.textarea)
 				},
 				props.isMultiLine && { rows: props.rows }
 			));
@@ -110,19 +111,17 @@ export default class TextInputControl extends React.Component {
 
 		return (
 			<div
-				className={css(STYLE.placeholder, STYLE[`placeholderSize${props.size.toUpperCase()}`])}>
+				className={css(STYLE.placeholder, STYLE.getPreset('placeholderSize', props.size))}>
 				{props.placeholder}
 			</div>
 		)
 	}
 
 	render() {
-		const props = this.props;
-
 		return (
-			<View className={css(STYLE.root)} style={{ flex: 1 }}>
+			<View styles={[STYLE.controlRoot]}>
 				{this._renderPlaceholder()}
-				<View style={{ position: 'relative', flex: 1 }}>
+				<View styles={[STYLE.controlWrapper]}>
 					{this._renderControl()}
 				</View>
 			</View>
@@ -130,9 +129,14 @@ export default class TextInputControl extends React.Component {
 	}
 }
 
-const STYLE = StyleSheet.create({
-	root: {
-		position: 'relative'
+const STYLE = StyleSheet.create(Object.assign(generateTextStyles(), generateTextStyles('placeholderSize'), {
+	controlRoot: {
+		position: 'relative',
+		flex: 1
+	},
+	controlWrapper: {
+		position: 'relative',
+		flex: 1
 	},
 	control: {
 		position: 'relative',
@@ -149,21 +153,6 @@ const STYLE = StyleSheet.create({
 		cursor: 'text',
 		resize: 'vertical'
 	},
-	controlSizeXL: {
-		padding: '.7rem .4rem'
-	},
-	controlSizeL: {
-		padding: '.5rem .3rem'
-	},
-	controlSizeM: {
-		padding: '.3rem .2rem'
-	},
-	controlSizeS: {
-		padding: '.1rem .1rem'
-	},
-	controlSizeTITLE: {
-		padding: '.3rem .2rem'
-	},
 	placeholder: {
 		position: 'absolute',
 		top: 0,
@@ -175,20 +164,8 @@ const STYLE = StyleSheet.create({
 		overflow: 'hidden',
 		textOverflow: 'ellipsis'
 	},
-	placeholderSizeL: {
-		padding: '0 .4rem'
-	},
-	placeholderSizeM: {
-		padding: '0 .3rem'
-	},
-	placeholderSizeS: {
-		padding: '0 .2rem'
-	},
-	placeholderSizeXS: {
-		padding: '0 .1rem'
-	},
-	placeholderSizeTITLE: {
-		padding: '0 .2rem'
+	textarea: {
+		height: 'auto!important'
 	}
-});
+}));
 

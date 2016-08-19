@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import PopupTail from '../Popup/PopupTail.jsx';
+import PopupTail from '../Popup/PopupTail';
 import { StyleSheet, css } from '../helpers/styles';
 
 const INVERTED_DIRECTION = {

@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 import { StyleSheet, css } from '../helpers/styles';
 
 import { COLOR } from '../const/theme';
-import Icon from '../SVGIcons/CloseCross.jsx';
+import Icon from '../SVGIcons/CloseCross';
 
 export default class CloseCross extends React.Component {
     static propTypes = {

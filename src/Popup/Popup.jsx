@@ -4,7 +4,7 @@ import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
 import View from '../View';
-import PopupTail from './PopupTail.jsx';
+import PopupTail from './PopupTail';
 
 import addEventListener from '../helpers/addEventListener.js';
 import { SHADOW } from '../const/theme.js';

@@ -2,9 +2,9 @@
 
 import React, { PropTypes } from 'react';
 import View from '../View';
-import Control from './TextInputControl.jsx';
+import Control from './TextInputControl';
 
-import { FONT, COLOR, SHADOW } from '../const/theme.js';
+import { FONT, COLOR, SHADOW } from '../const/theme';
 
 import { StyleSheet, css } from '../helpers/styles';
 import { generateTextStyles } from './helpers';

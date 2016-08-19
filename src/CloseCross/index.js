@@ -1,1 +1,1 @@
-export { default } from './CloseCross.jsx';
+export { default } from './CloseCross';

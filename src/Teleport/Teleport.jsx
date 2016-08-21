@@ -13,7 +13,8 @@ export default class Teleport extends React.Component {
             update: PropTypes.func,
             isAdded: PropTypes.func,
             getRootDOMNode: PropTypes.func,
-            getBoundingClientRect: PropTypes.func
+            getBoundingClientRect: PropTypes.func,
+            getContextLevel: PropTypes.func
         })
     };
 
@@ -40,6 +41,8 @@ export default class Teleport extends React.Component {
         if (nextProps.children !== this.props.children) {
             this._update(nextProps.children);
         }
+
+        this._update(nextProps.children);
     }
 
     componentWillUnmount() {
@@ -48,6 +51,10 @@ export default class Teleport extends React.Component {
 
     getParentDOMNode() {
         return this._parentDOMNode || null;
+    }
+
+    getRootDOMNode() {
+        return this.context.teleport.getRootDOMNode();
     }
 
     getParentBoundingClientRect() {

@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom';
 import { StyleSheet, css } from '../helpers/styles';
 import TeleportWrapper from './TeleportWrapper';
 
+var idCount = 0;
+const relationships = {};
+
 /**
  * Context for Teleport component
  */
@@ -19,6 +22,7 @@ export default class TeleportContext extends React.Component {
             shownComponents: []
         };
 
+        this._componentID = `${Math.random().toString(32).slice(2, 10)}:${++idCount}`;
         this._componentsBank = {};
         this._shownComponents = [];
         this._refs = {};
@@ -27,7 +31,11 @@ export default class TeleportContext extends React.Component {
     }
 
     componentDidMount() {
-        this._parentDOMNode = ReactDOM.findDOMNode(this).parentNode;
+        const selfDOMNode = ReactDOM.findDOMNode(this);
+        this._parentDOMNode = selfDOMNode.parentNode;
+
+        selfDOMNode.setAttribute('data-teleport', this._componentID);
+        this._registerRelationship();
     }
 
     getChildContext() {
@@ -57,7 +65,8 @@ export default class TeleportContext extends React.Component {
                     return this._shownComponents.some(id => id === componentID);
                 },
                 getRootDOMNode: (): Object => {
-                    return this._parentDOMNode || null;
+                    return this.refs.rootDOMNode || null;
+                    //return this._parentDOMNode || null;
                 },
                 getBoundingClientRect: (): Object => {
                     const node = this._parentDOMNode;
@@ -71,6 +80,15 @@ export default class TeleportContext extends React.Component {
                     }
 
                     return this._boundingClientRect;
+                },
+                getContextLevel: (): number => {
+                    const data = relationships[this._componentID];
+
+                    if (!data) {
+                        throw new Error(`TeleportContext: Context with id "${this._componentID}" is not mount`);
+                    }
+
+                    return data.level;
                 }
             }
          };
@@ -80,6 +98,17 @@ export default class TeleportContext extends React.Component {
         return this._isMount;
     }
 
+    _registerRelationship() {
+        const parentID = findParentContext(this._parentDOMNode);
+
+        relationships[this._componentID] = (relationships[this._componentID] || {});
+
+        relationships[this._componentID] = {
+            level: parentID ? (relationships[parentID].level + 1) : 1,
+            parentID: parentID
+        };
+    }
+
     render() {
         const props = this.props;
 
@@ -87,7 +116,7 @@ export default class TeleportContext extends React.Component {
             props.children,
             {
                 children: [
-                    <div className={css(styles.teleportRoot)}>
+                    <div ref='rootDOMNode' className={css(styles.teleportRoot)}>
                         {
                             this.state.shownComponents.map((id) => (
                                 <TeleportWrapper key={id} ref={(c) => c && (this._refs[id] = c)}>
@@ -110,9 +139,24 @@ TeleportContext.childContextTypes = {
         update: PropTypes.func,
         isAdded: PropTypes.func,
         getRootDOMNode: PropTypes.func,
-        getBoundingClientRect: PropTypes.func
+        getBoundingClientRect: PropTypes.func,
+        getContextLevel: PropTypes.number
     })
 };
+
+function findParentContext(parentDOMNode) {
+    if (!parentDOMNode || typeof parentDOMNode.getAttribute !== 'function') {
+        return null;
+    }
+
+    const componentID = parentDOMNode.getAttribute('data-teleport');
+
+    if (componentID) {
+        return componentID;
+    }
+
+    return findParentContext(parentDOMNode.parentNode);
+}
 
 
 const styles = StyleSheet.create({

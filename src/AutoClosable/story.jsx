@@ -4,7 +4,9 @@ import AutoClosable from './AutoClosable';
 import Popup from '../Popup';
 
 storiesOf('AutoClosable', module)
-	.addWithInfo('AutoClosable Popup window', 'AutoClosable Popup window', () => (
-		<AutoClosable onClose={action(console.log('close'))}><Popup>Popup window</Popup></AutoClosable>
-	))
+	.add('AutoClosable Popup window', () => (
+		<AutoClosable onClose={action('close')}>
+			<Popup>Popup window</Popup>
+		</AutoClosable>
+	));
 

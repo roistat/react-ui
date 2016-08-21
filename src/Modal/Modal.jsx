@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import View from '../View';
-import Teleport from '../Teleport';
+import Teleport, { TeleportContext } from '../Teleport';
 import Popup from '../Popup';
 import Transition from '../Transition';
 import AutoClosable from '../AutoClosable';
@@ -39,6 +39,10 @@ export default class Modal extends React.Component {
         this.props.isShown && this.show();
     }
 
+    componentWillUnmount() {
+        this._enableRootScroll();
+    }
+    
     componentWillReceiveProps(nextProps) {
         if (nextProps.isShown !== this.props.isShown) {
             nextProps.isShown ? this.show() : this.hide();
@@ -54,7 +58,7 @@ export default class Modal extends React.Component {
     hide(callback: () => void) {
         callback && this._onDidHideCallbacks.push(callback);
 
-        this._enableBodyScroll();
+        this._enableRootScroll();
         this.setState({ isShown: false });
     }
 
@@ -72,27 +76,28 @@ export default class Modal extends React.Component {
         });
     }
 
-    _disableBodyScroll() {
+    _disableRootScroll() {
         if (typeof document !== 'undefined' && !this._isBodyScrollDisabled) {
-            let body = document.body;
+            let parentDOMNodeWithScroll = this._getParentDOMNodeWithScroll();
 
             this._isBodyScrollDisabled = true;
-            this._prevBodyOverflow = body.style.overflow;
-            body.style.overflow = 'hidden';
+            this._prevBodyOverflow = parentDOMNodeWithScroll.style.overflow;
+            parentDOMNodeWithScroll.style.overflow = 'hidden';
         }
     }
 
-    _enableBodyScroll() {
-        if (typeof document !== 'undefined') {
+    _enableRootScroll() {
+        if (typeof document !== 'undefined' && this._isBodyScrollDisabled) {
             this._isBodyScrollDisabled = false;
-            document.body.style.overflow = this._prevBodyOverflow;
+
+            this._getParentDOMNodeWithScroll().style.overflow = this._prevBodyOverflow;
         }
     }
 
     _onShowHandler() {
         const callbacks = this._onDidShowCallbacks;
-        this._disableBodyScroll();
-
+        this._disableRootScroll();
+        
         this._onDidShowCallbacks = [];
 
         callbacks.forEach((callback) => callback());
@@ -115,9 +120,34 @@ export default class Modal extends React.Component {
         this.props.onDidClose && this.props.onDidClose();
     }
 
+
+    _getParentDOMNodeWithScroll() {
+        if (!this._parentDOMNodeWithScroll) {
+            const rootDOMNode = this._getRootDOMNode();
+
+            this._parentDOMNodeWithScroll = (rootDOMNode &&
+                getParentDOMNodeWithScroll(rootDOMNode)) ||
+                    document.getElementsByTagName('body')[0];
+        }
+
+        return this._parentDOMNodeWithScroll;
+    }
+
+    _getRootDOMNode() {
+        if (!this._teleport) {
+            return null;
+        }
+
+        if (!this._rootDOMNode) {
+            this._rootDOMNode = this._teleport.getRootDOMNode();
+        }
+
+        return this._rootDOMNode;
+    }
+
     render() {
         return (
-            <Teleport>
+            <Teleport ref={(c) => this._teleport = c}>
                 <Transition
                     timeout={200}
                     leaveTimeout={400}
@@ -136,10 +166,15 @@ export default class Modal extends React.Component {
                                     isEnter && styles.shownInner,
                                     isLeave && styles.leaveInner
                                 ]}>
+
                                 <AutoClosable onClose={this._onCloseHandler}>
-                                    <Popup styles={[styles.popup]} isRounded >
-                                        {this._renderChildren()}
-                                    </Popup>
+                                    <TeleportContext>
+                                        <View styles={[styles.popupWrapper]}>
+                                            <Popup styles={[styles.popup]} isRounded >
+                                                {this._renderChildren()}
+                                            </Popup>
+                                        </View>
+                                    </TeleportContext>
                                 </AutoClosable>
                             </View>
                         </View>
@@ -150,6 +185,35 @@ export default class Modal extends React.Component {
     }
 }
 
+function getParentDOMNodeWithScroll(parentDOMNode) {
+    if (!parentDOMNode) {
+        return null;
+    }
+
+    const clientWidth = parentDOMNode.clientWidth;
+    const clientHeight = parentDOMNode.clientHeight;
+
+    const scrollWidth = parentDOMNode.scrollWidth;
+    const scrollHeight = parentDOMNode.scrollHeight;
+
+    if (clientWidth === undefined) {
+        return null;
+    }
+
+    if ((clientWidth || clientHeight)) {
+
+        const isCanScroll = ['overflow', 'overflow-x', 'overflow-y'].some((key) => {
+            return /auto|scroll/.test(window.getComputedStyle(parentDOMNode)[key]);
+        });
+
+        if (isCanScroll && (clientWidth !== scrollWidth || clientHeight !== scrollHeight)) {
+            return parentDOMNode;
+        }
+    }
+
+    return getParentDOMNodeWithScroll(parentDOMNode.parentNode);
+}
+
 const styles = StyleSheet.create({
     overlay: {
         position: 'fixed',
@@ -157,7 +221,7 @@ const styles = StyleSheet.create({
         right: 0,
         left: 0,
         bottom: 0,
-        zIndex: 9999,
+        zIndex: 999,
         transform: 'translate3d(0, 0, 0)',
         transition: 'all .2s ease-out',
         background: 'rgba(0, 0, 0, 0)',
@@ -171,13 +235,15 @@ const styles = StyleSheet.create({
         transform: 'translate3d(0, 0, 0) scale(.9)',
         opacity: 0,
     },
+    popupWrapper: {
+        margin: '4.4rem 140px 5rem 140px'
+    },
     popup: {
         padding: 0,
         flexDirection: 'column',
         overflow: 'hidden',
         minWidth: '960px',
         minHeight: '400px',
-        margin: '4.4rem 140px 5rem 140px'
     },
     shownOverlay: {
         background: 'rgba(0, 0, 0, .4)'

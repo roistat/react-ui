@@ -1,62 +1,63 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 import Teleport from '../Teleport';
 import PlacerWrapper from './PlacerWrapper';
 import addEventListener from '../helpers/addEventListener';
 
 const PRESETS = {
     x : {
-        'outside-left': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'outside-left': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left - placeableRect.width + windowRect.left + offsets.left
+                left: targetRect.left - placeableRect.width - rootRect.left + offsets.left
             }
         },
-        'outside-right': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'outside-right': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width + windowRect.left + offsets.left
+                left: targetRect.left + targetRect.width - rootRect.left + offsets.left
             }
         },
-        'middle': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'middle': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  + windowRect.left + offsets.left
+                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  - rootRect.left + offsets.left
             }
         },
-        'inside-left': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'inside-left': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + windowRect.left + offsets.left
+                left: targetRect.left - rootRect.left + offsets.left
             }
         },
-        'inside-right': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'inside-right': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width - placeableRect.width + windowRect.left + offsets.left
+                left: targetRect.left + targetRect.width - placeableRect.width - rootRect.left + offsets.left
             }
         }
     },
     y: {
-        'outside-top': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'outside-top': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top - placeableRect.height + windowRect.top + offsets.top
+                top: targetRect.top - placeableRect.height - rootRect.top + offsets.top
             }
         },
-        'outside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'outside-bottom': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height + windowRect.top + offsets.top
+                top: targetRect.top + targetRect.height - rootRect.top + offsets.top
             }
         },
-        'middle':  (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'middle':  (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2 + windowRect.top + offsets.top
+                top: targetRect.top + targetRect.height / 2 - placeableRect.height / 2 - rootRect.top + offsets.top
             }
         },
-        'inside-top': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'inside-top': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + windowRect.top + offsets.top
+                top: targetRect.top - rootRect.top + offsets.top
             }
         },
-        'inside-bottom': (targetRect: Object, placeableRect: Object, windowRect: Object, offsets: Object) => {
+        'inside-bottom': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                top: targetRect.top + targetRect.height - placeableRect.height + windowRect.top + offsets.top
+                top: targetRect.top + targetRect.height - placeableRect.height +- rootRect.top + offsets.top
             }
         }
     }
@@ -100,7 +101,15 @@ export default class Placer extends React.Component {
             top: PropTypes.number,
             width: PropTypes.number,
             height: PropTypes.number,
-        })
+        }),
+        /**
+         * Z-index of root div
+         */
+        zIndex: PropTypes.number
+    };
+
+    static defaultProps = {
+        zIndex: 999
     };
 
     static contextTypes = {
@@ -110,7 +119,8 @@ export default class Placer extends React.Component {
             update: PropTypes.func,
             isAdded: PropTypes.func,
             getRootDOMNode: PropTypes.func,
-            getBoundingClientRect: PropTypes.func
+            getBoundingClientRect: PropTypes.func,
+            getContextLevel: PropTypes.func
         })
     };
     
@@ -118,6 +128,7 @@ export default class Placer extends React.Component {
         super(props, ...args);
         
         this._teleportComponent = null;
+        this._parentDOMNodeWithScroll = null;
         this._onWrapperMountHandler = this._onWrapperMountHandler.bind(this);
         this._onTeleportMountHandler = this._onTeleportMountHandler.bind(this);
     }
@@ -150,6 +161,10 @@ export default class Placer extends React.Component {
         this._scrollEventListener && this._scrollEventListener.remove();
     }
 
+    componentDidUpdate() {
+        this._setPositionStyles();
+    }
+
     _onWrapperMountHandler(c) {
         this._wrapperComponent = c;
 
@@ -161,14 +176,14 @@ export default class Placer extends React.Component {
     }
 
     _setPositionStyles() {
-        this._wrapperComponent && this._wrapperComponent.setStyles(this._generateStyles());
+        setTimeout(() => this._wrapperComponent &&
+            this._wrapperComponent.setStyles(this._generateStyles()));
     }
 
     _getTargetRect() {
         if (!this._teleportComponent) {
             return null;
         }
-
         return this._teleportComponent.getParentBoundingClientRect();
     }
 
@@ -181,10 +196,14 @@ export default class Placer extends React.Component {
     }
 
     _getRootRect() {
-        return this.context.teleport.getBoundingClientRect();
+        if (!this._wrapperComponent) {
+            return null;
+        }
+
+        return ReactDOM.findDOMNode(this._wrapperComponent).parentNode.getBoundingClientRect();
     }
 
-    _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, windowRect: Object) {
+    _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, rootRect: Object) {
         const props = this.props;
 
         var resultPreset = props[`${axis}AxisPresets`][0];
@@ -194,10 +213,10 @@ export default class Placer extends React.Component {
         const offsets = { left: props.offsetX || 0, top: props.offsetY || 0 };
 
         props[`${axis}AxisPresets`].some(preset => {
-            let rect = PRESETS[axis][preset](targetRect, placeableRect, windowRect, offsets);
+            let rect = PRESETS[axis][preset](targetRect, placeableRect, rootRect, offsets);
 
             if (rect[axisPropertyKey] > -1 &&
-                windowRect[windowPropertyKey] - rect[axisPropertyKey] - placeableRect[windowPropertyKey] > 0) {
+                rootRect[windowPropertyKey] - rect[axisPropertyKey] - placeableRect[windowPropertyKey] > 0) {
                 resultPreset = preset;
 
                 return true;
@@ -206,14 +225,14 @@ export default class Placer extends React.Component {
             return false;
         });
 
-        return PRESETS[axis][resultPreset](targetRect, placeableRect, windowRect, offsets);
+        return PRESETS[axis][resultPreset](targetRect, placeableRect, rootRect, offsets);
     }
 
     _generateStyles(): Object {
         const targetRect = this.props.targetRect || this._getTargetRect();
         const placeableRect = this._getPlaceableRect();
-        const windowRect = this._getWindowRect();
-        const args = [targetRect, placeableRect, windowRect];
+        const rootRect = this._getRootRect();
+        const args = [targetRect, placeableRect, rootRect];
 
         const position = Object.assign({},
             this._calculateBestPosition('x', ...args),
@@ -222,18 +241,13 @@ export default class Placer extends React.Component {
         return {
             top: position.top ? `${position.top}px` : 0,
             left: position.left ? `${position.left}px` : 0,
-            visibility: 'visible'
+            visibility: 'visible',
+            zIndex: this._getZIndex()
         }
     }
 
-    _getWindowRect() {
-        const body = document.getElementsByTagName('body')[0]
-        return {
-            width: window.innerWidth,
-            height: window.innerHeight,
-            left: body.scrollLeft,
-            top: body.scrollTop,
-        }
+    _getZIndex(): number {
+        return this.context.teleport.getContextLevel() + this.props.zIndex;
     }
 
     render() {
@@ -245,4 +259,33 @@ export default class Placer extends React.Component {
             </Teleport>
         );
     }
+}
+
+function getParentDOMNodeWithScroll(parentDOMNode) {
+    if (!parentDOMNode) {
+        return null;
+    }
+
+    const clientWidth = parentDOMNode.clientWidth;
+    const clientHeight = parentDOMNode.clientHeight;
+
+    const scrollWidth = parentDOMNode.scrollWidth;
+    const scrollHeight = parentDOMNode.scrollHeight;
+
+    if (clientWidth === undefined) {
+        return null;
+    }
+
+    if ((clientWidth || clientHeight)) {
+
+        const isCanScroll = ['overflow', 'overflow-x', 'overflow-y'].some((key) => {
+            return /auto|scroll/.test(window.getComputedStyle(parentDOMNode)[key]);
+        });
+
+        if (isCanScroll && (clientWidth !== scrollWidth || clientHeight !== scrollHeight)) {
+            return parentDOMNode;
+        }
+    }
+
+    return getParentDOMNodeWithScroll(parentDOMNode.parentNode);
 }

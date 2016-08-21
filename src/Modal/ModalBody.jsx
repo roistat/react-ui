@@ -7,7 +7,7 @@ import { COLOR } from '../const/theme';
 import { StyleSheet, css } from '../helpers/styles';
 
 const ModalBody = (props) => (
-    <View styles={[STYLE.body, STYLE.getPreset('theme', props.theme)]}>
+    <View styles={[STYLE.body, STYLE.getPreset('theme', props.theme), ...(props.styles || [])]}>
         {props.children}
     </View>
 );
@@ -22,7 +22,8 @@ ModalBody.defaultProps = {
 
 const STYLE = StyleSheet.create({
     body: {
-        padding: '1rem .8rem'
+        padding: '1rem .8rem',
+        flex: 1
     },
     themeNormal: {
         background: '#fff'

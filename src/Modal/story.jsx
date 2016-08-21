@@ -11,6 +11,7 @@ import ModalHeaderTitle from './ModalHeaderTitle';
 import ModalBody from './ModalBody';
 import { TeleportContext } from '../Teleport';
 import StateProvider from '../StateProvider';
+import Placer from '../Placer';
 
 storiesOf('Modal', module)
     .add('Update', () => (
@@ -120,6 +121,36 @@ storiesOf('Modal', module)
                             <ModalBody theme='gray'>
                                 <View style={{ height: 100, width: 200 }}>
                                     {state.content || 'some modal content'}
+                                </View>
+                            </ModalBody>
+                        </Modal>
+                    </div>
+                </TeleportContext>
+            )}
+        </StateProvider>
+    ))
+    .add('AutoClosable and Placer', () => (
+        <StateProvider>
+            {(state, setState) => (
+                <TeleportContext>
+                    <div>
+                        <Button onClick={() => setState({ isShown: !state.isShown })}>
+                            show modal
+                        </Button>
+                        <Modal isAutoClosable isShown={state.isShown} onClose={() => setState({ isShown: false, content: null })}>
+                            <ModalHeader>
+                                <ModalHeaderEditableTitle onClick={() => setState({ isShown: false, content: null })}>
+                                    New Title ...
+                                </ModalHeaderEditableTitle>
+                            </ModalHeader>
+                            <ModalBody theme='gray'>
+                                <View style={{ height: 100, width: 200 }}>
+                                    {state.content || 'some modal content'}
+                                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['inside-top']}>
+                                        <div style={{ padding: 40, height: 400,width: 100, background: '#333', color: '#fff' }}>
+                                            Click me
+                                        </div>
+                                    </Placer>
                                 </View>
                             </ModalBody>
                         </Modal>

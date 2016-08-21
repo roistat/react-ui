@@ -1,8 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-
-//TODO: 'improve update'
+import raf from 'raf';
 
 export default class Transition extends React.Component {
     static propTypes = {
@@ -29,7 +28,13 @@ export default class Transition extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = { children: null, isEnter: false, isLeave: true, isAppear: false };
+        this.state = {
+            children: null,
+            isEnter: false,
+            isLeave: true,
+            isAppear: false,
+            isDidEnter: false
+        };
     }
 
     componentDidMount() {
@@ -61,7 +66,7 @@ export default class Transition extends React.Component {
             this.props.isImmediatelyUpdate ?
                 this._showNewChildren(nextProps, true, true) :
                 this._removeOldChildren(
-                    () => { setTimeout(() => this._showNewChildren(nextProps, true), nextProps.updateDelay)},
+                    () => { setTimeout(this._showNewChildren(nextProps, true), nextProps.updateDelay)},
                     true);
         }
     }
@@ -76,7 +81,8 @@ export default class Transition extends React.Component {
                 children: props.children || null,
                 isEnter: true,
                 isAppear: false,
-                isLeave: false
+                isLeave: false,
+                isDidEnter: true
             });
 
             return;
@@ -92,12 +98,17 @@ export default class Transition extends React.Component {
                 isLeave: false,
                 isUpdate: !!isUpdate
             },
-            () => setTimeout(() => {
+            () => raf(() => {
                 this._isMounted && this.setState({
                     isEnter: true,
                     isAppear: false
-                }, () => props.onDidEnter && props.onDidEnter());
-            }, 5));
+                }, () => {
+                    const timeout = this._getTimeout('enter');
+                    setTimeout(() => this.setState(
+                        { isDidEnter: true },
+                        () => props.onDidEnter && props.onDidEnter()), timeout);
+                });
+            }));
     }
 
     _removeOldChildren(callback: () => void, isUpdate: boolean) {
@@ -107,26 +118,24 @@ export default class Transition extends React.Component {
             return;
         }
 
-        const timeout = props.leaveTimeout === undefined ?
-            props.timeout :
-            props.leaveTimeout;
+        const timeout = this._getTimeout('leave');
 
         this._isRemoving = true;
 
         props.onWillLeave && props.onWillLeave();
 
-        this.setState({ isEnter: false, isLeave: true, isUpdate: !!isUpdate }, () => {
-            setTimeout(() => {
-                if (callback) {
-                    props.onDidLeave && props.onDidLeave();
-                    callback();
-                    this._isRemoving = false;
+        raf(() => this._isMounted &&
+            this.setState({ isEnter: false, isLeave: true, isUpdate: !!isUpdate, isDidEnter: false }, () => {
+                setTimeout(() => {
+                    if (callback) {
+                        props.onDidLeave && props.onDidLeave();
+                        callback();
+                        this._isRemoving = false;
 
-                    return;
-                }
+                        return;
+                    }
 
-                if (this._isMounted) {
-                    this.setState(
+                    raf(() => this._isMounted && this.setState(
                         {
                             children: null,
                             isEnter: false,
@@ -136,10 +145,18 @@ export default class Transition extends React.Component {
                         () => {
                             this._isRemoving = false;
                             props.onDidLeave && props.onDidLeave();
-                        });
-                }
-            }, timeout);
-        });
+                        }));
+
+                }, timeout);
+        }));
+    }
+
+    _getTimeout(stage: 'enter'|'leave'): number {
+        const props = this.props;
+
+        return props[`${stage}Timeout`] === undefined ?
+            props.timeout :
+            props[`${stage}Timeout`];
     }
 
     render() {

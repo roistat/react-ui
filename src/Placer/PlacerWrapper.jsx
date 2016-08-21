@@ -2,6 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
+import raf from 'raf';
 
 export default class PlacerWrapper extends React.Component {
     static propTypes = {
@@ -24,14 +25,23 @@ export default class PlacerWrapper extends React.Component {
     }
 
     setStyles(styles: Object) {
-        Object.assign(this.getDOMNode().style, styles);
+        raf(() => Object.assign(this.getDOMNode().style, styles));
     }
 
     render() {
         const props = this.props;
 
         return (
-            <div style={{ visibility: 'hidden', position: 'absolute', top: 0, left: 0 }}>
+            <div
+                style={{
+                    zIndex: props.zIndex,
+                    visibility: 'hidden',
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    bottom: 0,
+                    right: 0
+                }}>
                 {props.children}
             </div>
         )

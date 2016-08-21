@@ -52,13 +52,12 @@ export default class Modal extends React.Component {
     show(callback: () => void) {
         callback && this._onDidShowCallbacks.push(callback);
 
-        this.setState({ isShown: true });
+        this.setState({ isShown: true }, () => this._disableRootScroll());
     }
 
     hide(callback: () => void) {
         callback && this._onDidHideCallbacks.push(callback);
 
-        this._enableRootScroll();
         this.setState({ isShown: false });
     }
 
@@ -96,8 +95,7 @@ export default class Modal extends React.Component {
 
     _onShowHandler() {
         const callbacks = this._onDidShowCallbacks;
-        this._disableRootScroll();
-        
+
         this._onDidShowCallbacks = [];
 
         callbacks.forEach((callback) => callback());
@@ -117,6 +115,7 @@ export default class Modal extends React.Component {
         this._onDidHideCallbacks = [];
         callbacks.forEach((callback) => callback());
 
+        this._enableRootScroll();
         this.props.onDidClose && this.props.onDidClose();
     }
 

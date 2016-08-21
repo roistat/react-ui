@@ -37,10 +37,9 @@ export default class PlacerWrapper extends React.Component {
                     zIndex: props.zIndex,
                     visibility: 'hidden',
                     position: 'absolute',
+                    transform: 'translate3d(0, 0, 0)',
                     top: 0,
-                    left: 0,
-                    bottom: 0,
-                    right: 0
+                    left: 0
                 }}>
                 {props.children}
             </div>

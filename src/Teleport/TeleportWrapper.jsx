@@ -1,6 +1,7 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
+import ReactDOM from 'react-dom';
 
 export default class TeleportWrapper extends React.Component {
     static propTypes = {};
@@ -13,10 +14,16 @@ export default class TeleportWrapper extends React.Component {
 
     componentDidMount() {
         this._isMount = true;
+        this._selfDOMNode = ReactDOM.findDOMNode(this);
     }
 
     componentWillUnmount() {
         this._isMount = false;
+        this._selfDOMNode = null;
+    }
+
+    getDOMNode() {
+        return this._selfDOMNode;
     }
 
     update(newChildren: Object, callback: () => void) {

@@ -176,8 +176,8 @@ export default class Placer extends React.Component {
     }
 
     _setPositionStyles() {
-        setTimeout(() => this._wrapperComponent &&
-            this._wrapperComponent.setStyles(this._generateStyles()));
+        this._wrapperComponent &&
+            this._wrapperComponent.setStyles(this._generateStyles());
     }
 
     _getTargetRect() {
@@ -200,7 +200,7 @@ export default class Placer extends React.Component {
             return null;
         }
 
-        return ReactDOM.findDOMNode(this._wrapperComponent).parentNode.getBoundingClientRect();
+        return this.context.teleport.getRootDOMNode().getBoundingClientRect();
     }
 
     _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, rootRect: Object) {
@@ -238,9 +238,11 @@ export default class Placer extends React.Component {
             this._calculateBestPosition('x', ...args),
             this._calculateBestPosition('y', ...args));
 
+        const xPosition =  position.left ? `${position.left}px` : 0;
+        const yPosition = position.top ? `${position.top}px` : 0;
+
         return {
-            top: position.top ? `${position.top}px` : 0,
-            left: position.left ? `${position.left}px` : 0,
+            transform: `translate3d(${xPosition}, ${yPosition}, 0)`,
             visibility: 'visible',
             zIndex: this._getZIndex()
         }

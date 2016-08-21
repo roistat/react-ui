@@ -66,7 +66,7 @@ export default class Transition extends React.Component {
             this.props.isImmediatelyUpdate ?
                 this._showNewChildren(nextProps, true, true) :
                 this._removeOldChildren(
-                    () => { setTimeout(this._showNewChildren(nextProps, true), nextProps.updateDelay)},
+                    () => { setTimeout(() => this._showNewChildren(nextProps, true), nextProps.updateDelay)},
                     true);
         }
     }
@@ -79,10 +79,6 @@ export default class Transition extends React.Component {
         if (this._isMounted && isSkipAppear) {
             this.setState({
                 children: props.children || null,
-                isEnter: true,
-                isAppear: false,
-                isLeave: false,
-                isDidEnter: true
             });
 
             return;
@@ -90,7 +86,7 @@ export default class Transition extends React.Component {
 
         props.onWillEnter && props.onWillEnter();
 
-        this._isMounted && this.setState(
+        raf(() => this._isMounted && this.setState(
             {
                 children: props.children,
                 isEnter: false,
@@ -108,7 +104,7 @@ export default class Transition extends React.Component {
                         { isDidEnter: true },
                         () => props.onDidEnter && props.onDidEnter()), timeout);
                 });
-            }));
+            })));
     }
 
     _removeOldChildren(callback: () => void, isUpdate: boolean) {

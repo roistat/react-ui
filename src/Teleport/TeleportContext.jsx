@@ -140,7 +140,7 @@ TeleportContext.childContextTypes = {
         isAdded: PropTypes.func,
         getRootDOMNode: PropTypes.func,
         getBoundingClientRect: PropTypes.func,
-        getContextLevel: PropTypes.number
+        getContextLevel: PropTypes.func
     })
 };
 

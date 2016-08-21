@@ -1,7 +1,6 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 import Teleport from '../Teleport';
 import PlacerWrapper from './PlacerWrapper';
 import addEventListener from '../helpers/addEventListener';
@@ -64,6 +63,8 @@ const PRESETS = {
 };
 
 export default class Placer extends React.Component {
+    static __PLACER__ = true;
+
     static propTypes = {
         /**
          * Presets for position by x axis
@@ -105,7 +106,8 @@ export default class Placer extends React.Component {
         /**
          * Z-index of root div
          */
-        zIndex: PropTypes.number
+        zIndex: PropTypes.number,
+        targetDOMNode: PropTypes.object
     };
 
     static defaultProps = {
@@ -181,9 +183,14 @@ export default class Placer extends React.Component {
     }
 
     _getTargetRect() {
+        if (this.props.targetDOMNode) {
+            return this.props.targetDOMNode.getBoundingClientRect();
+        }
+
         if (!this._teleportComponent) {
             return null;
         }
+
         return this._teleportComponent.getParentBoundingClientRect();
     }
 

@@ -3,7 +3,7 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 
-import addEventListener from '../helpers/addEventListener.js';
+import addEventListener from '../helpers/addEventListener';
 
 export default class AutoClosable extends React.Component {
 	static propTypes = {
@@ -12,19 +12,18 @@ export default class AutoClosable extends React.Component {
 		 */
 		onClose: PropTypes.func,
 		/**
-		 * Optional parent component, click event on parent don't fire close event
+		 * Optional parent dom node, click event on parent dom node don't fire close event
 		 */
-		parentComponent: PropTypes.element
+		parentDOMNode: PropTypes.element
 	};
 
 	componentDidMount() {
 		const props = this.props;
-		const parentNode = this._getParentDOMNode();
+		const parentNode = props.parentDOMNode;
 
 		this._removeOutsideClickListener = addEventListener(document, 'click', (event) => {
 			if (!(parentNode && parentNode.contains(event.target)) &&
-				!this._node.contains(event.target) &&
-				!(props.targetNode && props.targetNode.contains(event.target))) {
+				!this._node.contains(event.target)) {
 				this._emitClose();
 			}
 		});
@@ -34,15 +33,6 @@ export default class AutoClosable extends React.Component {
 				this._emitClose();
 			}
 		});
-	}
-
-	_getParentDOMNode() {
-		const props = this.props;
-
-		if (!this._parentNode) {
-			this._parentNode = (props.parentComponent && ReactDOM.findDOMNode(props.parentComponent));
-		}
-		return this._parentNode;
 	}
 
 	_emitClose() {

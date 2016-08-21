@@ -3,6 +3,7 @@ import { storiesOf, action } from '@kadira/storybook';
 
 import Placer from './Placer';
 import { TeleportContext } from '../Teleport';
+import TargetWrapper from './TargetWrapper';
 
 storiesOf('Placer', module)
     .add('Y axis outside top', () => (
@@ -259,6 +260,24 @@ storiesOf('Placer', module)
                         Placeable
                     </div>
                 </Placer>
+            </div>
+        </TeleportContext>
+    ))
+    .add('TargetWrapper', () => (
+        <TeleportContext>
+            <div style={{ margin: '40px' }}>
+                <TargetWrapper>
+                    <div style={{ position: 'absolute', left: 200, top: 100, width: 100, height: 40, background: '#eee' }}>
+                        Target
+                    </div>
+                    <Placer
+                        xAxisPresets={['middle']}
+                        yAxisPresets={['outside-bottom']}>
+                        <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
+                            Placeable
+                        </div>
+                    </Placer>
+                </TargetWrapper>
             </div>
         </TeleportContext>
     ));

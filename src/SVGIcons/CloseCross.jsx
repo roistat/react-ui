@@ -9,4 +9,3 @@ const CloseCross = (props) => (
 );
 
 export default CloseCross;
-

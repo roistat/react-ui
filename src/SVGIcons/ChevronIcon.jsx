@@ -9,4 +9,3 @@ const ChevronIcon = (props) => (
 );
 
 export default ChevronIcon;
-

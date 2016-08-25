@@ -8,4 +8,3 @@ export { default as HeaderSubtitle } from './ModalHeaderSubtitle';
 export { default as HeaderSearchInput } from './ModalHeaderSearchInput';
 export { default as HeaderToolbar } from './ModalHeaderToolbar';
 export { default as HeaderToolbarItem } from './ModalHeaderToolbarItem';
-

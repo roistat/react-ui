@@ -37,4 +37,3 @@ const STYLE = StyleSheet.create({
 });
 
 export default ModalBody;
-

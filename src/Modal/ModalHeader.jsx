@@ -84,4 +84,3 @@ const styles = StyleSheet.create({
 		width: '2rem'
 	}
 });
-

@@ -159,4 +159,3 @@ storiesOf('Modal', module)
 			)}
 		</StateProvider>
 	))
-

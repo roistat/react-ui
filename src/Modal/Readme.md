@@ -147,4 +147,3 @@ Autoclosable Modal Window with Editable Title and placer
 			</TeleportContext>
 		)}
 	</StateProvider>
-

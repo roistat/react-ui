@@ -1,12 +1,7 @@
-### Usage
+Button Text
 
-```js
-    import Text from '@roistat/ui/lib/Text';
-```
-
-Example
-
-    <Text>
-        Some awesome text
-    </Text>
-    
+	<View>
+		<Button>
+			<Text>Some awesome text</Text> 
+		</Button>
+	</View>

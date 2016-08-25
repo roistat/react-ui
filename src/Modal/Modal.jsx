@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import View from '../View';
-import Teleport from '../Teleport';
+import Teleport, { TeleportContext } from '../Teleport';
 import Popup from '../Popup';
 import Transition from '../Transition';
 import AutoClosable from '../AutoClosable';
@@ -10,156 +10,266 @@ import AutoClosable from '../AutoClosable';
 import { StyleSheet } from '../helpers/styles';
 
 export default class Modal extends React.Component {
-    static propTypes = {
-        isShown: PropTypes.boolean,
-        onDidClose: PropTypes.func,
-        onDidShow: PropTypes.func
-    };
+	static propTypes = {
+		/**
+		 * Is modal window showed
+		 */
+		isShown: PropTypes.boolean,
+		/**
+		 * After component closed action
+		 */
+		onDidClose: PropTypes.func,
+		/**
+		 * After component showed action
+		 */
+		onDidShow: PropTypes.func,
+		/**
+		 * Is Modal Winodw will be closed by clicking outside it
+		 */
+		isAutoClosable: PropTypes.boolean,
+		/**
+		 * On close handler
+		 */
+		onClose: PropTypes.func
+	};
 
-    constructor(props, ...args) {
-        super(props, ...args);
+	constructor(props, ...args) {
+		super(props, ...args);
 
-        this.state = {
-            isShown: false
-        };
+		this.state = {
+			isShown: false
+		};
 
-        this._onShowHandler =  this._onShowHandler.bind(this);
-        this._onCloseHandler =  this._onCloseHandler.bind(this);
-        this._isBodyScrollDisabled = null;
-        this._prevBodyOverflow = null;
-    }
+		this._onShowHandler =  this._onShowHandler.bind(this);
+		this._onCloseHandler =  this._onCloseHandler.bind(this);
+		this._onDidLeaveHandler =  this._onDidLeaveHandler.bind(this);
+		this._isBodyScrollDisabled = null;
+		this._prevBodyOverflow = null;
 
-    componentDidMount() {
-        this.props.isShown && this.show();
-    }
+		this._onDidShowCallbacks = [];
+		this._onDidHideCallbacks = [];
+	}
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.isShown !== this.props.isShown) {
-            nextProps.isShown ? this.show() : this.hide();
-        }
-    }
-    
-    show() {
-        this.setState({ isShown: true });
-    }
+	componentDidMount() {
+		this.props.isShown && this.show();
+	}
 
-    hide() {
-        this._enableBodyScroll();
-        this.setState({ isShown: false });
-    }
+	componentWillUnmount() {
+		this._enableRootScroll();
+	}
+	
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.isShown !== this.props.isShown) {
+			nextProps.isShown ? this.show() : this.hide();
+		}
+	}
 
-    _renderChildren() {
-        const props = this.props;
+	show(callback: () => void) {
+		callback && this._onDidShowCallbacks.push(callback);
 
-        return React.Children.map(props.children, (child) => {
-            if (child && child.type && child.type.__MODAL_HEADER__) {
-                return React.cloneElement(child, {
-                    onClose: props.onClose
-                });
-            }
+		this.setState({ isShown: true }, () => this._disableRootScroll());
+	}
 
-            return child;
-        });
-    }
+	hide(callback: () => void) {
+		callback && this._onDidHideCallbacks.push(callback);
 
-    _disableBodyScroll() {
-        if (typeof document !== 'undefined' && !this._isBodyScrollDisabled) {
-            let body = document.body;
+		this.setState({ isShown: false });
+	}
 
-            this._isBodyScrollDisabled = true;
-            this._prevBodyOverflow = body.style.overflow;
-            body.style.overflow = 'hidden';
-        }
-    }
+	_renderChildren() {
+		const props = this.props;
 
-    _enableBodyScroll() {
-        if (typeof document !== 'undefined') {
-            this._isBodyScrollDisabled = false;
-            document.body.style.overflow = this._prevBodyOverflow;
-        }
-    }
+		return React.Children.map(props.children, (child) => {
+			if (child && child.type && child.type.__MODAL_HEADER__) {
+				return React.cloneElement(child, {
+					onClose: props.onClose
+				});
+			}
 
-    _onShowHandler() {
-        this._disableBodyScroll();
-        this.props.onDidShow && this.props.onDidShow();
-    }
+			return child;
+		});
+	}
 
-    _onCloseHandler() {
-        this.hide();
-    }
+	_disableRootScroll() {
+		if (typeof document !== 'undefined' && !this._isBodyScrollDisabled) {
+			let parentDOMNodeWithScroll = this._getParentDOMNodeWithScroll();
 
-    render() {
-        return (
-            <Teleport>
-                <Transition
-                    timeout={200}
-                    leaveTimeout={400}
-                    onDidEnter={this._onShowHandler}
-                    onDidLeave={() => this.props.onDidClose && this.props.onDidClose()}>
-                    {this.state.isShown && (({ isEnter, isLeave }) => (
-                        <View
-                            styles={[
-                                styles.overlay,
-                                isEnter && styles.shownOverlay,
-                                isLeave && styles.leaveOverlay
-                            ]}>
-                            <View
-                                styles={[
-                                    styles.inner,
-                                    isEnter && styles.shownInner,
-                                    isLeave && styles.leaveInner
-                                ]}>
-                                <AutoClosable onClose={this._onCloseHandler}>
-                                    <Popup styles={[styles.popup]} isRounded >
-                                        {this._renderChildren()}
-                                    </Popup>
-                                </AutoClosable>
-                            </View>
-                        </View>
-                    ))}
-                </Transition>
-            </Teleport>
-        )
-    }
+			this._isBodyScrollDisabled = true;
+			this._prevBodyOverflow = parentDOMNodeWithScroll.style.overflow;
+			parentDOMNodeWithScroll.style.overflow = 'hidden';
+		}
+	}
+
+	_enableRootScroll() {
+		if (typeof document !== 'undefined' && this._isBodyScrollDisabled) {
+			this._isBodyScrollDisabled = false;
+
+			this._getParentDOMNodeWithScroll().style.overflow = this._prevBodyOverflow;
+		}
+	}
+
+	_onShowHandler() {
+		const callbacks = this._onDidShowCallbacks;
+
+		this._onDidShowCallbacks = [];
+
+		callbacks.forEach((callback) => callback());
+
+		this.props.onDidShow && this.props.onDidShow();
+	}
+
+	_onCloseHandler() {
+		const { isAutoClosable, onClose } = this.props;
+
+		isAutoClosable && onClose && onClose();
+	}
+
+	_onDidLeaveHandler() {
+		const callbacks = this._onDidHideCallbacks;
+
+		this._onDidHideCallbacks = [];
+		callbacks.forEach((callback) => callback());
+
+		this._enableRootScroll();
+		this.props.onDidClose && this.props.onDidClose();
+	}
+
+
+	_getParentDOMNodeWithScroll() {
+		if (!this._parentDOMNodeWithScroll) {
+			const rootDOMNode = this._getRootDOMNode();
+
+			this._parentDOMNodeWithScroll = (rootDOMNode &&
+				getParentDOMNodeWithScroll(rootDOMNode)) ||
+					document.getElementsByTagName('body')[0];
+		}
+
+		return this._parentDOMNodeWithScroll;
+	}
+
+	_getRootDOMNode() {
+		if (!this._teleport) {
+			return null;
+		}
+
+		if (!this._rootDOMNode) {
+			this._rootDOMNode = this._teleport.getRootDOMNode();
+		}
+
+		return this._rootDOMNode;
+	}
+
+	render() {
+		return (
+			<Teleport ref={(c) => this._teleport = c}>
+				<Transition
+					timeout={200}
+					leaveTimeout={400}
+					onDidEnter={this._onShowHandler}
+					onDidLeave={this._onDidLeaveHandler}>
+					{this.state.isShown && (({ isEnter, isLeave }) => (
+						<View
+							styles={[
+								styles.overlay,
+								isEnter && styles.shownOverlay,
+								isLeave && styles.leaveOverlay
+							]}>
+							<View
+								styles={[
+									styles.inner,
+									isEnter && styles.shownInner,
+									isLeave && styles.leaveInner
+								]}>
+								<AutoClosable onClose={this._onCloseHandler}>
+									<TeleportContext>
+										<View styles={[styles.popupWrapper]}>
+											<Popup styles={[styles.popup]} isRounded >
+												{this._renderChildren()}
+											</Popup>
+										</View>
+									</TeleportContext>
+								</AutoClosable>
+							</View>
+						</View>
+					))}
+				</Transition>
+			</Teleport>
+		)
+	}
+}
+
+function getParentDOMNodeWithScroll(parentDOMNode) {
+	if (!parentDOMNode) {
+		return null;
+	}
+
+	const clientWidth = parentDOMNode.clientWidth;
+	const clientHeight = parentDOMNode.clientHeight;
+
+	const scrollWidth = parentDOMNode.scrollWidth;
+	const scrollHeight = parentDOMNode.scrollHeight;
+
+	if (clientWidth === undefined) {
+		return null;
+	}
+
+	if ((clientWidth || clientHeight)) {
+
+		const isCanScroll = ['overflow', 'overflow-x', 'overflow-y'].some((key) => {
+			return /auto|scroll/.test(window.getComputedStyle(parentDOMNode)[key]);
+		});
+
+		if (isCanScroll && (clientWidth !== scrollWidth || clientHeight !== scrollHeight)) {
+			return parentDOMNode;
+		}
+	}
+
+	return getParentDOMNodeWithScroll(parentDOMNode.parentNode);
 }
 
 const styles = StyleSheet.create({
-    overlay: {
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        left: 0,
-        bottom: 0,
-        zIndex: 9999,
-        transform: 'translate3d(0, 0, 0)',
-        transition: 'all .2s ease-out',
-        background: 'rgba(0, 0, 0, 0)',
-    },
-    inner: {
-        minWidth: '100%',
-        alignItems: 'flex-start',
-        justifyContent: 'center',
-        padding: '4.4rem 140px 5rem 140px',
-        transition: 'all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-        transform: 'translate3d(0, 0, 0) scale(.9)',
-        opacity: 0,
-    },
-    popup: {
-        padding: 0,
-        flexDirection: 'column',
-        overflow: 'hidden'
-    },
-    shownOverlay: {
-        background: 'rgba(0, 0, 0, .4)'
-    },
-    shownInner: {
-        transform: 'translate3d(0, 0, 0) scale(1)',
-        opacity: 1
-    },
-    leaveInner: {
-        transition: 'all .4s cubic-bezier(0.165, 0.84, 0.44, 1)'
-    },
-    leaveOverlay: {
-        transition: 'all .4s cubic-bezier(0.165, 0.84, 0.44, 1)'
-    }
+	overlay: {
+		position: 'fixed',
+		top: 0,
+		right: 0,
+		left: 0,
+		bottom: 0,
+		zIndex: 999,
+		transform: 'translate3d(0, 0, 0)',
+		transition: 'all .2s ease-out',
+		background: 'rgba(0, 0, 0, 0)',
+		overflow: 'auto'
+	},
+	inner: {
+		minWidth: '100%',
+		alignItems: 'flex-start',
+		justifyContent: 'center',
+		transition: 'all .2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+		transform: 'translate3d(0, 0, 0) scale(.9)',
+		opacity: 0,
+	},
+	popupWrapper: {
+		margin: '4.4rem 140px 5rem 140px'
+	},
+	popup: {
+		padding: 0,
+		flexDirection: 'column',
+		overflow: 'hidden',
+		minWidth: '960px',
+		minHeight: '400px',
+	},
+	shownOverlay: {
+		background: 'rgba(0, 0, 0, .4)'
+	},
+	shownInner: {
+		transform: 'translate3d(0, 0, 0) scale(1)',
+		opacity: 1
+	},
+	leaveInner: {
+		transition: 'all .4s cubic-bezier(0.165, 0.84, 0.44, 1)'
+	},
+	leaveOverlay: {
+		transition: 'all .4s cubic-bezier(0.165, 0.84, 0.44, 1)'
+	}
 });
+

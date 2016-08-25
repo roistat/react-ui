@@ -111,4 +111,3 @@ storiesOf('Teleport', module)
 			)}
 		</StateProvider>
 	));
-

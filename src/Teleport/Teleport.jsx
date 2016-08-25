@@ -87,4 +87,3 @@ export default class Teleport extends React.Component {
 		)
 	}
 }
-

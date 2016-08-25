@@ -5,4 +5,3 @@ Button Text
 			<Text>Some awesome text</Text> 
 		</Button>
 	</View>
-

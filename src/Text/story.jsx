@@ -12,4 +12,3 @@ storiesOf('Text', module)
 			</Button>
 		</View>
 	))
-

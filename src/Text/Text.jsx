@@ -44,4 +44,3 @@ const STYLES = StyleSheet.create({
 });
 
 export default Text;
-

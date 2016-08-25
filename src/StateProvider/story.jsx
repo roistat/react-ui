@@ -18,4 +18,3 @@ import StateProvider from './StateProvider';
 			)}
 		</StateProvider>
 	));
-

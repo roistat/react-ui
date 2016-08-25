@@ -13,4 +13,3 @@ StateProvider usage
 			</div>
 		)}
 	</StateProvider>
-

@@ -35,4 +35,3 @@ export default class StateProvider extends React.Component {
 		)
 	}
 }
-

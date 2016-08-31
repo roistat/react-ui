@@ -8,7 +8,7 @@ storiesOf('CloseCross', module)
     .add('CloseCross without hover effect', () => (
         <View>
             <Popup>
-                <CloseCross size="xs" style={{ position:'relative', left: 85+'%' }} />
+                <CloseCross size="xs" style={{ position:'relative', left: '85%' }} />
                 Popup text
             </Popup>
         </View>
@@ -16,7 +16,7 @@ storiesOf('CloseCross', module)
     .add('CloseCross with hover effect', () => (
         <View>
             <Popup>
-                <CloseCross size="xs" isHasHover={true} style={{ position:'relative', left: 85+'%' }} />
+                <CloseCross size="xs" isHasHover={true} style={{ position:'relative', left: '85%' }} />
                 Popup text
             </Popup>
         </View>

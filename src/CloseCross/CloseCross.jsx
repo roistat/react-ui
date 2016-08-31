@@ -13,7 +13,7 @@ export default class CloseCross extends React.Component {
          */
         size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
         /**
-         * is animation uses, when hovered
+         * Is has hover animation
          */
         isHasHover: PropTypes.bool
     };
@@ -35,7 +35,7 @@ export default class CloseCross extends React.Component {
                     isHasHover && STYLE.closeCrossHover,
                     ...(styles || []))
                 }>
-                <Icon color={COLOR.TEXT} />
+                <Icon color={isHasHover ? COLOR.MUTED : COLOR.TEXT} />
             </div>
         )
     }
@@ -51,7 +51,7 @@ const STYLE = StyleSheet.create({
     },
     closeCrossHover: {
         '&:hover path': {
-            stroke: COLOR.MUTED,
+            stroke: COLOR.TEXT,
             transition: 'all 0.15s'
         }
     },
@@ -67,5 +67,4 @@ const STYLE = StyleSheet.create({
     sizeXs: {
         fontSize: '.8rem'
     }
-
 });

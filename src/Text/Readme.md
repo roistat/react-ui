@@ -9,4 +9,3 @@ Example
     <Text>
         Some awesome text
     </Text>
-    

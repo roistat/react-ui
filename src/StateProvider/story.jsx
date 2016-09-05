@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import StateProvider from './StateProvider';
 
-    storiesOf('StateProvider', module)
+storiesOf('StateProvider', module)
     .add('change content on button click', () => (
         <StateProvider state={{ content: 'awesome content' }}>
             {(state, setState) => (

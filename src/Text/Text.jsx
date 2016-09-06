@@ -9,27 +9,18 @@ var Text = (props) => {
     return (
         <span
             {...rest}
-            className={css(STYLES.text, ...(styles || []))}
-            style={
-                Object.assign(
-                    {},
-                    numberOfLines && {
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                    },
-                    numberOfLines === 1 && {
-                        whiteSpace: 'nowrap'
-                    }
-                )
-            }>
+            className={css(STYLES.text,numberOfLines == 1 && STYLES.singleLine, ...(styles || []))}
+            >
             {props.text || props.children}
         </span>
     )
 };
 
 Text.propTypes = {
-    styles: PropTypes.arrayOf(PropTypes.string),
-    numberOfLines: PropTypes.oneOf([1])
+    /**
+     * Css styles, applied to text
+     */
+    styles: PropTypes.arrayOf(PropTypes.string)
 };
 
 const STYLES = StyleSheet.create({
@@ -40,6 +31,11 @@ const STYLES = StyleSheet.create({
         fontWeight: 400,
         lineHeight: FONT.BASE_LINE_HEIGHT,
         color: COLOR.TEXT
+    },
+    singleLine: {
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap'
     },
     sub: {
         fontSize: FONT.SIZE_SUB_TEXT,

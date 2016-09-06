@@ -8,7 +8,13 @@ import Icon from '../SVGIcons/CloseCross';
 
 export default class CloseCross extends React.Component {
     static propTypes = {
+        /**
+         * Size of CloseCross icon
+         */
         size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
+        /**
+         * Is has hover animation
+         */
         isHasHover: PropTypes.bool
     };
 
@@ -29,7 +35,7 @@ export default class CloseCross extends React.Component {
                     isHasHover && STYLE.closeCrossHover,
                     ...(styles || []))
                 }>
-                <Icon color={COLOR.TEXT} />
+                <Icon color={isHasHover ? COLOR.MUTED : COLOR.TEXT} />
             </div>
         )
     }
@@ -44,9 +50,9 @@ const STYLE = StyleSheet.create({
         lineHeight: '16px'
     },
     closeCrossHover: {
-        transition: 'all .15s',
-        '&:hover': {
-            stroke: COLOR.TEXT
+        '&:hover path': {
+            stroke: COLOR.TEXT,
+            transition: 'all 0.15s'
         }
     },
     sizeL: {
@@ -61,5 +67,4 @@ const STYLE = StyleSheet.create({
     sizeXs: {
         fontSize: '.8rem'
     }
-
 });

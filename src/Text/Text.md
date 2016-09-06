@@ -12,8 +12,12 @@ Example
 
 Single line text
 
-    <View>
+    const Button = require('../Button').default;
+     
+    <div style={{ width: 100 }}>
         <Button>
-            <Text numberOfLines={1}>Some awesome text</Text>
+            <Text numberOfLines={1}>
+                Some awesome text
+            </Text>
         </Button>
-    </View>
+    </div>

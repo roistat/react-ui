@@ -3,6 +3,9 @@ import { FONT, COLOR } from '../const/theme';
 
 import { StyleSheet, css } from '../helpers/styles';
 
+/**
+ * Normal text component
+ */
 var Text = (props) => {
     const { numberOfLines, styles, ...rest } = props;
 

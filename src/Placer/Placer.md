@@ -11,7 +11,7 @@ Target component is point for position of Placer.
 
 ```js
 import { TeleportContext } from '@roistat/ui/lib/Teleport';
-import Placer from '@roistat/ui/lib/Placer';
+import Placer, { TargetWrapper } from '@roistat/ui/lib/Placer';
 ```
 
 Position X: inside-left, Y: outside-top
@@ -137,6 +137,8 @@ Offset
         
 Custom target
 
+        const PrimaryButton = require('../PrimaryButton').default;
+        
         <TeleportContext>
             <div style={{ margin: '40px' }}>
                 <PrimaryButton

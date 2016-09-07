@@ -3,47 +3,21 @@
 import React, { PropTypes } from 'react';
 
 import View from '../View';
-import PopupTail from './PopupTail';
 
 import { SHADOW } from '../const/theme.js';
-
 import { StyleSheet, css } from '../helpers/styles';
 
 export default class Popup extends React.Component {
 	static propTypes = {
-		/**
-		 * is popup has tail
-		 */
-		hasTail: PropTypes.bool,
-		/**
-		 * Tail direction
-		 */
-		tailDirection: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
-		/**
-		 * Tail color
-		 */
-		tailColor: PropTypes.string,
-		/**
-		 * is rounded popup
-		 */
 		isRounded: PropTypes.bool
 	};
 
-	_renderTail() {
-		const props = this.props;
-
-		return (
-			<PopupTail direction={props.tailDirection} color={props.tailColor} />
-		)
-	}
-
 	render() {
-		const { styles, isRounded, hasTail, children }  = this.props;
+		const { styles, isRounded, children }  = this.props;
 
 		return (
 			<View styles={[STYLES.popup, isRounded && STYLES.rounded, ...(styles || [])]} >
 				{children}
-				{hasTail && this._renderTail()}
 			</View>
 		)
 	}

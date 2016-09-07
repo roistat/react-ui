@@ -10,6 +10,7 @@ import Placer, { TargetWrapper }  from '../Placer';
 
 export default class PopupShowner extends React.Component {
     static propTypes = {
+        isAutoClosable: PropTypes.bool,
         presets: PropTypes.arrayOf(PropTypes.shape({
             x: PropTypes.string,
             y: PropTypes.string

@@ -2,17 +2,45 @@ const path = require('path');
 const dir = path.join(__dirname, 'src');
 var glob = require('glob');
 
+const createRe = (components) => {
+    return new RegExp(
+        components.map(name => `/${name}`).join('|'));
+};
 
 const RE_TYPO = new RegExp([
     'Text.jsx'
 ].join('|'));
 
-const RE_HELPERS = new RegExp([
+const RE_HELPERS = createRe([
     'Teleport.jsx',
     'TeleportContext.jsx',
     'Placer.jsx',
-    'TargetWrapper'
-].join('|'));
+    'TargetWrapper.jsx',
+    'AutoClosable.jsx',
+    'StateProvider.jsx',
+    'Transition.jsx',
+    'Toggler.jsx',
+    'PopupShowner.jsx',
+]);
+
+const RE_CONTROLS = createRe([
+    'Button.jsx',
+    'PrimaryButton.jsx',
+    'TextInput.jsx'
+]);
+
+const RE_ELEMENTS = createRe([
+    'View.jsx',
+    'Tail.jsx',
+    'Spinner.jsx',
+    'FontIcon.jsx',
+    'CloseCross.jsx',
+    'Popup.jsx',
+]);
+
+const RE_VIEWS = createRe([
+    'Modal.jsx',
+]);
 
 
 const createMatcher = (re) => () => {
@@ -24,24 +52,29 @@ module.exports = {
     sections: [
         {
             name: 'Typography',
-            //content: '',
             components: createMatcher(RE_TYPO)
         },
         {
-            name: 'Helper components',
-            //content: '',
+            name: 'Controls',
+            components: createMatcher(RE_CONTROLS)
+        },
+        {
+            name: 'Views',
+            components: createMatcher(RE_VIEWS)
+        },
+        {
+            name: 'Helpers',
             components: createMatcher(RE_HELPERS)
+        },
+        {
+            name: 'Elements',
+            components: createMatcher(RE_ELEMENTS)
         }
+        // {
+        //     name: 'Behavers',
+        //     components: createMatcher(RE_ELEMENTS)
+        // }
     ],
-    // components: function() {
-    //     return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
-    //         if (RE_EXCLUDE.test(module)) {
-    //             return false
-    //         }
-    //
-    //         return !/story.jsx$/.test(module);
-    //     });
-    // },
     getExampleFilename: function(componentPath) {
         return componentPath.replace(/\.jsx?$/,   '.md');
     },

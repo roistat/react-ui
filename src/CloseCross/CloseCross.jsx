@@ -4,42 +4,40 @@ import React, { PropTypes } from 'react';
 import { StyleSheet, css } from '../helpers/styles';
 
 import { COLOR } from '../const/theme';
-import Icon from '../SVGIcons/CloseCross';
+import Icon from '../SVGIcons/CloseCrossIcon';
 
-export default class CloseCross extends React.Component {
-    static propTypes = {
-        /**
-         * Size of CloseCross icon
-         */
-        size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
-        /**
-         * Is has hover animation
-         */
-        isHasHover: PropTypes.bool
-    };
+const CloseCross = (props) => {
+    const { size, styles, isHasHover, ...rest } = props;
 
-    static defaultProps = {
-        size: 'm',
-        isHasHover: false
-    };
+    return (
+        <div
+            {...rest}
+            className={css(
+                STYLE.closeCross,
+                STYLE.getPreset('size', size),
+                isHasHover && STYLE.closeCrossHover,
+                ...(styles || []))
+            }>
+            <Icon color={isHasHover ? COLOR.MUTED : COLOR.TEXT} />
+        </div>
+    )
+};
 
-    render() {
-        const { size, styles, isHasHover, ...rest } = this.props;
+CloseCross.propTypes = {
+    /**
+     * Size of CloseCross icon
+     */
+    size: PropTypes.oneOf(['l', 'm', 's', 'xs']),
+    /**
+     * Is has hover animation
+     */
+    isHasHover: PropTypes.bool
+};
 
-        return (
-            <div
-                {...rest}
-                className={css(
-                    STYLE.closeCross,
-                    STYLE.getPreset('size', size),
-                    isHasHover && STYLE.closeCrossHover,
-                    ...(styles || []))
-                }>
-                <Icon color={isHasHover ? COLOR.MUTED : COLOR.TEXT} />
-            </div>
-        )
-    }
-}
+CloseCross.defaultProps = {
+    size: 'm',
+    isHasHover: false
+};
 
 const STYLE = StyleSheet.create({
     closeCross: {
@@ -47,12 +45,14 @@ const STYLE = StyleSheet.create({
         verticalAlign: 'top',
         height: '16px',
         width: '16px',
-        lineHeight: '16px'
+        lineHeight: '16px',
+        '& path': {
+            transition: 'all 0.15s ease-in'
+        }
     },
     closeCrossHover: {
         '&:hover path': {
-            stroke: COLOR.TEXT,
-            transition: 'all 0.15s'
+            stroke: COLOR.TEXT
         }
     },
     sizeL: {
@@ -68,3 +68,5 @@ const STYLE = StyleSheet.create({
         fontSize: '.8rem'
     }
 });
+
+export default CloseCross;

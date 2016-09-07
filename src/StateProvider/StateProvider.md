@@ -1,3 +1,7 @@
+### Use cases
+
+Use for provide simple state without HOC
+
 ### Usage
 
 ```js

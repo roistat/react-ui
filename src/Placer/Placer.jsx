@@ -67,36 +67,26 @@ export default class Placer extends React.Component {
 
     static propTypes = {
         /**
-         * Presets for position by x axis
+         * Position available presets
          */
-        xAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
-            'outside-left',
-            'outside-right',
-            'inside-left',
-            'inside-right',
-            'middle'
-        ])).isRequired,
-        /**
-         * Presets for position by x axis
-         */
-        yAxisPresets: PropTypes.arrayOf(PropTypes.oneOf([
-            'outside-top',
-            'outside-bottom',
-            'inside-top',
-            'inside-bottom',
-            'middle'
-        ])).isRequired,
-        /**
-         * Offset by x axis
-         */
-        offsetX: PropTypes.number,
-        /**
-         * Offset by y axis
-         */
-        offsetY: PropTypes.number,
-        /**
-         * Custom target position
-         */
+        presets: PropTypes.arrayOf(PropTypes.shape({
+            xAxis: PropTypes.oneOf([
+                'outside-left',
+                'outside-right',
+                'inside-left',
+                'inside-right',
+                'middle'
+            ]),
+            yAxis: PropTypes.oneOf([
+                'outside-top',
+                'outside-bottom',
+                'inside-top',
+                'inside-bottom',
+                'middle'
+            ]),
+            offsetX: PropTypes.number,
+            offsetY: PropTypes.number,
+        })),
         targetRect: PropTypes.shape({
             left: PropTypes.number,
             top: PropTypes.number,
@@ -107,11 +97,13 @@ export default class Placer extends React.Component {
          * Z-index of root div
          */
         zIndex: PropTypes.number,
-        targetDOMNode: PropTypes.object
+        targetDOMNode: PropTypes.object,
+        viewportAccuracyFactor: PropTypes.number,
     };
 
     static defaultProps = {
-        zIndex: 999
+        zIndex: 999,
+        viewportAccuracyFactor: .9
     };
 
     static contextTypes = {
@@ -210,40 +202,53 @@ export default class Placer extends React.Component {
         return this.context.teleport.getRootDOMNode().getBoundingClientRect();
     }
 
-    _calculateBestPosition(axis: 'x' | 'y', targetRect: Object, placeableRect: Object, rootRect: Object) {
-        const props = this.props;
+    _calculateBestPosition(targetRect: Object, placeableRect: Object, rootRect: Object) {
+        const { presets, viewportAccuracyFactor } = this.props;
 
-        var resultPreset = props[`${axis}AxisPresets`][0];
-        const isXaxis = axis === 'x';
-        const axisPropertyKey = isXaxis ? 'left' : 'top';
-        const windowPropertyKey = isXaxis ? 'width' : 'height';
-        const offsets = { left: props.offsetX || 0, top: props.offsetY || 0 };
+        var resultPreset = presets[0];
+        var bestViewportAccuracyFactor = 0;
 
-        props[`${axis}AxisPresets`].some(preset => {
-            let rect = PRESETS[axis][preset](targetRect, placeableRect, rootRect, offsets);
+        if (typeof window !== undefined && presets.length > 1) {
+            const windowWidth  = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+            const windowHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
 
-            if (rect[axisPropertyKey] > -1 &&
-                rootRect[windowPropertyKey] - rect[axisPropertyKey] - placeableRect[windowPropertyKey] > 0) {
-                resultPreset = preset;
+            presets.some(preset => {
+                let position = calculatePreset(preset, targetRect, placeableRect, rootRect);
+                let rect = Object.assign({ width: placeableRect.width, height: placeableRect.height }, position);
 
-                return true;
-            }
+                let left = Math.max(rect.left, 0);
+                let right =Math.min(rect.left + rect.width, windowWidth);
 
-            return false;
-        });
+                let top = Math.max(rect.top, 0);
+                let bottom = Math.min(rect.top + rect.height, windowHeight);
 
-        return PRESETS[axis][resultPreset](targetRect, placeableRect, rootRect, offsets);
+                let rectArea = rect.width * rect.height;
+                let visibleRectArea = (right - left) * (bottom - top);
+                let currentViewportAccuracyFactor = visibleRectArea / rectArea;
+
+                if (currentViewportAccuracyFactor >= viewportAccuracyFactor) {
+                    resultPreset = preset;
+
+                    return true;
+                }
+
+                if (currentViewportAccuracyFactor >  bestViewportAccuracyFactor) {
+                    bestViewportAccuracyFactor = currentViewportAccuracyFactor;
+                    resultPreset = preset;
+                }
+            });
+        }
+
+        return calculatePreset(resultPreset, targetRect, placeableRect, rootRect);
     }
+
 
     _generateStyles(): Object {
         const targetRect = this.props.targetRect || this._getTargetRect();
         const placeableRect = this._getPlaceableRect();
         const rootRect = this._getRootRect();
-        const args = [targetRect, placeableRect, rootRect];
 
-        const position = Object.assign({},
-            this._calculateBestPosition('x', ...args),
-            this._calculateBestPosition('y', ...args));
+        const position = this._calculateBestPosition(targetRect, placeableRect, rootRect);
 
         const xPosition =  position.left ? `${position.left}px` : 0;
         const yPosition = position.top ? `${position.top}px` : 0;
@@ -298,3 +303,19 @@ function getParentDOMNodeWithScroll(parentDOMNode) {
 
     return getParentDOMNodeWithScroll(parentDOMNode.parentNode);
 }
+
+const calculatePreset = (preset, targetRect: Object, placeableRect: Object, rootRect: Object) => {
+    var resultOffset = { left: preset.offsetX || 0, top: preset.offsetY || 0 };
+
+    return Object.assign({},
+        PRESETS.x[preset.xAxis](
+            targetRect,
+            placeableRect,
+            rootRect,
+            resultOffset),
+        PRESETS.y[preset.yAxis](
+            targetRect,
+            placeableRect,
+            rootRect,
+            resultOffset));
+};

@@ -12,8 +12,10 @@ export default class PopupShowner extends React.Component {
     static propTypes = {
         isAutoClosable: PropTypes.bool,
         presets: PropTypes.arrayOf(PropTypes.shape({
-            x: PropTypes.string,
-            y: PropTypes.string
+            xAxis: PropTypes.string,
+            yAxis: PropTypes.string,
+            offsetX: PropTypes.number,
+            offsetY: PropTypes.number,
         }))
     };
 
@@ -31,10 +33,7 @@ export default class PopupShowner extends React.Component {
                         {props.children[0]}
                         { isShown &&
                             <Placer
-                                xAxisPresets={[props.presets[0].xAxis]}
-                                yAxisPresets={[props.presets[0].yAxis]}
-                                offsetX={props.presets[0].offsetX}
-                                offsetY={props.presets[0].offsetY}>
+                                presets={props.presets}>
                                 <AutoClosable
                                     onClose={() => props.isAutoClosable && toggle()}
                                     parentDOMNode={node}>

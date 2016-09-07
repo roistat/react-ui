@@ -40,6 +40,7 @@ const RE_ELEMENTS = createRe([
 
 const RE_VIEWS = createRe([
     'Modal.jsx',
+    //'Popover.jsx',
 ]);
 
 

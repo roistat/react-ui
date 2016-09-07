@@ -2,7 +2,7 @@
 
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import PopupTail from '../Popup/PopupTail';
+import Tail from '../Tail';
 import { StyleSheet, css } from '../helpers/styles';
 
 const INVERTED_DIRECTION = {
@@ -72,7 +72,7 @@ export default class Popover extends React.Component {
 				className={css(STYLE.root)}
 				ref={(c) => c && (this._node = ReactDOM.findDOMNode(c))}>
 				{props.children}
-				<PopupTail
+				<Tail
 					color={props.tailColor}
 					direction={INVERTED_DIRECTION[props.tailDirection]}
 					ref={(c) => c && (this._tailNode = ReactDOM.findDOMNode(c))}

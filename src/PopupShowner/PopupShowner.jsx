@@ -4,13 +4,16 @@ import React, { PropTypes } from 'react';
 import Toggler from '../Toggler';
 import { TeleportContext } from '../Teleport';
 import AutoClosable from '../AutoClosable';
+import Transition from '../Transition';
 import Placer, { TargetWrapper }  from '../Placer';
+import { StyleSheet, css } from '../helpers/styles';
 
 //TODO: add transition animation
 
 export default class PopupShowner extends React.Component {
     static propTypes = {
         isAutoClosable: PropTypes.bool,
+        isAnimated: PropTypes.bool,
         presets: PropTypes.arrayOf(PropTypes.shape({
             xAxis: PropTypes.string,
             yAxis: PropTypes.string,
@@ -21,6 +24,31 @@ export default class PopupShowner extends React.Component {
 
     toggle() {
         this._toggler && this._toggler.toggle();
+    }
+
+    _renderPopup() {
+        const { children, isAnimated } = this.props;
+        const popup = React.cloneElement(children[1], { onClose: () => toggle() });
+
+        if (!isAnimated) {
+            return popup;
+        }
+
+        return (
+            <div>
+                <Transition>
+                    {({ isAppear, isEnter, isLeave, isUpdate }) => (
+                        <div className={css(styles.popupContainer, isAppear && styles.formBottomAppear)}>
+                            {popup}
+                        </div>
+                    )}
+                </Transition>
+            </div>
+        );
+    }
+
+    _getAppearStyle() {
+
     }
 
     render() {
@@ -38,7 +66,7 @@ export default class PopupShowner extends React.Component {
                                     onClose={() => props.isAutoClosable && toggle()}
                                     parentDOMNode={node}>
                                     <TeleportContext>
-                                        {React.cloneElement(props.children[1], { onClose: () => toggle() })}
+                                        {this._renderPopup()}
                                     </TeleportContext>
                                 </AutoClosable>
                             </Placer>
@@ -49,3 +77,19 @@ export default class PopupShowner extends React.Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    popupContainer: {
+        transition: 'all .15s ease-in',
+        opacity: 1,
+        transform: 'translate3d(0, 0, 0)'
+    },
+    formBottomAppear: {
+        opacity: 0,
+        transform: 'translate3d(0, 10%, 0)'
+    },
+    formTopAppear: {
+        opacity: 0,
+        transform: 'translate3d(0, -10%, 0)'
+    }
+});

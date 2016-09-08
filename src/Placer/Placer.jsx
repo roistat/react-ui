@@ -147,6 +147,8 @@ export default class Placer extends React.Component {
                 this._setPositionStyles();
             });
         }
+        
+        console.log('### componentDidMount placer')
     }
 
     componentWillUnmount() {
@@ -175,6 +177,7 @@ export default class Placer extends React.Component {
     }
 
     _getTargetRect() {
+        console.log('### _getTargetRect', this.props.targetDOMNode, this._teleportComponent && this._teleportComponent.getParentBoundingClientRect());
         if (this.props.targetDOMNode) {
             return this.props.targetDOMNode.getBoundingClientRect();
         }
@@ -203,6 +206,14 @@ export default class Placer extends React.Component {
     }
 
     _calculateBestPosition(targetRect: Object, placeableRect: Object, rootRect: Object) {
+        return calculatePreset(
+            this._getBestPreset(targetRect, placeableRect, rootRect),
+            targetRect,
+            placeableRect,
+            rootRect);
+    }
+
+    _getBestPreset(targetRect: Object, placeableRect: Object, rootRect: Object) {
         const { presets, viewportAccuracyFactor } = this.props;
 
         var resultPreset = presets[0];
@@ -239,16 +250,12 @@ export default class Placer extends React.Component {
             });
         }
 
-        return calculatePreset(resultPreset, targetRect, placeableRect, rootRect);
+        return resultPreset;
     }
 
 
     _generateStyles(): Object {
-        const targetRect = this.props.targetRect || this._getTargetRect();
-        const placeableRect = this._getPlaceableRect();
-        const rootRect = this._getRootRect();
-
-        const position = this._calculateBestPosition(targetRect, placeableRect, rootRect);
+        const position = this._calculateBestPosition(...this._getArgumentsForPositionCalculation());
 
         const xPosition =  position.left ? `${position.left}px` : 0;
         const yPosition = position.top ? `${position.top}px` : 0;
@@ -260,48 +267,35 @@ export default class Placer extends React.Component {
         }
     }
 
+    _getArgumentsForPositionCalculation() {
+        const targetRect = this.props.targetRect || this._getTargetRect();
+        const placeableRect = this._getPlaceableRect();
+        const rootRect = this._getRootRect();
+
+        return [targetRect, placeableRect, rootRect];
+    }
+
     _getZIndex(): number {
         return this.context.teleport.getContextLevel() + this.props.zIndex;
     }
 
     render() {
+        // try {
+        //     console.log('### args:', this._getArgumentsForPositionCalculation());
+        //     console.log('### >>> ', this._getBestPreset(...this._getArgumentsForPositionCalculation()));
+        // } catch (err) {
+        //     console.error('Error', err, err.stack);
+        // }
+        // console.log('#### render')
+        console.log('### RENDER');
         return (
             <Teleport ref={this._onTeleportMountHandler}>
-                <PlacerWrapper onDidMount={this._onWrapperMountHandler}>
+                <PlacerWrapper targetRect={this._getTargetRect()} onDidMount={this._onWrapperMountHandler}>
                     {React.Children.only(this.props.children)}
                 </PlacerWrapper>
             </Teleport>
         );
     }
-}
-
-function getParentDOMNodeWithScroll(parentDOMNode) {
-    if (!parentDOMNode) {
-        return null;
-    }
-
-    const clientWidth = parentDOMNode.clientWidth;
-    const clientHeight = parentDOMNode.clientHeight;
-
-    const scrollWidth = parentDOMNode.scrollWidth;
-    const scrollHeight = parentDOMNode.scrollHeight;
-
-    if (clientWidth === undefined) {
-        return null;
-    }
-
-    if ((clientWidth || clientHeight)) {
-
-        const isCanScroll = ['overflow', 'overflow-x', 'overflow-y'].some((key) => {
-            return /auto|scroll/.test(window.getComputedStyle(parentDOMNode)[key]);
-        });
-
-        if (isCanScroll && (clientWidth !== scrollWidth || clientHeight !== scrollHeight)) {
-            return parentDOMNode;
-        }
-    }
-
-    return getParentDOMNodeWithScroll(parentDOMNode.parentNode);
 }
 
 const calculatePreset = (preset, targetRect: Object, placeableRect: Object, rootRect: Object) => {

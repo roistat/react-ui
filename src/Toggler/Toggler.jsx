@@ -8,7 +8,7 @@ export default class Toggler extends React.Component {
         /**
          * Initial value
          */
-        value: PropTypes.boolean,
+        value: PropTypes.bool,
         /**
          * On change event handler
          */

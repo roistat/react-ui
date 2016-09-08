@@ -26,6 +26,7 @@ export default class Teleport extends React.Component {
     }
 
     componentDidMount() {
+        console.log('### DID MOUNT TELEPORT', ReactDOM.findDOMNode(this).parentNode);
         this._parentDOMNode = ReactDOM.findDOMNode(this).parentNode;
 
         if (this.context.teleport.isAdded(this._componentID)) {
@@ -58,6 +59,7 @@ export default class Teleport extends React.Component {
     }
 
     getParentBoundingClientRect() {
+        console.log('### getParentBoundingClientRect <<<<<', this._parentDOMNode ? this._parentDOMNode.getBoundingClientRect() : null);
         return this._parentDOMNode ? this._parentDOMNode.getBoundingClientRect() : null;
 
     }

@@ -16,17 +16,39 @@ PopupShowner provide onClick props for control component and onClose props for p
     const TeleportContext = require('../Teleport').TeleportContext;
     const Popup = require('../Popup').default;
     const Button = require('../Button').default;
+    const PrimaryButton = require('../PrimaryButton').default;
     
     <TeleportContext>
          <div style={{ margin: '40px' }}>
+              <div>
+                   <div style={{ marginBottom: 10 }}>
+                       <Button 
+                            size='xs' 
+                            onClick={() => setState({ 
+                                preset: { xAxis: 'inside-left', yAxis: 'outside-bottom', offsetY: 5 }
+                            })}>
+                          xAxis: 'inside-left', yAxis: 'outside-bottom'
+                       </Button>
+                   </div>
+                   <div style={{ marginBottom: 10 }}>
+                       <Button 
+                            size='xs' 
+                            onClick={() => setState({ 
+                                preset: { xAxis: 'inside-left', yAxis: 'outside-top', offsetY: -5 }
+                            })}>
+                          xAxis: 'inside-left', yAxis: 'outside-top'
+                       </Button>
+                   </div>
+              </div>
              <PopupShowner
                  isAutoClosable
+                 isAnimated
                  presets={[
-                     { xAxis: 'inside-left', yAxis: 'outside-bottom', offsetY: 5 }
+                     state.preset || { xAxis: 'inside-left', yAxis: 'outside-bottom', offsetY: 5 }
                  ]}>
-                 <Button>
+                 <PrimaryButton>
                      Click me
-                 </Button>
+                 </PrimaryButton>
                  <Popup>
                      Popup content
                  </Popup>

@@ -19,7 +19,7 @@ const PRESETS = {
         },
         'middle': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
             return {
-                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2  - rootRect.left + offsets.left
+                left: targetRect.left + targetRect.width / 2 - placeableRect.width / 2 - rootRect.left + offsets.left
             }
         },
         'inside-left': (targetRect: Object, placeableRect: Object, rootRect: Object, offsets: Object) => {
@@ -107,6 +107,9 @@ export default class Placer extends React.Component {
          * Z-index of root div
          */
         zIndex: PropTypes.number,
+        /**
+         * Target Dom element
+         */
         targetDOMNode: PropTypes.object
     };
 

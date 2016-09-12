@@ -6,6 +6,9 @@ import raf from 'raf';
 
 export default class PlacerWrapper extends React.Component {
     static propTypes = {
+        /**
+         * On component mount function
+         */
         onDidMount: PropTypes.func
     };
 

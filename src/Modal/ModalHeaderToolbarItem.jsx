@@ -16,7 +16,13 @@ const ModalHeaderToolbarItem = (props) => (
 );
 
 ModalHeaderToolbarItem.propTypes = {
+    /**
+     * FontIcon name
+     */
     iconName: PropTypes.string,
+    /**
+     * On click handler
+     */
     onClick: PropTypes.func
 };
 

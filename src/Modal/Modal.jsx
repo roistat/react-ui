@@ -11,10 +11,25 @@ import { StyleSheet } from '../helpers/styles';
 
 export default class Modal extends React.Component {
     static propTypes = {
+        /**
+         * Is modal window showed
+         */
         isShown: PropTypes.boolean,
+        /**
+         * After component closed action
+         */
         onDidClose: PropTypes.func,
+        /**
+         * After component showed action
+         */
         onDidShow: PropTypes.func,
+        /**
+         * Is Modal Winodw will be closed by clicking outside it
+         */
         isAutoClosable: PropTypes.boolean,
+        /**
+         * On close handler
+         */
         onClose: PropTypes.func
     };
 
@@ -48,7 +63,7 @@ export default class Modal extends React.Component {
             nextProps.isShown ? this.show() : this.hide();
         }
     }
-    
+
     show(callback: () => void) {
         callback && this._onDidShowCallbacks.push(callback);
 
@@ -165,7 +180,6 @@ export default class Modal extends React.Component {
                                     isEnter && styles.shownInner,
                                     isLeave && styles.leaveInner
                                 ]}>
-
                                 <AutoClosable onClose={this._onCloseHandler}>
                                     <TeleportContext>
                                         <View styles={[styles.popupWrapper]}>

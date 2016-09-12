@@ -3,6 +3,7 @@
 import React, { PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import raf from 'raf';
+import addEventListener from '../helpers/addEventListener';
 
 const PRESETS = {
     x : {
@@ -78,36 +79,42 @@ export default class PlacerWrapper extends React.Component {
         })
     };
 
-    componentWillMount() {
-        const teleportRootDOMNode = this.context.teleport.getRootDOMNode();
+    constructor(...args) {
+        super(...args);
 
-        this._placeableRectOnMount = this._getPlaceableRect();
-        this._rootRectOnMount = teleportRootDOMNode ? teleportRootDOMNode.getBoundingClientRect() : null;
+        this.state = { currentPreset: null };
+        this._onChildrenMount = this._onChildrenMount.bind(this);
     }
 
     componentDidMount() {
         const props = this.props;
 
         this._selfDOMNode = ReactDOM.findDOMNode(this);
-        props.onDidMount && props.onDidMount(this)
+        props.onDidMount && props.onDidMount(this);
 
         this._isMount = true;
 
         if (typeof window !== 'undefined') {
             this._resizeEventListener = addEventListener(window, 'resize', () => {
-                if (!this._isMount) {
-                    return;
+                if (this._isMount) {
+                    this.updatePosition();
                 }
 
             });
 
             this._scrollEventListener = addEventListener(window, 'scroll', () => {
-                if (!this._isMount) {
-                    return;
+                if (this._isMount) {
+                    this.updatePosition();
                 }
 
             });
         }
+    }
+
+    componentWillUnmount() {
+        this._isMount = false;
+        this._resizeEventListener && this._resizeEventListener.remove();
+        this._scrollEventListener && this._scrollEventListener.remove();
     }
 
     getDOMNode(): Object {
@@ -122,14 +129,34 @@ export default class PlacerWrapper extends React.Component {
         raf(() => Object.assign(this.getDOMNode().style, styles));
     }
 
-    /** ------------------------------------------------------------------------- **/
+    updatePosition() {
+        const args = this._getArgumentsForPositionCalculation();
+        const bestPreset = this._getBestPreset(...args);
+        const position = calculatePreset(bestPreset, ...args);
 
-    _calculateBestPosition(targetRect: Object, placeableRect: Object, rootRect: Object) {
-        return calculatePreset(
-            this._getBestPreset(targetRect, placeableRect, rootRect),
-            targetRect,
-            placeableRect,
-            rootRect);
+        const xPosition =  position.left ? `${position.left}px` : 0;
+        const yPosition = position.top ? `${position.top}px` : 0;
+        const newStyles = {
+            transform: `translate3d(${xPosition}, ${yPosition}, 0)`,
+            visibility: 'visible'
+        };
+
+        if (!this._isNewPreseEqualEqula(bestPreset)) {
+            this.setState({
+                currentPreset: bestPreset
+            }, () => this.setStyles(newStyles));
+        } else {
+            this.setStyles(newStyles)
+        }
+    }
+
+    _isNewPreseEqualEqula(nextPreset) {
+        const preset = this.state.currentPreset || {};
+
+        return preset.xAxis === nextPreset.xAxis &&
+            preset.yAxis === nextPreset.yAxis &&
+                preset.offsetX === nextPreset.offsetX &&
+                    preset.offsetY === nextPreset.offsetY;
     }
 
     _getBestPreset(targetRect: Object, placeableRect: Object, rootRect: Object) {
@@ -173,57 +200,42 @@ export default class PlacerWrapper extends React.Component {
     }
 
 
-    _generateStyles(): Object {
-        const position = this._calculateBestPosition(...this._getArgumentsForPositionCalculation());
-
-        const xPosition =  position.left ? `${position.left}px` : 0;
-        const yPosition = position.top ? `${position.top}px` : 0;
-
-        return {
-            transform: `translate3d(${xPosition}, ${yPosition}, 0)`,
-            visibility: 'visible',
-            zIndex: this._getZIndex()
-        }
-    }
-
     _getArgumentsForPositionCalculation() {
         const placeableRect = this._getPlaceableRect();
         const rootRect = this.context.teleport.getRootDOMNode().getBoundingClientRect();
 
-        return [this.props.targetRect, placeableRect, rootRect];
+        return [this.props.getTargetRect(), placeableRect, rootRect];
     }
 
-    _getZIndex(): number {
-        return this.context.teleport.getContextLevel() + this.props.zIndex;
-    }
 
     _getPlaceableRect() {
-        const hiddenDOMNode = getHiddenDOMNode();
+        return this._placeableDOMNode ? this._placeableDOMNode.getBoundingClientRect() : null;
+    }
 
-        try { ReactDOM.render(this.props.children, hiddenDOMNode) } catch(err) {}
-
-        const rect = hiddenDOMNode.childNodes[0].getBoundingClientRect();
-
-        ReactDOM.unmountComponentAtNode(hiddenDOMNode);
-
-        return rect;
+    _onChildrenMount(component) {
+        this._placeableDOMNode = ReactDOM.findDOMNode(component);
+        component && this.updatePosition();
     }
 
     render() {
         const props = this.props;
+        const childrenProps = { ref: this._onChildrenMount };
 
-        console.log('### ->>> props', this.props.targetRect, this._placeableRectOnMount, this._rootRectOnMount);
+        if (typeof props.children.type === 'function') {
+            childrenProps.currentPreset = this.state.currentPreset;
+        }
+
         return (
             <div
                 style={{
-                    zIndex: this._getZIndex(),
+                    zIndex: this.context.teleport.getContextLevel() + props.zIndex,
                     visibility: 'hidden',
                     position: 'absolute',
                     transform: 'translate3d(0, 0, 0)',
                     top: 0,
                     left: 0
                 }}>
-                {props.children}
+                {React.cloneElement(React.Children.only(props.children), childrenProps)}
             </div>
         )
     }
@@ -244,22 +256,3 @@ const calculatePreset = (preset, targetRect: Object, placeableRect: Object, root
             rootRect,
             resultOffset));
 };
-
-
-var _hiddenDOMNode = null;
-var _isHiddenDOMNodeAppended = false;
-
-function getHiddenDOMNode() {
-    if (!_hiddenDOMNode) {
-        _hiddenDOMNode = document.createElement('div');
-
-        _hiddenDOMNode.style.visibility = 'hidden';
-        _hiddenDOMNode.style.position = 'absolute';
-    }
-
-    if (!_isHiddenDOMNodeAppended && typeof document !== 'undefined') {
-        document.body.appendChild(_hiddenDOMNode);
-    }
-
-    return _hiddenDOMNode;
-}

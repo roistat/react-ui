@@ -11,7 +11,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['outside-top']} xAxisPresets={['middle']} >
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'outside-top' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -25,7 +25,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['outside-bottom']} xAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'outside-bottom' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -39,7 +39,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['middle']} xAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -53,7 +53,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['inside-top']} xAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'inside-top' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -67,7 +67,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['inside-bottom']} xAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'inside-bottom' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -81,7 +81,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['outside-left']} yAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'outside-left', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -95,7 +95,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['outside-right']} yAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'outside-right', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -109,7 +109,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['middle']} yAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -123,7 +123,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'inside-left', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -137,7 +137,7 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-right']} yAxisPresets={['middle']}>
+                    <Placer presets={[{ xAxis: 'inside-right', yAxis: 'middle' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -151,7 +151,12 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', top: 20, left: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-right', 'inside-left', 'outside-left']} yAxisPresets={['outside-top', 'outside-bottom']}>
+                    <Placer
+                        presets={[
+                            { xAxis: 'inside-right', yAxis: 'outside-top' },
+                            { xAxis: 'inside-left', yAxis: 'outside-bottom' },
+                            { xAxis: 'outside-left', yAxis: 'outside-top' },
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -165,7 +170,12 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', top: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left', 'outside-left']} yAxisPresets={['outside-top', 'middle']}>
+                    <Placer
+                        presets={[
+                            { xAxis: 'inside-left', yAxis: 'outside-top' },
+                            { xAxis: 'outside-left', yAxis: 'middle' },
+                            { xAxis: 'inside-left', yAxis: 'outside-bottom' },
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -179,7 +189,11 @@ storiesOf('Placer', module)
             <div style={{ margin: '40px' }}>
                 <div style={{ position: 'absolute', bottom: 20, left: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-right', 'inside-left', ]} yAxisPresets={['outside-bottom', 'outside-top']}>
+                    <Placer
+                        presets={[
+                            { xAxis: 'inside-right', yAxis: 'outside-bottom' },
+                            { xAxis: 'inside-left', yAxis: 'outside-top' }
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -193,7 +207,11 @@ storiesOf('Placer', module)
             <div style={{ margin: 0 }}>
                 <div style={{ position: 'absolute', bottom: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
+                    <Placer
+                        presets={[
+                            { xAxis: 'inside-left', yAxis: 'outside-bottom' },
+                            { xAxis: 'inside-right', yAxis: 'outside-top' }
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -207,7 +225,11 @@ storiesOf('Placer', module)
             <div style={{ margin: '900px 0' }}>
                 <div style={{ position: 'absolute', bottom: 20, right: 20, padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
+                    <Placer
+                        presets={[
+                            { xAxis: 'inside-left', yAxis: 'outside-bottom' },
+                            { xAxis: 'inside-right', yAxis: 'outside-top' }
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -222,7 +244,11 @@ storiesOf('Placer', module)
                 <div style={{ margin: '300px 100px' }}>
                     <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                         Target
-                        <Placer xAxisPresets={['inside-left', 'inside-right']} yAxisPresets={['outside-bottom', 'outside-top']}>
+                        <Placer
+                            presets={[
+                                { xAxis: 'inside-left', yAxis: 'outside-bottom' },
+                                { xAxis: 'inside-right', yAxis: 'outside-top' }
+                            ]}>
                             <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                                 Placeable
                             </div>
@@ -237,7 +263,8 @@ storiesOf('Placer', module)
             <div style={{ margin: 40 }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer offsetX={10} offsetY={-15} xAxisPresets={['inside-right']} yAxisPresets={['inside-top']}>
+                    <Placer
+                        presets={[{ xAxis: 'inside-right', yAxis: 'inside-top' , offsetX: 10, offsetY: -15 }]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff', opacity: .2 }}>
                             Placeable
                         </div>
@@ -254,8 +281,7 @@ storiesOf('Placer', module)
                 </div>
                 <Placer
                     targetRect={{ left: 200, top: 100, width: 100, height: 40 }}
-                    xAxisPresets={['middle']}
-                    yAxisPresets={['outside-bottom']}>
+                    presets={[{ xAxis: 'middle', yAxis: 'outside-bottom' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -270,9 +296,7 @@ storiesOf('Placer', module)
                     <div style={{ position: 'absolute', left: 200, top: 100, width: 100, height: 40, background: '#eee' }}>
                         Target
                     </div>
-                    <Placer
-                        xAxisPresets={['middle']}
-                        yAxisPresets={['outside-bottom']}>
+                    <Placer presets={[{ xAxis: 'middle', yAxis: 'outside-bottom' }]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff' }}>
                             Placeable
                         </div>

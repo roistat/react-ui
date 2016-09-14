@@ -18,7 +18,7 @@ storiesOf('Toggler', module)
                                 {isShown ? 'Hide' : 'Show'}
                             </Button>
                             { isShown &&
-                                <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                                <Placer presets={[{ xAxis: 'inside-left', yAxis: 'outside-bottom' }]}>
                                     <Popup>
                                         Popup content
                                     </Popup>

@@ -20,7 +20,7 @@ Position X: inside-left, Y: outside-top
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-top']}>
+                <Placer presets={[{ xAxis: 'inside-left', yAxis: 'outside-top' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -36,7 +36,7 @@ Position X: inside-left, Y: outside-bottom
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['inside-left']} yAxisPresets={['outside-bottom']}>
+                <Placer presets={[{ xAxis: 'inside-left', yAxis: 'outside-bottom' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -51,7 +51,7 @@ Position X: outside-right, Y: inside-top
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['outside-right']} yAxisPresets={['inside-top']}>
+                <Placer presets={[{ xAxis: 'outside-right', yAxis: 'inside-top' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -66,7 +66,7 @@ Position X: outside-right, Y: middle
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['outside-right']} yAxisPresets={['middle']}>
+                <Placer presets={[{ xAxis: 'outside-right', yAxis: 'middle' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -81,7 +81,7 @@ Position X: middle, Y: outside-top
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['middle']} yAxisPresets={['outside-top']}>
+                <Placer presets={[{ xAxis: 'middle', yAxis: 'outside-top' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -96,7 +96,7 @@ Position X: inside-left, Y: inside-bottom
         <div style={{ margin: '40px' }}>
             <div style={{ padding: '40px', background: '#eee', width: '200px' }}>
                 Target
-                <Placer xAxisPresets={['inside-left']} yAxisPresets={['inside-bottom']}>
+                <Placer presets={[{ xAxis: 'inside-left', yAxis: 'inside-bottom' }]}>
                     <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                         Placeable
                     </div>
@@ -111,7 +111,11 @@ Auto position, use first best position with space for both side
             <div style={{ margin: '40px' }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer yAxisPresets={['outside-bottom', 'outside-bottom']} xAxisPresets={['inside-left', 'inside-right']} >
+                    <Placer 
+                        presets={[
+                            { xAxis: 'inside-left', yAxis: 'outside-bottom' }, 
+                            { xAxis: 'inside-right', yAxis: 'outside-bottom' }
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '100px', color: '#fff' }}>
                             Placeable
                         </div>
@@ -126,7 +130,10 @@ Offset
             <div style={{ margin: 40 }}>
                 <div style={{ padding: '20px', background: '#eee', width: '200px' }}>
                     Target
-                    <Placer offsetX={10} offsetY={-15} xAxisPresets={['inside-right']} yAxisPresets={['inside-top']}>
+                    <Placer 
+                        presets={[
+                            { xAxis: 'inside-right', yAxis: 'inside-top', offsetX: 10, offsetY: -15 }
+                        ]}>
                         <div style={{ padding: '8px', background: '#333', width: '280px', color: '#fff', opacity: .2 }}>
                             Placeable
                         </div>
@@ -166,9 +173,8 @@ Custom target
                 {
                     state.rect &&
                     <Placer
-                        targetRect={state.rect}
-                        xAxisPresets={['middle']}
-                        yAxisPresets={['middle']}>
+                        presets={[{ xAxis: 'middle', yAxis: 'middle' }]} 
+                        targetRect={state.rect}>
                         <div 
                             onClick={() => setState({ rect: null })} 
                             style={{ padding: '8px', background: 'red', color: '#fff', cursor: 'pointer' }}>

@@ -59,7 +59,6 @@ export default class Teleport extends React.Component {
 
     getParentBoundingClientRect() {
         return this._parentDOMNode ? this._parentDOMNode.getBoundingClientRect() : null;
-
     }
 
     _moveToDestination(callback: () => void) {

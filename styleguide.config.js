@@ -20,7 +20,7 @@ const RE_HELPERS = createRe([
     'StateProvider.jsx',
     'Transition.jsx',
     'Toggler.jsx',
-    'PopupShowner.jsx',
+    'Popover.jsx',
 ]);
 
 const RE_CONTROLS = createRe([
@@ -39,8 +39,7 @@ const RE_ELEMENTS = createRe([
 ]);
 
 const RE_VIEWS = createRe([
-    'Modal.jsx',
-    //'Popover.jsx',
+    'Modal.jsx'
 ]);
 
 

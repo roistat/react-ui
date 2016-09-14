@@ -106,7 +106,7 @@ export default class TeleportContext extends React.Component {
         relationships[this._componentID] = (relationships[this._componentID] || {});
 
         relationships[this._componentID] = {
-            level: parentID ? (relationships[parentID].level + 1) : 1,
+            level: relationships[parentID] ? (relationships[parentID].level + 1) : 1,
             parentID: parentID
         };
     }

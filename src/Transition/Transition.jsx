@@ -38,7 +38,7 @@ export default class Transition extends React.Component {
 
         if (props.children) {
             props.onWillEnter && props.onWillEnter();
-            this._setEnterState();
+            setTimeout(() => this._setEnterState(), 0);
         }
     }
 

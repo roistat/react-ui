@@ -29,6 +29,9 @@ export default class Placer extends React.Component {
             offsetX: PropTypes.number,
             offsetY: PropTypes.number,
         })),
+        /**
+         * Custom target element params
+         */
         targetRect: PropTypes.shape({
             left: PropTypes.number,
             top: PropTypes.number,
@@ -39,8 +42,14 @@ export default class Placer extends React.Component {
          * Z-index of root div
          */
         zIndex: PropTypes.number,
+        /**
+         * Custom target element DOM node
+         */
         targetDOMNode: PropTypes.object,
-        viewportAccuracyFactor: PropTypes.number,
+        /**
+         * Factor for detect best position preset
+         */
+        viewportAccuracyFactor: PropTypes.number
     };
 
     static defaultProps = {
@@ -79,7 +88,13 @@ export default class Placer extends React.Component {
     }
 
     _getTargetRect() {
-        if (this.props.targetDOMNode) {
+        const props = this.props;
+
+        if (props.targetRect) {
+            return props.targetRect
+        }
+
+        if (props.targetDOMNode) {
             return this.props.targetDOMNode.getBoundingClientRect();
         }
 

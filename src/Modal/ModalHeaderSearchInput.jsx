@@ -18,9 +18,17 @@ const ModalHeaderSearchInput = (props) => (
 );
 
 ModalHeaderSearchInput.propTypes = {
+    /**
+     * On change SearchInput handler
+     */
     onChange: PropTypes.func,
+    /**
+     * SearchInput placeholde
+     */
     placeholder: PropTypes.placeholder,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    /**
+     * SearchInput value
+     */
 };
 ModalHeaderSearchInput.__MODAL_HEADER_RIGHT_LAYOUT__ = true;
 

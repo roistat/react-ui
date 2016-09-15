@@ -23,6 +23,7 @@ ModalHeaderToolbarItem.propTypes = {
     /**
      * On click handler
      */
+    onClick: PropTypes.func
 };
 
 const styles = StyleSheet.create({

@@ -26,7 +26,8 @@ const RE_HELPERS = createRe([
 const RE_CONTROLS = createRe([
     'Button.jsx',
     'PrimaryButton.jsx',
-    'TextInput.jsx'
+    'TextInput.jsx',
+    'Dropdown.jsx'
 ]);
 
 const RE_ELEMENTS = createRe([

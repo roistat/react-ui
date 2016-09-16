@@ -79,11 +79,15 @@ export default class PlacerWrapper extends React.Component {
         })
     };
 
-    constructor(...args) {
-        super(...args);
+    constructor(props, ...args) {
+        super(props, ...args);
 
         this.state = { currentPreset: null };
         this._onChildrenMount = this._onChildrenMount.bind(this);
+
+        if (!props.presets) {
+            throw new Error('Placer component: presets property is required');
+        }
     }
 
     componentDidMount() {

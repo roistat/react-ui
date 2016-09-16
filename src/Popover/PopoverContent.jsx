@@ -8,7 +8,7 @@ import AutoClosable from '../AutoClosable';
 import Transition from '../Transition';
 import { StyleSheet, css } from '../helpers/styles';
 
-export default class PopoverrContent extends React.Component {
+export default class PopoverContent extends React.Component {
     static propTypes = {
         toggle: PropTypes.func,
         parentDOMNode: PropTypes.object,
@@ -41,7 +41,7 @@ export default class PopoverrContent extends React.Component {
     
     _renderPopup() {
         const { children, isAnimated, toggle, currentPreset } = this.props;
-        const popup = React.cloneElement(children[1], { onClose: () => toggle() });
+        const popup = React.cloneElement(children, { onClose: () => toggle() });
 
         if (!isAnimated) {
             return popup;
@@ -109,5 +109,3 @@ const styles = StyleSheet.create({
 
     }
 });
-
-// expansion move zoom

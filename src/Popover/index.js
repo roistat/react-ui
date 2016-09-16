@@ -1,1 +1,1 @@
-export { default } from './PopupShowner';
+export { default } from './Popover';

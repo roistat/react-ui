@@ -7,15 +7,32 @@ import PopupShownerContent from './PopoverContent';
 
 export default class Popover extends React.Component {
     static propTypes = {
+        /**
+         * Is Popover close by outside click
+         */
         isAutoClosable: PropTypes.bool,
+        /**
+         * is has transition animation
+         */
         isAnimated: PropTypes.bool,
+        /**
+         * Position presets
+         */
         presets: PropTypes.arrayOf(PropTypes.shape({
             xAxis: PropTypes.string,
             yAxis: PropTypes.string,
             offsetX: PropTypes.number,
             offsetY: PropTypes.number,
-        }))
+        })).isRequired
     };
+
+    constructor(props, ...args) {
+        super(props, ...args);
+
+        if (React.Children.count(props.children) !== 2) {
+            throw new Error('Popover component: Children count must be equal 2');
+        }
+    }
 
     toggle() {
         this._toggler && this._toggler.toggle();
@@ -37,7 +54,7 @@ export default class Popover extends React.Component {
                                     isAnimated={props.isAnimated}
                                     isAutoClosable={props.isAutoClosable}
                                     toggle={toggle}>
-                                    {this.props.children}
+                                    {props.children[1]}
                                 </PopupShownerContent>
                             </Placer>
                         }

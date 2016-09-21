@@ -11,10 +11,25 @@ import { StyleSheet } from '../helpers/styles';
 
 export default class Modal extends React.Component {
     static propTypes = {
-        isShown: PropTypes.bool,
+        /**
+         * Is modal window showed
+         */
+        isShown: PropTypes.boolean,
+        /**
+         * After component closed action
+         */
         onDidClose: PropTypes.func,
+        /**
+         * After component showed action
+         */
         onDidShow: PropTypes.func,
-        isAutoClosable: PropTypes.bool,
+        /**
+         * Is Modal Winodw will be closed by clicking outside it
+         */
+        isAutoClosable: PropTypes.boolean,
+        /**
+         * On close handler
+         */
         onClose: PropTypes.func
     };
 

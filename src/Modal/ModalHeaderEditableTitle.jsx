@@ -18,7 +18,13 @@ const ModalHeaderEditableTitle = (props) => (
 );
 
 ModalHeaderEditableTitle.propTypes = {
+    /**
+     * On change EditableTitle handler
+     */
     onChange: PropTypes.func,
+    /**
+     * EditableTitle children
+     */
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, action } from '@kadira/storybook';
 import Checkbox from './Checkbox';
-import Checkbox from '../View';
+import View from '../View';
 
 storiesOf('Checkbox', module)
     .add('Checkbox', () => (

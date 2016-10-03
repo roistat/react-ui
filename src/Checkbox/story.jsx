@@ -4,7 +4,9 @@ import Checkbox from './Checkbox';
 
 storiesOf('Checkbox', module)
     .add('Checkbox', () => (
-        <Checkbox />
+        <View>
+            <Checkbox />
+        </View>
     ))
     .add('Checkbox not toggle mode', () => (
         <View>

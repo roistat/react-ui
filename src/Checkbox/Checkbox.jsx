@@ -10,6 +10,9 @@ import { StyleSheet, css } from '../helpers/styles';
 export default class Checkbox extends AbstractButton {
     static defaultProps = {
         ...AbstractButton.defaultProps,
+        /**
+         * Is button in toggle mod, on click button change checked state.
+         */
         isToggleMod: true
     };
 

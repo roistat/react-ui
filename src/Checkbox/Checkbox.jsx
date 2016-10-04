@@ -8,14 +8,25 @@ import { COLOR, SHADOW } from '../const/theme';
 import { StyleSheet, css } from '../helpers/styles';
 
 export default class Checkbox extends AbstractButton {
-    static defaultProps = {
-        ...AbstractButton.defaultProps,
+    static propTypes = {
         /**
-         * Is button in toggle mod, on click button change checked state.
+         * Is checkbox disabled.
          */
-        isToggleMod: true
+        isDisabled: PropTypes.bool,
+        /**
+         * Is checkbox in checked state, use only for isToggleMod=true
+         */
+        isChecked: PropTypes.bool,
+        /**
+         * On click event handler
+         */
+        onClick: PropTypes.func
     };
 
+    static defaultProps = {
+        ...AbstractButton.defaultProps,
+        isToggleMod: true
+    };
 
     render() {
         return (
@@ -24,8 +35,8 @@ export default class Checkbox extends AbstractButton {
                 className={css(...this.buildStyleList(STYLE, 'root'))}
             >
                 {
-                    this.state.isChecked &&
-                    <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                    this.state.isChecked && !this.state.isDisabled &&
+                    <View className={css(STYLE.viewRoot)}>
                         <svg
                             width="11"
                             height="8"
@@ -44,7 +55,7 @@ const STYLE = StyleSheet.create({
         ...AbstractButton.BASE_ROOT_STYLE,
         width: '.8rem',
         height: '.8rem',
-		border: `1px solid ${COLOR.BORDER}`,
+        border: `1px solid ${COLOR.BORDER}`,
         borderRadius: '2px',
         boxShadow: SHADOW.INPUT,
         transition: 'all .05s ease-in'
@@ -53,8 +64,19 @@ const STYLE = StyleSheet.create({
         background: COLOR.ACTIVE,
         boxShadow: 'none'
     },
+    rootIsDisabled: {
+        cursor: 'default',
+        transition: 'none',
+        border: '1px solid #c3cacd',
+        boxShadow: 'none',
+        background:  COLOR.DISABLED
+    },
     rootIsFocused: {
         boxShadow: `${SHADOW.FOCUS}, ${SHADOW.INPUT}`
+    },
+    viewRoot: {
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     iconRoot: {
         width: '100%',
@@ -67,4 +89,3 @@ const STYLE = StyleSheet.create({
         fillRule: 'evenodd'
     }
 });
-

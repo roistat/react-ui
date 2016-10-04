@@ -7,17 +7,17 @@ import StateProvider from '../StateProvider';
 storiesOf('Checkbox', module)
     .add('Checkbox', () => (
         <View>
-            <StateProvider state={{ isChecked: false }}>
+            <StateProvider>
                 {(state, setState) => (
                     <div>
-                        <Checkbox onClick={() => setState({ isChecked: !state.isChecked })} />
-                        <span> {state.isChecked ? 'Вкл' : 'Выкл'}</span>
+                        <Checkbox isChecked={state.isChecked} onClick={() => setState({ isChecked: !state.isChecked })} />
+                        <span> {state.isChecked ? 'Checked' : 'Unchecked'}</span>
                     </div>
-                    )}
+                )}
             </StateProvider>
         </View>
     ))
-    .add('Checkbox not toggle mode', () => (
-        <Checkbox isToggleMod={false} />
+    .add('Checkbox is disabled', () => (
+        <Checkbox isDisabled={true} />
     ));
 

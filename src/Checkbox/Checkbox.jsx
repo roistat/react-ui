@@ -14,7 +14,7 @@ export default class Checkbox extends AbstractButton {
          */
         isDisabled: PropTypes.bool,
         /**
-         * Is checkbox in checked state, use only for isToggleMod=true
+         * Is checkbox in checked state
          */
         isChecked: PropTypes.bool,
         /**
@@ -35,7 +35,7 @@ export default class Checkbox extends AbstractButton {
                 className={css(...this.buildStyleList(STYLE, 'root'))}
             >
                 {
-                    this.state.isChecked && !this.state.isDisabled &&
+                    this.state.isChecked && 
                     <View className={css(STYLE.viewRoot)}>
                         <svg
                             width="11"

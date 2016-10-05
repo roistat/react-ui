@@ -19,5 +19,17 @@ storiesOf('Checkbox', module)
     ))
     .add('Checkbox is disabled', () => (
         <Checkbox isDisabled={true} />
+    ))
+	.add('Checkbox is disabled by click', () => (
+        <View>
+            <StateProvider>
+                {(state, setState) => (
+                    <div>
+                        <Checkbox isDisabled={state.isDisabled} isChecked={state.isChecked} onClick={() => setState({ isChecked: !state.isChecked, isDisabled: !state.isDisabled })} />
+                        <span> {state.isChecked ? 'Checked' : 'Unchecked'}</span>
+                    </div>
+                )}
+            </StateProvider>
+        </View>
     ));
 

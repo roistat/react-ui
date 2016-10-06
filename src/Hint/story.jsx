@@ -30,7 +30,7 @@ storiesOf('Hint', module)
                         </button>    
                         { state.isHovered && <Hint tailPosition={'topLeft'} style={{marginTop:5+'px'}}>Hint</Hint> }
                     </div>
-                    )}
+                )}
             </StateProvider>
         </View>
     ));

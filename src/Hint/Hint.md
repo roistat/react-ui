@@ -5,7 +5,6 @@ import Hint from '@roistat/ui/lib/Hint';
 ```
 
 const View = require('../View').default;
-const StateProvider = require('../StateProvider').default;
 
 *Hint*
 

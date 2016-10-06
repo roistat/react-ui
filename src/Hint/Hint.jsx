@@ -24,24 +24,24 @@ export default class Hint extends React.Component {
         const props = this.props;
 
         return (
-                <View styles={[STYLE.hint, ...props.styles || []]}>
-                    <View
-                        styles={[
-                        STYLE.triangle,
-                        (props.tailPosition === 'leftTop' ||  props.tailPosition === 'rightTop') && STYLE.triangleHorizontal ,
-                        (props.tailPosition === 'topLeft' ) && STYLE.triangleVertical ,
-                        props.tailPosition === 'leftTop' && STYLE.leftTop,
-                        props.tailPosition === 'rightTop' && STYLE.rightTop,
-                        props.tailPosition === 'topLeft'&& STYLE.topLeft
-                    ]}
-                    >
-                    </View>
-                    <View styles={[STYLE.textBox]}>
-                        <Text styles={[STYLE.hintText]}>
-                            {props.children}
-                        </Text>
-                    </View>
+            <View styles={[STYLE.hint, ...props.styles || []]}>
+                <View
+                    styles={[
+                    STYLE.triangle,
+                    (props.tailPosition === 'leftTop' ||  props.tailPosition === 'rightTop') && STYLE.triangleHorizontal ,
+                    (props.tailPosition === 'topLeft' ) && STYLE.triangleVertical ,
+                    props.tailPosition === 'leftTop' && STYLE.leftTop,
+                    props.tailPosition === 'rightTop' && STYLE.rightTop,
+                    props.tailPosition === 'topLeft'&& STYLE.topLeft
+                ]}
+                >
                 </View>
+                <View styles={[STYLE.textBox]}>
+                    <Text styles={[STYLE.hintText]}>
+                        {props.children}
+                    </Text>
+                </View>
+            </View>
         )
     }
 }

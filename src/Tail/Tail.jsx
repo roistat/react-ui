@@ -2,21 +2,33 @@
 
 import React, { PropTypes } from 'react';
 import { StyleSheet, css } from '../helpers/styles';
+import { SHADOW } from '../const/theme.js';
 
-const Tail = (props) => (
-	<div className={css(styles.tailRoot, styles.getPreset('size', props.size))}>
-		<i
-			className={css(
-			styles.tail,
-			styles.getPreset('direction', props.direction),
-			...(props.styles || []))
-		}
-			style={{ background: props.color }}
-		/>
-	</div>
-);
+const Tail = ({ size, color, isHasShadow, direction, styles, style }) => {
+	const tailSize = Math.sqrt(2 * Math.pow(size / 2, 2));
+
+	return (
+		<div
+			style={{ width: size, height: size, ...(style || {})}}
+			className={css(STYLES.tailRoot, ...(styles || []))}>
+			<i
+				className={css(STYLES.tail, isHasShadow && STYLES.shadow)}
+				style={{
+					width: tailSize,
+					height: tailSize,
+					background: color,
+				 	transform: getTailTransform(direction, size)
+				}}
+			/>
+		</div>
+	)
+};
 
 Tail.propTypes = {
+	/**
+	 * Is tail has shadow
+	 */
+	isHasShadow: PropTypes.bool,
 	/**
 	 * Tail direction
 	 */
@@ -26,51 +38,47 @@ Tail.propTypes = {
 	 */
 	color: PropTypes.string,
 	/**
-	 * Tail size
+	 * Custom tail size in px
 	 */
-	size: PropTypes.oneOf(['xs', 's']),
+	size: PropTypes.number,
+	/**
+	 * Extra styles
+	 */
 	styles: PropTypes.arrayOf(PropTypes.string)
 };
 
 Tail.defaultProps = {
 	color: '#fff',
-	size: 's'
+	size: 14
 };
 
-const styles = StyleSheet.create({
+const getTailTransform = (direction, size) => {
+	switch (direction) {
+		case 'top':
+			return `translate3d(${size / 2}px, ${size + size / 2}px, 0) rotate(225deg)`;
+		case 'right':
+			return `translate3d(0, ${size}px, 0) rotate(225deg)`;
+		case 'bottom':
+			return `translate3d(${size / 2}px, ${size / 2}px, 0) rotate(225deg)`;
+		case 'left':
+			return `translate3d(${size}px, ${size}px, 0) rotate(225deg)`;
+	}
+};
+
+const STYLES = StyleSheet.create({
 	tailRoot: {
 		position: 'relative',
 		display: 'inline-block',
 		overflow: 'hidden',
 	},
 	tail: {
-		display: 'block',
 		position: 'absolute',
-		left: '20%',
-		top: '20%',
-		right: '20%',
-		bottom: '20%'
+		display: 'block',
+		transformOrigin: 'top left'
 	},
-	sizeS: {
-		width: '14px',
-		height: '14px'
-	},
-	sizeXs: {
-		width: '10px',
-		height: '10px'
-	},
-	directionLeft: {
-		transform: 'translateX(85%) rotate(45deg)'
-	},
-	directionTop: {
-		transform: 'translateY(85%) rotate(45deg)'
-	},
-	directionRight: {
-		transform: 'translateX(-85%) rotate(45deg)'
-	},
-	directionBottom: {
-		transform: 'translateY(-80%) rotate(45deg)'
-	},
+	shadow: {
+		boxShadow: '0px 0px 6px rgba(114, 125, 129, .75)'
+	}
 });
 
 export default Tail;

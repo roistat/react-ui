@@ -21,7 +21,7 @@ export default class Popup extends React.Component {
 		return (
 			<View styles={[STYLES.popup, isRounded && STYLES.rounded, ...(styles || [])]} >
 				{React.Children.map(children, (child) => {
-					if (typeof child !== 'object') {
+					if (!child || typeof child !== 'object') {
 						return child;
 					}
 

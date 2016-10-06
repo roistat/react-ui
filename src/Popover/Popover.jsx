@@ -3,7 +3,9 @@
 import React, { PropTypes } from 'react';
 import Toggler from '../Toggler';
 import Placer, { TargetWrapper }  from '../Placer';
-import PopupShownerContent from './PopoverContent';
+import PopoverContent from './PopoverContent';
+
+import { StyleSheet, css } from '../helpers/styles';
 
 export default class Popover extends React.Component {
     static propTypes = {
@@ -16,6 +18,22 @@ export default class Popover extends React.Component {
          */
         isAnimated: PropTypes.bool,
         /**
+         * Is popover has tail
+         */
+        isHasTail: PropTypes.bool,
+        /**
+         * Tail size in px
+         */
+        tailSize: PropTypes.number,
+        /**
+         * Tail background color
+         */
+        tailColor: PropTypes.string,
+        /**
+         * Is tail has shadow
+         */
+        isTailHasShadow: PropTypes.bool,
+        /**
          * Position presets
          */
         presets: PropTypes.arrayOf(PropTypes.shape({
@@ -23,7 +41,15 @@ export default class Popover extends React.Component {
             yAxis: PropTypes.string,
             offsetX: PropTypes.number,
             offsetY: PropTypes.number,
+            tail: PropTypes.shape({
+                direction: PropTypes.oneOf(['top', 'right', 'bottom', 'left'])
+            })
         })).isRequired
+    };
+
+    static defaultProps = {
+        tailOffsetSize: 14,
+        tailSize: 14
     };
 
     constructor(props, ...args) {
@@ -49,13 +75,17 @@ export default class Popover extends React.Component {
                         { isShown &&
                             <Placer
                                 presets={props.presets}>
-                                <PopupShownerContent
+                                <PopoverContent
                                     parentDOMNode={node}
+                                    isHasTail={props.isHasTail}
+                                    isTailHasShadow={props.isTailHasShadow}
+                                    tailSize={props.tailSize}
+                                    tailColor={props.tailColor}
                                     isAnimated={props.isAnimated}
                                     isAutoClosable={props.isAutoClosable}
                                     toggle={toggle}>
                                     {props.children[1]}
-                                </PopupShownerContent>
+                                </PopoverContent>
                             </Placer>
                         }
                     </TargetWrapper>

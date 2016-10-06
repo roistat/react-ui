@@ -82,7 +82,7 @@ export default class PlacerWrapper extends React.Component {
     constructor(props, ...args) {
         super(props, ...args);
 
-        this.state = { currentPreset: null };
+        this.state = { currentPreset: null, placeableRect: null, targetRect: null };
         this._onChildrenMount = this._onChildrenMount.bind(this);
 
         if (!props.presets) {
@@ -147,7 +147,10 @@ export default class PlacerWrapper extends React.Component {
 
         if (!this._isNewPreseEqualEqula(bestPreset)) {
             this.setState({
-                currentPreset: bestPreset
+                currentPreset: bestPreset,
+                targetRect: args[0],
+                placeableRect: args[1],
+
             }, () => this.setStyles(newStyles));
         } else {
             this.setStyles(newStyles)
@@ -227,6 +230,8 @@ export default class PlacerWrapper extends React.Component {
 
         if (typeof props.children.type === 'function') {
             childrenProps.currentPreset = this.state.currentPreset;
+            childrenProps.selfRect = this.state.placeableRect;
+            childrenProps.targetRect = this.state.targetRect;
         }
 
         return (

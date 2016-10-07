@@ -140,9 +140,10 @@ storiesOf('Popover', module)
                                                 type='radio'
                                                 name='yAxis'
                                                 onClick={() => setState(Object.assign(
-                                                { yAxis: preset.yAxis },
-                                                preset.direction && { tail: { direction: preset.direction  } }))
-                                            }                                        />
+                                                    { yAxis: preset.yAxis },
+                                                    preset.direction && { tail: { direction: preset.direction  } }))
+                                                }
+                                            />
                                             {preset.yAxis}
                                         </label>
                                     </div>
@@ -182,6 +183,16 @@ storiesOf('Popover', module)
                                     </div>
                                 ))}
                             </div>
+                            <div style={{ margin: '0 40px 40px 0' }}>
+                                <h4>Tail to middle</h4>
+                                <label>
+                                    <input
+                                        type='checkbox'
+                                        isChecked={state.isToMiddle}
+                                        onClick={() => setState({ isToMiddle: !state.isToMiddle } )}
+                                    />
+                                </label>
+                            </div>
                         </View>
                         <Popover
                             isAutoClosable
@@ -193,7 +204,8 @@ storiesOf('Popover', module)
                                     yAxis: state.yAxis || 'outside-bottom',
                                     tail: {
                                         xOffset: state.xTailOffset,
-                                        yOffset: state.yTailOffset
+                                        yOffset: state.yTailOffset,
+                                        toMiddle: !!state.isToMiddle
                                     },
                                 }
                             ]}>

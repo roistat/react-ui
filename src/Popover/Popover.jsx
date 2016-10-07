@@ -42,7 +42,10 @@ export default class Popover extends React.Component {
             offsetX: PropTypes.number,
             offsetY: PropTypes.number,
             tail: PropTypes.shape({
-                direction: PropTypes.oneOf(['top', 'right', 'bottom', 'left'])
+                direction: PropTypes.oneOf(['top', 'right', 'bottom', 'left']),
+                toMiddle: PropTypes.bool,
+                xOffset: PropTypes.number,
+                yOffset: PropTypes.number,
             })
         })).isRequired
     };
@@ -58,6 +61,7 @@ export default class Popover extends React.Component {
         if (React.Children.count(props.children) !== 2) {
             throw new Error('Popover component: Children count must be equal 2');
         }
+        //TODO: invariant for context
     }
 
     toggle() {

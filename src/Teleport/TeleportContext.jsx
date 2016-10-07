@@ -119,7 +119,7 @@ export default class TeleportContext extends React.Component {
             {
                 'data-teleport': this._componentID,
                 children: [
-                    <div className={css(styles.teleportRoot)}>
+                    <div className={css(styles.teleportRoot)} key='teleportRoot'>
                         {
                             this.state.shownComponents.map((id) => (
                                 <TeleportWrapper key={id} ref={(c) => c && (this._refs[id] = c)}>

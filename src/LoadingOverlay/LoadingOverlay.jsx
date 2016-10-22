@@ -7,26 +7,26 @@ import View from '../View';
 
 import { StyleSheet, css } from '../helpers/styles';
 
-export default class LoadingOverlay extends React.Component {
-    render() {
-        return (
-            <Overlay>
-                <View
-                    className={css(styles.root)}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}>
-                    <Spinner size='xs'/>
-                </View>
-            </Overlay>
-        )
-    }
+const LoadingOverlay = () => {
+    return (
+        <Overlay>
+            <View className={css(STYLE.root)} >
+                <Spinner size='xs'/>
+            </View>
+        </Overlay>
+    )
 }
 
-const styles = StyleSheet.create({
+const STYLE = StyleSheet.create({
     root: {
         position: 'absolute',
         top: 0,
         right: 0,
         bottom: 0,
-        left: 0
+        left: 0,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });
+
+export default LoadingOverlay;

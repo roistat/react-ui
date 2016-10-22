@@ -6,12 +6,9 @@ import Avatar from '@roistat/ui/lib/Avatar';
 
 *Avatar small size*
 
-    <Avatar size='s' />
+    <Avatar url='/penguinAvatar.jpg' size='s' />
 
 *Avatar medium size*
 
-    <Avatar size='m' />
+    <Avatar url='/penguinAvatar.jpg' size='m' />
 
-*Set Avatar using custom url*
-
-    <Avatar url='/avatar/penguinAvatar.jpg' />

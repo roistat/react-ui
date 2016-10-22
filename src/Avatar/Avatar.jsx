@@ -8,8 +8,8 @@ const Avatar = (props) => {
     const { size, url } = props;
 
     return (  
-        <div className={css(STYLE.base, STYLE.getPreset('size', size))}>
-            <img className={css(STYLE.img)} src={url}/>
+        <div className={css( STYLE.base, STYLE.getPreset('size', size) )} >
+            <img className={css(STYLE.img)} src={url} />
         </div>
     )
 }

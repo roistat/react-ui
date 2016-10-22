@@ -4,30 +4,30 @@ import React, { PropTypes } from 'react';
 
 import { StyleSheet, css } from '../helpers/styles';
 
-export default class Overlay extends React.Component {
-    static propTypes = {
-        color: PropTypes.string,
-        opacity: PropTypes.number,
-        isFixed: PropTypes.bool
-    };
+const Overlay = (props) => {
 
-    static defaultProps = {
-        color: '#fff',
-        opacity: .45,
-        styles: []
-    };
+    const { color, opacity, styles, ...rest } = props;
 
-    render() {
-        const props = this.props;
-        return (
-            <div
-                className={css(STYLE.overlay, props.isFixed && STYLE.rootIsFixed)}
-                style={{ background: props.color, opacity: props.opacity, ...props.style }}>
-                {props.children}
-            </div>
-        )
-    }
-}
+    return (
+        <div
+            className={css(STYLE.overlay, props.isFixed && STYLE.rootIsFixed)}
+            style={{ background: props.color, opacity: props.opacity, ...props.style }}>
+            {props.children}
+        </div>
+    );
+};
+
+Overlay.propTypes = {
+    color: PropTypes.string,
+    opacity: PropTypes.number,
+    isFixed: PropTypes.bool
+};
+
+Overlay.defaultProps = {
+    color: '#fff',
+    opacity: .45,
+    styles: []
+};
 
 const STYLE = StyleSheet.create({
     overlay: {
@@ -42,3 +42,6 @@ const STYLE = StyleSheet.create({
         position: 'fixed'
     }
 });
+
+export default Overlay;
+

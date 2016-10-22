@@ -18,8 +18,17 @@ const Overlay = (props) => {
 };
 
 Overlay.propTypes = {
+    /**
+     * Overlay background color
+     */
     color: PropTypes.string,
+    /**
+     * Overlay opacity
+     */
     opacity: PropTypes.number,
+    /**
+     * is Overlay has fixed position
+     */
     isFixed: PropTypes.bool
 };
 

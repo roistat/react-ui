@@ -6,12 +6,12 @@ import View from '../View';
 storiesOf('Avatar', module)
     .add('Avatar medium size', () => (
         <View>
-            <Avatar url='/avatar/penguinAvatar.jpg' size='m' />
+            <Avatar url='/penguinAvatar.jpg' size='m' />
         </View>
     ))
 
     .add('Avatar small size', () => (
         <View>
-            <Avatar url='/avatar/penguinAvatar.jpg' size='s' />
+            <Avatar url='/penguinAvatar.jpg' size='s' />
         </View>
     ));

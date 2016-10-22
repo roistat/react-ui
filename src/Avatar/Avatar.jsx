@@ -1,57 +1,47 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
 
-const DEFAULT_AVATAR_URL = '/files/penguinAvatar.jpg';
+import { StyleSheet, css } from '../helpers/styles';
 
-class Avatar extends React.Component {
-    static propTypes = {
-        /**
-         * Avatar image url
-         */
-        url: PropTypes.string,
-        /**
-         * Avatar size
-         */
-        size: PropTypes.oneOf(['s', 'm'])
-    };
+const Avatar = (props) => {
+    const { size, url } = props;
 
-    render() {
-        let style = Object.assign(
-            {},
-            STYLE.base,
-            STYLE.size[this.props.size]
-        );
-
-        return (
-            <div
-                style={style}>
-                <img style={STYLE.img} src={this.props.url || DEFAULT_AVATAR_URL}/>
-            </div>
-        )
-    }
+    return (  
+        <div className={css(STYLE.base, STYLE.getPreset('size', size))}>
+            <img className={css(STYLE.img)} src={url}/>
+        </div>
+    )
 }
 
-export default Avatar;
+Avatar.propTypes = {
+    /**
+     * Avatar image url
+     */
+    url: PropTypes.string.isRequired,
+    /**
+     * Avatar size
+     */
+    size: PropTypes.oneOf(['s', 'm'])
+};
 
-const STYLE = {
+const STYLE = StyleSheet.create({
     base: {
         display: 'inline-block',
         borderRadius: '50%',
         overflow: 'hidden'
     },
-    size: {
-        s: {
-            width: '40px',
-            height: '40px'
-        },
-        m: {
-            width: '70px',
-            height: '70px'
-        }
+    sizeS: {
+        width: '40px',
+        height: '40px'
+    },
+    sizeM: {
+        width: '70px',
+        height: '70px'
     },
     img: {
         width: '100%'
     }
-};
+});
+
+export default Avatar;

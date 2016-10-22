@@ -44,4 +44,3 @@ const STYLE = StyleSheet.create({
 });
 
 export default Overlay;
-

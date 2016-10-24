@@ -8,43 +8,36 @@ import { COLOR, FONT } from '../const/theme';
 
 import { StyleSheet, css } from '../helpers/styles';
 
-export default class Hint extends React.Component {
-    static propTypes = {
-        /**
-         * Tail position
-         */
-        tailPosition: PropTypes.oneOf(['leftTop', 'rightTop', 'topLeft'])
-    };
-
-    static defaultProps = {
-        tailPosition: 'leftTop'
-    };
-
-    render() {
-        const props = this.props;
-
-        return (
-            <View styles={[STYLE.hint, ...props.styles || []]}>
-                <View
-                    styles={[
-                    STYLE.triangle,
-                    (props.tailPosition === 'leftTop' ||  props.tailPosition === 'rightTop') && STYLE.triangleHorizontal ,
-                    (props.tailPosition === 'topLeft' ) && STYLE.triangleVertical ,
-                    props.tailPosition === 'leftTop' && STYLE.leftTop,
-                    props.tailPosition === 'rightTop' && STYLE.rightTop,
-                    props.tailPosition === 'topLeft'&& STYLE.topLeft
-                ]}
-                >
-                </View>
-                <View styles={[STYLE.textBox]}>
-                    <Text styles={[STYLE.hintText]}>
-                        {props.children}
-                    </Text>
-                </View>
+const Hint = (props) => {
+    const { tailPosition, ...styles } = props;
+    return (
+        <View className={css(STYLE.hint)} styles={props.styles}>
+            <View className={css(
+                STYLE.triangle, 
+                (['leftTop', 'rightTop', 'leftBottom', 'rightBottom'].indexOf(tailPosition) != -1) && STYLE.triangleHorizontal,
+                (['topLeft', 'topRight', 'bottomLeft', 'bottomRight'].indexOf(tailPosition) != -1) && STYLE.triangleVertical,
+                STYLE.getPreset(tailPosition, '')
+            )} 
+            />
+            <View className={css(STYLE.textBox)}>
+                <Text className={css(STYLE.hintText)}>
+                    {props.children}
+                </Text>
             </View>
-        )
-    }
+        </View>
+    )
 }
+
+Hint.propTypes = {
+    /**
+     * Tail position
+     */
+    tailPosition: PropTypes.oneOf(['leftTop', 'rightTop', 'topLeft', 'leftBottom', 'rightBottom', 'topRight', 'bottomLeft', 'bottomRight']).isRequired
+};
+
+Hint.defaultProps = {
+    tailPosition: 'leftTop'
+};
 
 const STYLE = StyleSheet.create({
     hint: {
@@ -74,7 +67,9 @@ const STYLE = StyleSheet.create({
         borderRight: '1px dashed #d7d8d9'
     },
     leftTop: {
-        transform: 'rotate(45deg) translateX(-6px) translateY(9px)'
+        transform: 'rotate(45deg)',
+        left: '-4px',
+        top: '6px'
     },
     rightTop: {
         transform: 'rotate(225deg)',
@@ -82,7 +77,34 @@ const STYLE = StyleSheet.create({
         top: '6px'
     },
     topLeft: {
-        transform: 'rotate(-45deg) translateX(9px) translateY(-6px)'
+        transform: 'rotate(-45deg)',
+        left: '6px',
+        top: '-4px'
+    },
+    topRight: {
+        transform: 'rotate(-45deg)',
+        right: '6px',
+        top: '-4px'
+    },
+    leftBottom: {
+        transform: 'rotate(45deg)',
+        left: '-4px',
+        bottom: '6px'
+    },
+    rightBottom: {
+        transform: 'rotate(225deg)',
+        right: '-4px',
+        bottom: '6px'
+    },
+    bottomLeft: {
+        transform: 'rotate(135deg)',
+        left: '6px',
+        bottom: '-4px'
+    },
+    bottomRight: {
+        transform: 'rotate(135deg)',
+        right: '6px',
+        bottom: '-4px'
     },
     textBox: {
         flex: 1,
@@ -96,3 +118,5 @@ const STYLE = StyleSheet.create({
         lineHeight: '.95rem'
     }
 });
+
+export default Hint;

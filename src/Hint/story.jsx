@@ -5,21 +5,30 @@ import View from '../View';
 import StateProvider from '../StateProvider';
 
 storiesOf('Hint', module)
-    .add('Hint leftTop', () => (
+
+    .add('Hint', () => (
         <View>
-            <Hint tailPosition={'leftTop'}>Hint</Hint>
+            <StateProvider>
+                {(state, setState) => (
+                    <div>
+                        <div>tailPosition:</div>
+                        <select id='tailPosition'  style={{marginBottom:15+'px'}} onChange={() => setState({ tailPosition: document.getElementById("tailPosition").options[document.getElementById("tailPosition").selectedIndex].value })}>
+                            <option value="leftTop">leftTop</option>
+                            <option value="rightTop">rightTop</option>
+                            <option value="topLeft">topLeft</option>
+                            <option value="topRight">topRight</option>
+                            <option value="leftBottom">leftBottom</option>
+                            <option value="rightBottom">rightBottom</option>
+                            <option value="bottomLeft">bottomLeft</option>
+                            <option value="bottomRight">bottomRight</option>
+                        </select>
+                        <Hint tailPosition={state.tailPosition}>Hint</Hint>
+                    </div>
+                    )}
+            </StateProvider>
         </View>
     ))
-    .add('Hint rightTop', () => (
-        <View>
-            <Hint tailPosition={'rightTop'}>Hint</Hint>
-        </View>
-    ))
-    .add('Hint topLeft', () => (
-        <View>
-            <Hint tailPosition={'topLeft'}>Hint</Hint>
-        </View>
-    ))
+
     .add('Hint, showed on hover', () => (
         <View>
             <StateProvider>
@@ -27,10 +36,10 @@ storiesOf('Hint', module)
                     <div>
                         <button onMouseEnter={() => setState({ isHovered: true })} onMouseLeave={() => setState({ isHovered: false })}>
                             Button
-                        </button>    
+                        </button>
                         { state.isHovered && <Hint tailPosition={'topLeft'} style={{marginTop:5+'px'}}>Hint</Hint> }
                     </div>
-                )}
+                    )}
             </StateProvider>
         </View>
     ));

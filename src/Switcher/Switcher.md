@@ -8,5 +8,17 @@ const View = require('../View').default;
 *Switcher*
 
     <View>
-        <Switcher onClick={() => setState({ isChecked: !state.isChecked })} isChecked={state.isChecked} />
+        <Switcher />
+    </View>
+
+*Switcher is disabled*
+
+    <View>
+        <Switcher isDisabled={true} />
+    </View>
+
+*Switcher is checked*
+
+    <View>
+        <Switcher isChecked={true} />
     </View>

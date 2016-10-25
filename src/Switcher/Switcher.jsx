@@ -2,6 +2,10 @@
 
 import React, { PropTypes } from 'react';
 
+import { COLOR } from '../const/theme';
+
+import { StyleSheet, css } from '../helpers/styles';
+
 export default class Switcher extends React.Component {
     static propTypes = {
         /**
@@ -9,30 +13,75 @@ export default class Switcher extends React.Component {
          */
         isChecked: PropTypes.bool,
         /**
+         * Is switcher in disabled state
+         */
+        isDisabled: PropTypes.bool,
+        /**
          * On click event handler
          */
-        onClick: PropTypes.func
+        onClick: PropTypes.func,
+        /**
+         * On change event handler
+         */
+        onChange: PropTypes.func
     };
 
     static defaultProps = {
-        isChecked: false
+        isChecked: false,
+        isDisabled: false
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isChecked: props.isChecked,
+            isDisabled: props.isDisabled
+        };
+
+        this._onClickHandler = this._onClickHandler.bind(this);
+        this._onChangeHandler = this._onChangeHandler.bind(this);
+    }
+
+    _onChangeHandler(event) {
+        const props = this.props;
+
+        if (!props.isDisabled) {
+            props.onChange && props.onChange(event);
+        }
+    }
+
+    _onClickHandler(event) {
+        const props = this.props;
+
+        if (!props.isDisabled) {
+            this.setState({ isChecked: !this.state.isChecked });
+            props.onClick && props.onClick(event);
+        };
+    }
+
+    getDefaultRenderProps() {
+        return {
+            onChange: this._onChangeHandler,
+            onClick: this._onClickHandler
+        };
+    }
 
     render() {
         const props = this.props;
 
         return (
-            <div onClick={props.onClick}>
-                <div style={props.isChecked ? { ...styles.main, ...styles.on } : styles.main}>
-                    <div style={props.isChecked ? { ...styles.toggle, ...styles.toggleOn } : styles.toggle }>
+            <div {...this.getDefaultRenderProps()}>
+                <div className={css(STYLE.main, this.state.isChecked && STYLE.on, props.isDisabled && STYLE.isDisabled )}>
+                    <div className={css(STYLE.toggle, this.state.isChecked && STYLE.toggleOn, props.isDisabled && STYLE.isDisabled )}>
                     </div>
                 </div>
             </div>
-        )
+            )
     }
 }
 
-const styles = {
+const STYLE = StyleSheet.create({
     main: {
         width: '32px',
         height: '16px',
@@ -60,5 +109,8 @@ const styles = {
     toggleOn: {
         left: '19px',
         color: '#70c316'
+    },
+    isDisabled: {
+        opacity: 0.5
     }
-};
+});

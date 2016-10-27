@@ -11,7 +11,7 @@ const Overlay = (props) => {
     return (
         <div
             className={css(STYLE.overlay, props.isFixed && STYLE.rootIsFixed)}
-            style={{ background: props.color, opacity: props.opacity, ...props.style }}>
+            style={{ background: props.color, opacity: props.opacity, ...(props.style || {}) }}>
             {props.children}
         </div>
     );

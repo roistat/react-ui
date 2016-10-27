@@ -12,12 +12,13 @@ const Hint = (props) => {
     const { tailPosition } = props;
     return (
         <View styles={[STYLE.hint, ...(props.styles || {})]} >
-            <View className={css(
-                STYLE.triangle, 
-                (['leftTop', 'rightTop', 'leftBottom', 'rightBottom'].indexOf(tailPosition) != -1) && STYLE.triangleHorizontal,
-                (['topLeft', 'topRight', 'bottomLeft', 'bottomRight'].indexOf(tailPosition) != -1) && STYLE.triangleVertical,
-                STYLE.getPreset(tailPosition, '')
-            )} 
+            <View 
+                styles={[
+                    STYLE.triangle, 
+                    (['leftTop', 'rightTop', 'leftBottom', 'rightBottom'].indexOf(tailPosition) != -1) && STYLE.triangleHorizontal,
+                    (['topLeft', 'topRight', 'bottomLeft', 'bottomRight'].indexOf(tailPosition) != -1) && STYLE.triangleVertical,
+                    STYLE.getPreset(tailPosition, '')
+                ]}
             />
             <View className={css(STYLE.textBox)}>
                 <Text className={css(STYLE.hintText)}>

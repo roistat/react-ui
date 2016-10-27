@@ -9,9 +9,9 @@ import { COLOR, FONT } from '../const/theme';
 import { StyleSheet, css } from '../helpers/styles';
 
 const Hint = (props) => {
-    const { tailPosition, ...styles } = props;
+    const { tailPosition } = props;
     return (
-        <View className={css(STYLE.hint)} styles={props.styles}>
+        <View styles={[STYLE.hint, ...(props.styles || {})]} >
             <View className={css(
                 STYLE.triangle, 
                 (['leftTop', 'rightTop', 'leftBottom', 'rightBottom'].indexOf(tailPosition) != -1) && STYLE.triangleHorizontal,
@@ -32,7 +32,18 @@ Hint.propTypes = {
     /**
      * Tail position
      */
-    tailPosition: PropTypes.oneOf(['leftTop', 'rightTop', 'topLeft', 'leftBottom', 'rightBottom', 'topRight', 'bottomLeft', 'bottomRight']).isRequired
+    tailPosition: PropTypes.oneOf(
+        [
+            'leftTop', 
+            'rightTop', 
+            'topLeft', 
+            'leftBottom', 
+            'rightBottom', 
+            'topRight', 
+            'bottomLeft', 
+            'bottomRight'
+        ]
+    ).isRequired
 };
 
 Hint.defaultProps = {

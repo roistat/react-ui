@@ -27,27 +27,22 @@ export default class Switcher extends React.Component {
     };
 
     static defaultProps = {
-        isChecked: false,
-        isDisabled: false
+        isChecked: false
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isChecked: props.isChecked,
-            isDisabled: props.isDisabled
+            isChecked: props.isChecked
         };
 
         this._onClickHandler = this._onClickHandler.bind(this);
-        this._onChangeHandler = this._onChangeHandler.bind(this);
     }
 
-    _onChangeHandler(event) {
-        const props = this.props;
-
-        if (!props.isDisabled) {
-            props.onChange && props.onChange(event);
+    componentWillReceiveProps(newProps) {
+        if (this.state.isChecked !== newProps.isChecked) {
+            this.setState({ isChecked: newProps.isChecked });
         }
     }
 
@@ -55,15 +50,10 @@ export default class Switcher extends React.Component {
         const props = this.props;
 
         if (!props.isDisabled) {
-            this.setState({ isChecked: !this.state.isChecked });
-            props.onClick && props.onClick(event);
-        };
-    }
-
-    getDefaultRenderProps() {
-        return {
-            onChange: this._onChangeHandler,
-            onClick: this._onClickHandler
+            this.setState({ isChecked: !this.state.isChecked }, () => {
+                props.onClick && props.onClick(event); 
+                props.onChange && props.onChange(this.state.isChecked);
+            })
         };
     }
 
@@ -71,7 +61,7 @@ export default class Switcher extends React.Component {
         const props = this.props;
 
         return (
-            <div {...this.getDefaultRenderProps()}>
+            <div onClick={this._onClickHandler} >
                 <div className={css(STYLE.main, this.state.isChecked && STYLE.on, props.isDisabled && STYLE.isDisabled )}>
                     <div className={css(STYLE.toggle, this.state.isChecked && STYLE.toggleOn, props.isDisabled && STYLE.isDisabled )}>
                     </div>

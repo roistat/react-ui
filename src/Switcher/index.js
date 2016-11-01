@@ -1,1 +1,1 @@
-export { default } from './Switcher.jsx';
+export { default } from './Switcher';

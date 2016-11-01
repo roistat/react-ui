@@ -70,7 +70,7 @@ class Rating extends React.Component {
                     onMouseEnter={this.onStarMouseEnter.bind(this, rate)}
                     onMouseLeave={this.onStarMouseLeave.bind(this)}
                     onClick={this.onStarClick.bind(this, rate)}
-                    />
+                />
             );
         });
     };

@@ -1,1 +1,1 @@
-export { default } from './Spoiler.jsx';
+export { default } from './Spoiler';

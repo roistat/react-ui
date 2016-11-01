@@ -1,7 +1,7 @@
 ### Usage
 
 ```js
-import Hint from '@roistat/ui/lib/Spoiler';
+import Spoiler from '@roistat/ui/lib/Spoiler';
 ```
 const View = require('../View').default;
  

@@ -46,13 +46,17 @@ $ npm run storybook
 
 > узнать что такое <a href="https://github.com/storybooks/react-storybook" target="_blank" alt="Immutable Data and React">react-storybook &rarr;</a>
 
-### Основные реализованные компоненты 
-* <a href="https://roistat.github.io/react-ui/#Button" target="_blank" alt="Immutable Data and React">Button</a>
+### Основные компоненты 
+* <a href="https://roistat.github.io/react-ui/#Button" target="_blank" alt="Immutable Data and React">Button</a>, <a href="https://roistat.github.io/react-ui/#PrimaryButton" target="_blank" alt="Immutable Data and React">Primary Button</a>
+* <a href="https://roistat.github.io/react-ui/#TextInput" target="_blank" alt="Immutable Data and React">TextInput</a>
 * <a href="https://roistat.github.io/react-ui/#Modal" target="_blank" alt="Immutable Data and React">Modal</a>
-* <a href="https://roistat.github.io/react-ui/#Popup" target="_blank" alt="Immutable Data and React">Popup</a>
-* <a href="https://roistat.github.io/react-ui/#Spinner" target="_blank" alt="Immutable Data and React">Spinner</a>
-* <a href="https://roistat.github.io/react-ui/#FontIcon" target="_blank" alt="Immutable Data and React">FontIcon</a>
-* <a href="https://roistat.github.io/react-ui/#AutoClosable" target="_blank" alt="Immutable Data and React">AutoClosable</a>
+* <a href="https://roistat.github.io/react-ui/#Popover" target="_blank" alt="Immutable Data and React">Popover</a>
+
+### Вспомогательные компоненты 
+* <a href="https://roistat.github.io/react-ui/#Teleport" target="_blank" alt="Immutable Data and React">Teleport</a>
+* <a href="https://roistat.github.io/react-ui/#Placer" target="_blank" alt="Immutable Data and React">Placer</a>
+* <a href="https://roistat.github.io/react-ui/#Transition" target="_blank" alt="Immutable Data and React">Transition</a>
+* <a href="https://roistat.github.io/react-ui/#Toggler" target="_blank" alt="Immutable Data and React">Toggler</a>
 
 <a href="https://roistat.github.io/react-ui/" target="_blank" alt="Immutable Data and React">Перейти ко всем компонентам &rarr;</a>
 

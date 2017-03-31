@@ -1,6 +1,6 @@
 ## roistat-react-UI - библиотека компонентов пользовательского интерфейса
 
-<a href="https://roistat.github.io/react-ui/" target="_blank" alt="Immutable Data and React"><img src="http://i.imgur.com/IlImFpC.png" /></a>
+<a href="https://roistat.github.io/react-ui/" target="_blank" alt="Immutable Data and React"><img src="http://i.imgur.com/OKvnKV0.png" /></a>
 
 ### Необходимая экосистема
 * React JS
@@ -48,17 +48,12 @@ $ npm run storybook
 
 ### Основные реализованные компоненты 
 * <a href="https://roistat.github.io/react-ui/#Button" target="_blank" alt="Immutable Data and React">Button</a>
-> <img src="http://i.imgur.com/XFeOMPi.jpg" />
 * <a href="https://roistat.github.io/react-ui/#Modal" target="_blank" alt="Immutable Data and React">Modal</a>
-> <img src="http://i.imgur.com/tTAuUiE.jpg" />
 * <a href="https://roistat.github.io/react-ui/#Popup" target="_blank" alt="Immutable Data and React">Popup</a>
-> <img src="http://i.imgur.com/uaBwQkU.jpg" />
 * <a href="https://roistat.github.io/react-ui/#Spinner" target="_blank" alt="Immutable Data and React">Spinner</a>
-> <img src="http://i.imgur.com/XSZckMg.jpg" />
 * <a href="https://roistat.github.io/react-ui/#FontIcon" target="_blank" alt="Immutable Data and React">FontIcon</a>
-> <img src="http://i.imgur.com/9TEnf6F.jpg" />
 * <a href="https://roistat.github.io/react-ui/#AutoClosable" target="_blank" alt="Immutable Data and React">AutoClosable</a>
-> <img src="http://i.imgur.com/TGqTjD6.jpg" />
+
 <a href="https://roistat.github.io/react-ui/" target="_blank" alt="Immutable Data and React">Перейти ко всем компонентам &rarr;</a>
 
 ### Структура проека
@@ -88,9 +83,9 @@ $ npm run storybook
 │   │   
 └── └── .babelrc //конфиг Babel
 │   │   
-└── └── package.json.html 
+└─  └── package.json.html 
 │   │   
-└── └── styleguide.config.js //пример webpack-конфига
+└─  └── styleguide.config.js //пример webpack-конфига
 ```
 
 > <a href="https://github.com/roistat/react-ui/blob/master/docs/development.md" target="_blank" alt="Immutable Data and React">Рекомендации по разработке компонентов &rarr;</a>

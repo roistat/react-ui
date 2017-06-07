@@ -15,7 +15,12 @@ export default class Modal extends React.Component {
         onDidClose: PropTypes.func,
         onDidShow: PropTypes.func,
         isAutoClosable: PropTypes.boolean,
-        onClose: PropTypes.func
+        onClose: PropTypes.func,
+        customMinWidth: PropTypes.string
+    };
+
+    static defaultProps = {
+        customMinWidth: '960px'
     };
 
     constructor(props, ...args) {
@@ -42,13 +47,13 @@ export default class Modal extends React.Component {
     componentWillUnmount() {
         this._enableRootScroll();
     }
-    
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.isShown !== this.props.isShown) {
             nextProps.isShown ? this.show() : this.hide();
         }
     }
-    
+
     show(callback: () => void) {
         callback && this._onDidShowCallbacks.push(callback);
 
@@ -145,6 +150,8 @@ export default class Modal extends React.Component {
     }
 
     render() {
+        const customMinWidth = this.props.customMinWidth;
+
         return (
             <Teleport ref={(c) => this._teleport = c}>
                 <Transition
@@ -169,7 +176,11 @@ export default class Modal extends React.Component {
                                 <AutoClosable onClose={this._onCloseHandler}>
                                     <TeleportContext>
                                         <View styles={[styles.popupWrapper]}>
-                                            <Popup styles={[styles.popup]} isRounded >
+                                            <Popup
+                                                styles={[styles.popup]}
+                                                style={{minWidth: customMinWidth}}
+                                                isRounded
+                                            >
                                                 {this._renderChildren()}
                                             </Popup>
                                         </View>
@@ -241,7 +252,6 @@ const styles = StyleSheet.create({
         padding: 0,
         flexDirection: 'column',
         overflow: 'hidden',
-        minWidth: '960px',
         minHeight: '400px',
     },
     shownOverlay: {

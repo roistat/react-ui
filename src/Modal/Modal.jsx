@@ -42,13 +42,13 @@ export default class Modal extends React.Component {
     componentWillUnmount() {
         this._enableRootScroll();
     }
-    
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.isShown !== this.props.isShown) {
             nextProps.isShown ? this.show() : this.hide();
         }
     }
-    
+
     show(callback: () => void) {
         callback && this._onDidShowCallbacks.push(callback);
 
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
         right: 0,
         left: 0,
         bottom: 0,
-        zIndex: 999,
+        zIndex: 9999,
         transform: 'translate3d(0, 0, 0)',
         transition: 'all .2s ease-out',
         background: 'rgba(0, 0, 0, 0)',

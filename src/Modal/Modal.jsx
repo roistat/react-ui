@@ -11,26 +11,16 @@ import { StyleSheet } from '../helpers/styles';
 
 export default class Modal extends React.Component {
     static propTypes = {
-        /**
-         * Is modal window showed
-         */
         isShown: PropTypes.boolean,
-        /**
-         * After component closed action
-         */
-        onDidClose: PropTypes.func,
-        /**
-         * After component showed action
-         */
-        onDidShow: PropTypes.func,
-        /**
-         * Is Modal Winodw will be closed by clicking outside it
-         */
         isAutoClosable: PropTypes.boolean,
-        /**
-         * On close handler
-         */
-        onClose: PropTypes.func
+        onDidClose: PropTypes.func,
+        onDidShow: PropTypes.func,
+        onClose: PropTypes.func,
+        zIndex: PropTypes.number
+    };
+
+    static defaultProps = {
+        zIndex: 999
     };
 
     constructor(props, ...args) {
@@ -57,13 +47,13 @@ export default class Modal extends React.Component {
     componentWillUnmount() {
         this._enableRootScroll();
     }
-    
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.isShown !== this.props.isShown) {
             nextProps.isShown ? this.show() : this.hide();
         }
     }
-    
+
     show(callback: () => void) {
         callback && this._onDidShowCallbacks.push(callback);
 
@@ -169,6 +159,7 @@ export default class Modal extends React.Component {
                     onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
+                            style={{ zIndex: this.props.zIndex }}
                             styles={[
                                 styles.overlay,
                                 isEnter && styles.shownOverlay,
@@ -235,7 +226,6 @@ const styles = StyleSheet.create({
         right: 0,
         left: 0,
         bottom: 0,
-        zIndex: 999,
         transform: 'translate3d(0, 0, 0)',
         transition: 'all .2s ease-out',
         background: 'rgba(0, 0, 0, 0)',

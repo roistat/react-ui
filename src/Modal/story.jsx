@@ -146,7 +146,7 @@ storiesOf('Modal', module)
                             <ModalBody theme='gray'>
                                 <View style={{ height: 100, width: 200 }}>
                                     {state.content || 'some modal content'}
-                                    <Placer xAxisPresets={['inside-left']} yAxisPresets={['inside-top']}>
+                                    <Placer presets={[{ xAxis: 'inside-left', yAxis: 'inside-top' }]}>
                                         <div style={{ padding: 40, height: 400,width: 100, background: '#333', color: '#fff' }}>
                                             Click me
                                         </div>

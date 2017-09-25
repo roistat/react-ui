@@ -36,6 +36,8 @@ Disabled button:
        
 Button with icon:
 
+    const FontIcon = require('../FontIcon').default;
+   
     <Button>
         <FontIcon style={{ fontSize: '16px' }} name='money' />
         Get one dollar

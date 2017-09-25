@@ -1,5 +1,13 @@
-StateProvider usage
-        
+### Use cases
+
+Use for provide simple state without HOC
+
+### Usage
+
+```js
+import StateProvider from '@roistat/ui/lib/StateProvider';
+```
+    
     <StateProvider state={{ content: 'awesome content' }}>
         {(state, setState) => (
             <div>

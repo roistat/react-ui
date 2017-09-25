@@ -28,20 +28,18 @@ export default class Transition extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = {
-            children: null,
-            isEnter: false,
-            isLeave: true,
-            isAppear: false,
-            isDidEnter: false
-        };
+        this.state = props.children ? new AppearState(props, false) : new InitEmptyState();
+        this._setEnterState = this._setEnterState.bind(this)
     }
 
     componentDidMount() {
         const props = this.props;
         this._isMounted = true;
 
-        props.children && this._showNewChildren(props);
+        if (props.children) {
+            props.onWillEnter && props.onWillEnter();
+            setTimeout(() => this._setEnterState(), 0);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -87,24 +85,24 @@ export default class Transition extends React.Component {
         props.onWillEnter && props.onWillEnter();
 
         raf(() => this._isMounted && this.setState(
-            {
-                children: props.children,
-                isEnter: false,
-                isAppear: true,
-                isLeave: false,
-                isUpdate: !!isUpdate
-            },
-            () => raf(() => {
-                this._isMounted && this.setState({
-                    isEnter: true,
-                    isAppear: false
-                }, () => {
-                    const timeout = this._getTimeout('enter');
-                    setTimeout(() => this.setState(
-                        { isDidEnter: true },
-                        () => props.onDidEnter && props.onDidEnter()), timeout);
-                });
-            })));
+            new AppearState(props, isUpdate),
+            this._setEnterState));
+    }
+
+    _setEnterState() {
+        const { onDidEnter } = this.props;
+
+        raf(() => {
+            this._isMounted && this.setState({
+                isEnter: true,
+                isAppear: false
+            }, () => {
+                const timeout = this._getTimeout('enter');
+                setTimeout(() => this.setState(
+                    { isDidEnter: true },
+                    () => onDidEnter && onDidEnter()), timeout);
+            });
+        })
     }
 
     _removeOldChildren(callback: () => void, isUpdate: boolean) {
@@ -164,4 +162,22 @@ export default class Transition extends React.Component {
 
         return this.state.children({ isEnter, isLeave, isUpdate, isAppear });
     }
+}
+
+function AppearState(props, isUpdate) {
+    this.children = props.children;
+    this.isEnter = false;
+    this.isAppear = true;
+    this.isLeave = false;
+    this.isUpdate = !!isUpdate;
+    this.isDidEnter = false;
+}
+
+function InitEmptyState() {
+    this.children = null;
+    this.isEnter = false;
+    this.isLeave = true;
+    this.isAppear = false;
+    this.isUpdate = false;
+    this.isDidEnter = false;
 }

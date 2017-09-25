@@ -14,7 +14,7 @@ export default class AutoClosable extends React.Component {
 		/**
 		 * Optional parent dom node, click event on parent dom node don't fire close event
 		 */
-		parentDOMNode: PropTypes.element
+		parentDOMNode: PropTypes.object
 	};
 
 	componentDidMount() {

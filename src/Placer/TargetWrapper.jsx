@@ -5,6 +5,9 @@ import ReactDOM from 'react-dom';
 
 import { getChildByType, filterChildrenByNotType } from '../helpers/reactElements';
 
+/**
+ * Helper component for Placer
+ */
 export default class TargetWrapper extends React.Component {
     static propTypes = {};
 

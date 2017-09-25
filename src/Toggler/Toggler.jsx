@@ -8,7 +8,11 @@ export default class Toggler extends React.Component {
         /**
          * Initial value
          */
-        value: PropTypes.boolean,
+        value: PropTypes.bool,
+        /**
+         * On change event handler
+         */
+        onChange: PropTypes.func,
         /**
          * Wrapper function
          */
@@ -30,7 +34,9 @@ export default class Toggler extends React.Component {
     }
 
     toggle() {
-        this.setState({ value: !this.state.value });
+        const { onChange } = this.props;
+
+        this.setState({ value: !this.state.value }, () => onChange && onChange(this.state.value));
     }
 
     render() {

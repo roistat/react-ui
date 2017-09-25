@@ -19,6 +19,9 @@ const ModalHeaderBackTitle = (props) => (
 );
 
 ModalHeaderBackTitle.propTypes = {
+    /**
+     * On click handler
+     */
     onClick: PropTypes.func
 };
 ModalHeaderBackTitle.__MODAL_HEADER_LEFT_LAYOUT__ = true;

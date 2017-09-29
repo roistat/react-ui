@@ -1,99 +1,66 @@
 'use strict';
 
 import React, { PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import PopupTail from '../Popup/PopupTail';
-import { StyleSheet, css } from '../helpers/styles';
-
-const INVERTED_DIRECTION = {
-	top: 'bottom',
-	right: 'left',
-	bottom: 'top',
-	left: 'right'
-};
+import Toggler from '../Toggler';
+import Placer, { TargetWrapper }  from '../Placer';
+import PopupShownerContent from './PopoverContent';
 
 export default class Popover extends React.Component {
-	static propTypes = {
-		/**
-		 * Tail direction
-		 */
-		tailDirection: PropTypes.oneOf(['top', 'right', 'bottom', 'left']).isRequired,
-		/**
-		 * Tail color
-		 */
-		tailColor: PropTypes.string,
-		/**
-		 * Popover appearance delay
-		 */
-		delay: PropTypes.number
-	};
+    static propTypes = {
+        /**
+         * Is Popover close by outside click
+         */
+        isAutoClosable: PropTypes.bool,
+        /**
+         * is has transition animation
+         */
+        isAnimated: PropTypes.bool,
+        /**
+         * Position presets
+         */
+        presets: PropTypes.arrayOf(PropTypes.shape({
+            xAxis: PropTypes.string,
+            yAxis: PropTypes.string,
+            offsetX: PropTypes.number,
+            offsetY: PropTypes.number,
+        })).isRequired
+    };
 
-	componentDidMount() {
-		const props = this.props;
+    constructor(props, ...args) {
+        super(props, ...args);
 
-		setTimeout(() => this._reflow(), props.delay || 0);
-	}
+        if (React.Children.count(props.children) !== 2) {
+            throw new Error('Popover component: Children count must be equal 2');
+        }
+    }
 
-	_reflow() {
-		if (this._node) {
-			const style = this._getOffsetStyles();
-			Object.assign(this._node.style, style.root);
-			Object.assign(this._tailNode.style, style.tail);
-			this._node.style.visibility = 'visible'
-		}
-	}
+    toggle() {
+        this._toggler && this._toggler.toggle();
+    }
 
-	_getOffsetStyles() {
-		const result = { tail: {}, root: {} };
-		const params = this._node.getBoundingClientRect();
-		const right = document.body.getBoundingClientRect().width - (params.left + params.width);
+    render() {
+        const props = this.props;
 
-		if (params.left < 5) {
-			result.root.transform = `translateX(${5 - params.left}px)`;
-		}
-
-		if (right < 5) {
-			result.root.transform = `translateX(-${5 - right}px)`;
-			result.tail.marginLeft = `${5 - right}px`;
-		}
-
-		result.width = `${params.width}px`;
-
-		return result;
-	}
-
-	render() {
-		const props = this.props;
-
-		return (
-			<div
-				{...props}
-				style={{ ...props.style, visibility: 'hidden' }}
-				className={css(STYLE.root)}
-				ref={(c) => c && (this._node = ReactDOM.findDOMNode(c))}>
-				{props.children}
-				<PopupTail
-					color={props.tailColor}
-					direction={INVERTED_DIRECTION[props.tailDirection]}
-					ref={(c) => c && (this._tailNode = ReactDOM.findDOMNode(c))}
-				/>
-			</div>
-		)
-	}
+        return (
+            <Toggler ref={(c) => this._toggler = c}>
+                {(isShown, node, toggle) => (
+                    <TargetWrapper>
+                        {props.children[0]}
+                        { isShown &&
+                            <Placer
+                                presets={props.presets}>
+                                <PopupShownerContent
+                                    parentDOMNode={node}
+                                    isAnimated={props.isAnimated}
+                                    isAutoClosable={props.isAutoClosable}
+                                    toggle={toggle}>
+                                    {props.children[1]}
+                                </PopupShownerContent>
+                            </Placer>
+                        }
+                    </TargetWrapper>
+                )}
+            </Toggler>
+        )
+    }
 }
-
-const STYLE = StyleSheet.create({
-	root: {
-		position: 'relative',
-		display: 'table',
-		minWidth: '120px',
-		padding: '5px'
-	},
-	top: {
-		marginBottom: '7px'
-	},
-	bottom: {
-		marginTop: '7px'
-	}
-});
-

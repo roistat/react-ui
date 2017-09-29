@@ -13,6 +13,9 @@ const ModalBody = (props) => (
 );
 
 ModalBody.propTypes = {
+    /**
+     * ModalBody theme
+     */
     theme: PropTypes.oneOf(['gray', 'normal'])
 };
 

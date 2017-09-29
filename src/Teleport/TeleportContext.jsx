@@ -34,9 +34,11 @@ export default class TeleportContext extends React.Component {
         const selfDOMNode = ReactDOM.findDOMNode(this);
         this._parentDOMNode = selfDOMNode.parentNode;
 
-        selfDOMNode.setAttribute('data-teleport', this._componentID);
         this._registerRelationship();
+        this._isMount = true;
     }
+
+
 
     getChildContext() {
         return {
@@ -65,8 +67,8 @@ export default class TeleportContext extends React.Component {
                     return this._shownComponents.some(id => id === componentID);
                 },
                 getRootDOMNode: (): Object => {
-                    return this.refs.rootDOMNode || null;
-                    //return this._parentDOMNode || null;
+                    return ReactDOM.findDOMNode(this).getElementsByClassName(css(styles.teleportRoot))[0];
+                    //return this.refs.rootDOMNode || null;
                 },
                 getBoundingClientRect: (): Object => {
                     const node = this._parentDOMNode;
@@ -104,7 +106,7 @@ export default class TeleportContext extends React.Component {
         relationships[this._componentID] = (relationships[this._componentID] || {});
 
         relationships[this._componentID] = {
-            level: parentID ? (relationships[parentID].level + 1) : 1,
+            level: relationships[parentID] ? (relationships[parentID].level + 1) : 1,
             parentID: parentID
         };
     }
@@ -115,8 +117,9 @@ export default class TeleportContext extends React.Component {
         return React.cloneElement(
             props.children,
             {
+                'data-teleport': this._componentID,
                 children: [
-                    <div ref='rootDOMNode' className={css(styles.teleportRoot)}>
+                    <div className={css(styles.teleportRoot)}>
                         {
                             this.state.shownComponents.map((id) => (
                                 <TeleportWrapper key={id} ref={(c) => c && (this._refs[id] = c)}>

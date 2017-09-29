@@ -2,23 +2,82 @@ const path = require('path');
 const dir = path.join(__dirname, 'src');
 var glob = require('glob');
 
-var RE_EXCLUDE = new RegExp([
-    'TeleportWrapper',
-    'TextInputControl',
-    'PlacerWrapper',
-    'SVGIcons'
+const createRe = (components) => {
+    return new RegExp(
+        components.map(name => `/${name}`).join('|'));
+};
+
+const RE_TYPO = new RegExp([
+    'Text.jsx'
 ].join('|'));
+
+const RE_HELPERS = createRe([
+    'Teleport.jsx',
+    'TeleportContext.jsx',
+    'Placer.jsx',
+    'TargetWrapper.jsx',
+    'AutoClosable.jsx',
+    'StateProvider.jsx',
+    'Transition.jsx',
+    'Toggler.jsx',
+    'Popover.jsx',
+]);
+
+const RE_CONTROLS = createRe([
+    'Button.jsx',
+    'PrimaryButton.jsx',
+    'TextInput.jsx',
+    'Dropdown.jsx'
+]);
+
+const RE_ELEMENTS = createRe([
+    'View.jsx',
+    'Tail.jsx',
+    'Spinner.jsx',
+    'FontIcon.jsx',
+    'CloseCross.jsx',
+    'Popup.jsx',
+]);
+
+const RE_VIEWS = createRe([
+    'Modal.jsx'
+]);
+
+
+const createMatcher = (re) => () => {
+    return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter((module) => re.test(module));
+};
 
 module.exports = {
     title: 'Roistat react ui components',
-    components: function() {
-        return glob.sync(path.resolve(__dirname, './src/**/*.jsx')).filter(function(module) {
-            if (RE_EXCLUDE.test(module)) {
-                return false
-            }
-
-            return !/story.jsx$/.test(module);
-        });
+    sections: [
+        {
+            name: 'Typography',
+            components: createMatcher(RE_TYPO)
+        },
+        {
+            name: 'Controls',
+            components: createMatcher(RE_CONTROLS)
+        },
+        {
+            name: 'Views',
+            components: createMatcher(RE_VIEWS)
+        },
+        {
+            name: 'Helpers',
+            components: createMatcher(RE_HELPERS)
+        },
+        {
+            name: 'Elements',
+            components: createMatcher(RE_ELEMENTS)
+        }
+        // {
+        //     name: 'Behavers',
+        //     components: createMatcher(RE_ELEMENTS)
+        // }
+    ],
+    getExampleFilename: function(componentPath) {
+        return componentPath.replace(/\.jsx?$/,   '.md');
     },
     highlightTheme: 'material',
     assetsDir: './assets',

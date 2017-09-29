@@ -21,15 +21,14 @@ export default class View extends React.Component {
     };
 
     render() {
-        const props = this.props;
-        const extraClassName = props.styles &&  props.styles.length ? ` ${css(...props.styles)}` : '';
-        const className = props.className ? ` ${props.className}` : '';
+        const { styles, children, className, ...rest } = this.props;
+        const extraClassName = styles &&  styles.length ? ` ${css(...styles)}` : '';
 
         return (
             <div
-                {...props}
-                className={viewClassName + extraClassName + className}>
-                {props.children}
+                {...rest}
+                className={viewClassName + extraClassName + (className ? ` ${className}` : '')}>
+                {children}
             </div>
         )
     }

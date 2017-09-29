@@ -14,6 +14,9 @@ export default class ModalHeader extends React.Component {
     static __MODAL_HEADER__ = true;
 
     static propTypes = {
+        /**
+         * On close handler
+         */
         onClose: PropTypes.func
     };
 

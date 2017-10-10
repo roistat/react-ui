@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
         padding: 0,
         flexDirection: 'column',
         overflow: 'hidden',
-        minWidth: '960px',
+        minWidth: '720px',
         minHeight: '400px',
     },
     shownOverlay: {

@@ -16,11 +16,15 @@ export default class Modal extends React.Component {
         onDidClose: PropTypes.func,
         onDidShow: PropTypes.func,
         onClose: PropTypes.func,
-        zIndex: PropTypes.number
+        zIndex: PropTypes.number,
+        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     };
 
     static defaultProps = {
-        zIndex: 999
+        zIndex: 999,
+        width: 'auto',
+        minWidth: 720
     };
 
     constructor(props, ...args) {
@@ -150,6 +154,12 @@ export default class Modal extends React.Component {
     }
 
     render() {
+        const {
+            zIndex,
+            minWidth,
+            width
+        } = this.props;
+
         return (
             <Teleport ref={(c) => this._teleport = c}>
                 <Transition
@@ -159,7 +169,11 @@ export default class Modal extends React.Component {
                     onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
-                            style={{ zIndex: this.props.zIndex }}
+                            style={{
+                                zIndex: zIndex,
+                                minWidth: minWidth,
+                                width: width
+                            }}
                             styles={[
                                 styles.overlay,
                                 isEnter && styles.shownOverlay,
@@ -246,7 +260,6 @@ const styles = StyleSheet.create({
         padding: 0,
         flexDirection: 'column',
         overflow: 'hidden',
-        minWidth: '720px',
         minHeight: '400px',
     },
     shownOverlay: {

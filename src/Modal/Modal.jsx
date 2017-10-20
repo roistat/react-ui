@@ -169,11 +169,7 @@ export default class Modal extends React.Component {
                     onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
-                            style={{
-                                zIndex: zIndex,
-                                minWidth: minWidth,
-                                width: width
-                            }}
+                            style={{ zIndex, minWidth, width }}
                             styles={[
                                 styles.overlay,
                                 isEnter && styles.shownOverlay,

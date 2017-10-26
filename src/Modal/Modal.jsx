@@ -16,16 +16,10 @@ export default class Modal extends React.Component {
         onDidClose: PropTypes.func,
         onDidShow: PropTypes.func,
         onClose: PropTypes.func,
-        zIndex: PropTypes.number,
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        zIndex: PropTypes.number
     };
 
-    static defaultProps = {
-        zIndex: 999,
-        width: 'auto',
-        minWidth: 720
-    };
+    static defaultProps = { zIndex: 999 };
 
     constructor(props, ...args) {
         super(props, ...args);
@@ -154,11 +148,7 @@ export default class Modal extends React.Component {
     }
 
     render() {
-        const {
-            zIndex,
-            minWidth,
-            width
-        } = this.props;
+        const { zIndex } = this.props;
 
         return (
             <Teleport ref={(c) => this._teleport = c}>
@@ -169,7 +159,7 @@ export default class Modal extends React.Component {
                     onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
-                            style={{ zIndex, minWidth, width }}
+                            style={{ zIndex }}
                             styles={[
                                 styles.overlay,
                                 isEnter && styles.shownOverlay,
@@ -185,7 +175,7 @@ export default class Modal extends React.Component {
                                 <AutoClosable onClose={this._onCloseHandler}>
                                     <TeleportContext>
                                         <View styles={[styles.popupWrapper]}>
-                                            <Popup styles={[styles.popup]} isRounded >
+                                            <Popup styles={[styles.popup]} isRounded>
                                                 {this._renderChildren()}
                                             </Popup>
                                         </View>
@@ -254,9 +244,10 @@ const styles = StyleSheet.create({
     },
     popup: {
         padding: 0,
+        minHeight: 400,
+        minWidth: 720,
         flexDirection: 'column',
         overflow: 'hidden',
-        minHeight: '400px',
     },
     shownOverlay: {
         background: 'rgba(0, 0, 0, .4)'

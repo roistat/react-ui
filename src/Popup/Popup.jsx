@@ -12,14 +12,15 @@ export default class Popup extends React.Component {
 	static propTypes = {
 		isRounded: PropTypes.bool,
 		isHasClose: PropTypes.bool,
-		onClose: PropTypes.func
+		onClose: PropTypes.func,
+        popupStyles: PropTypes.object
 	};
 
 	render() {
-		const { styles, isRounded, onClose, children }  = this.props;
+		const { popupStyles, isRounded, onClose, children }  = this.props;
 
 		return (
-			<View styles={[STYLES.popup, isRounded && STYLES.rounded, ...(styles || [])]} >
+			<View styles={[STYLES.popup, isRounded && STYLES.rounded]} style={popupStyles}>
 				{React.Children.map(children, (child) => {
 					if (typeof child !== 'object') {
 						return child;

@@ -17,14 +17,18 @@ export default class Modal extends React.Component {
         onDidShow: PropTypes.func,
         onClose: PropTypes.func,
         zIndex: PropTypes.number,
-        width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-        minWidth: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+        popupStyles: PropTypes.object
     };
 
     static defaultProps = {
         zIndex: 999,
-        width: 'auto',
-        minWidth: 720
+        popupStyles: {
+            padding: 0,
+            minHeight: 400,
+            minWidth: 720,
+            flexDirection: 'column',
+            overflow: 'hidden'
+        }
     };
 
     constructor(props, ...args) {
@@ -154,11 +158,7 @@ export default class Modal extends React.Component {
     }
 
     render() {
-        const {
-            zIndex,
-            minWidth,
-            width
-        } = this.props;
+        const { zIndex, popupStyles } = this.props;
 
         return (
             <Teleport ref={(c) => this._teleport = c}>
@@ -169,7 +169,7 @@ export default class Modal extends React.Component {
                     onDidLeave={this._onDidLeaveHandler}>
                     {this.state.isShown && (({ isEnter, isLeave }) => (
                         <View
-                            style={{ zIndex, minWidth, width }}
+                            style={{ zIndex }}
                             styles={[
                                 styles.overlay,
                                 isEnter && styles.shownOverlay,
@@ -181,11 +181,10 @@ export default class Modal extends React.Component {
                                     isEnter && styles.shownInner,
                                     isLeave && styles.leaveInner
                                 ]}>
-
                                 <AutoClosable onClose={this._onCloseHandler}>
                                     <TeleportContext>
                                         <View styles={[styles.popupWrapper]}>
-                                            <Popup styles={[styles.popup]} isRounded >
+                                            <Popup popupStyles={popupStyles} isRounded>
                                                 {this._renderChildren()}
                                             </Popup>
                                         </View>
@@ -251,12 +250,6 @@ const styles = StyleSheet.create({
     },
     popupWrapper: {
         margin: '4.4rem 140px 5rem 140px'
-    },
-    popup: {
-        padding: 0,
-        flexDirection: 'column',
-        overflow: 'hidden',
-        minHeight: '400px',
     },
     shownOverlay: {
         background: 'rgba(0, 0, 0, .4)'

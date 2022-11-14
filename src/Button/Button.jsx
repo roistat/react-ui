@@ -161,25 +161,25 @@ const styles = StyleSheet.create({
         }
     },
     sizeL: {
-        padding: '.3rem .6rem',
-        minWidth: '1.8rem',
-        height: '1.8rem'
+        padding: '6px 12px',
+        minWidth: '36px',
+        height: '36px',
     },
     sizeM: {
-        padding: '.2rem .6rem',
-        minWidth: '1.6rem',
-        height: '1.6rem'
+        padding: '4px 12px',
+        minWidth: '32px',
+        height: '32px',
     },
     sizeS: {
-        padding: '.1rem .4rem',
-        minWidth: '1.4rem',
-        height: '1.4rem'
+        padding: '2px 8px',
+        minWidth: '28px',
+        height: '28px',
     },
     sizeXs: {
         fontSize: FONT.SIZE.BUTTON_SMALL_TEXT,
-        padding: '0 .4rem',
-        minWidth: '1.2rem',
-        height: '1.2rem'
+        padding: '0 8px',
+        minWidth: '24px',
+        height: '24px',
     },
     hiddenContent: {
         visibility: 'hidden'
